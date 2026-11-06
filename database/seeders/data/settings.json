@@ -1,0 +1,51 @@
+{
+    "github": "",
+    "open": true,
+    "bio": "Dasturlashni mustaqil oʻrganyapman — asosan PHP, Laravel va maʼlumotlar bazalari. Maqsadim — yaxshi backend dasturchi boʻlish.\n\nBolalarga kompyuter savodxonligi, HTML, Python va ingliz tilidan dars beraman. Ingliz tilida oʻz-oʻzini rivojlantirish haqida Telegram kanal yuritaman.\n\nBoʻsh vaqtimda sport bilan shugʻullanaman, anime koʻraman va bu yerga fikrlarimni yozaman.",
+    "now": [
+        {
+            "k": "Oʻrganyapman",
+            "v": "Laravel events va PostgreSQL"
+        },
+        {
+            "k": "Dars beraman",
+            "v": "12–18 yoshli bolalarga HTML, Python va ingliz tili"
+        },
+        {
+            "k": "Yozyapman",
+            "v": "Shu blog va Telegram kanal"
+        },
+        {
+            "k": "Qiziqaman",
+            "v": "Kiberxavfsizlik, Flutter, anime"
+        }
+    ],
+    "learn": [
+        {
+            "n": "Laravel events",
+            "p": 72
+        },
+        {
+            "n": "PostgreSQL",
+            "p": 48
+        },
+        {
+            "n": "Click va Payme",
+            "p": 20
+        }
+    ],
+    "telegram": {
+        "u": "",
+        "n": "Self-development",
+        "posts": [
+            {
+                "t": "Small steps every day beat big plans you never start.",
+                "d": "2026-11-04"
+            },
+            {
+                "t": "Learn in public. Your notes today become someone’s roadmap tomorrow.",
+                "d": "2026-11-01"
+            }
+        ]
+    }
+}

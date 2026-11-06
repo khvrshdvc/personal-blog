@@ -1,0 +1,56 @@
+[
+    {
+        "name": "CRM tizimi",
+        "repo": "crm-system",
+        "description": "Kompaniyalar, kontaktlar, lidlar, bitimlar va vazifalarni bir joyda boshqarish.",
+        "stack": [
+            "Laravel",
+            "MySQL",
+            "Redis",
+            "Docker"
+        ],
+        "demo_url": null
+    },
+    {
+        "name": "erp-brainup",
+        "repo": "erp-brainup",
+        "description": "Laravel Sail va Breeze asosidagi ERP. Ingliz tili guruhlarimga vazifalarni shu yerda beraman.",
+        "stack": [
+            "Laravel",
+            "Sail",
+            "Breeze"
+        ],
+        "demo_url": null
+    },
+    {
+        "name": "Shaxsiy sayt",
+        "repo": "blog-tulqinov",
+        "description": "Shu sayt: fikrlar, dasturlash boʻlimi va admin panel.",
+        "stack": [
+            "Laravel",
+            "Blade",
+            "Redis"
+        ],
+        "demo_url": null
+    },
+    {
+        "name": "Symfony blog",
+        "repo": "symfony-blog",
+        "description": "Admin panelli blog: Symfony backend, Doctrine va React frontend.",
+        "stack": [
+            "Symfony",
+            "Doctrine",
+            "React"
+        ],
+        "demo_url": null
+    },
+    {
+        "name": "Telegram vazifa bot",
+        "repo": "telegram-task-bot",
+        "description": "Guruhlarga vazifalarni avtomatik yuboradigan userbot.",
+        "stack": [
+            "Telegram API"
+        ],
+        "demo_url": null
+    }
+]

@@ -1,0 +1,145 @@
+[
+    {
+        "category": "fikr",
+        "tag": "Hayot",
+        "title": "Nega fikrlarimni yozishga qaror qildim",
+        "slug": "nega-fikrlarimni-yozaman",
+        "status": "published",
+        "published_at": "2026-11-05",
+        "cover": null,
+        "excerpt": "Bu blog faqat kod haqida emas. Oʻrganayotganlarim, oʻylayotganlarim va kundalik kichik kashfiyotlarim uchun joy.",
+        "body": "Uzoq vaqt blogni faqat dasturlash haqida yuritishni oʻylardim. Keyin tushundim: kod — hayotimning bir qismi, xolos. Har kuni boshqa narsalarni ham oʻrganaman: dars berishni, til oʻrganishni, intizomni, oʻzim bilan yolgʻiz qolishni.\n\nYozish fikrni tartibga soladi. Boshda chalkash turgan narsa qogʻozga tushganda oddiyroq koʻrinadi. Baʼzan yozib boʻlgachgina aslida nima demoqchi ekanimni tushunaman.\n\n## Bu yerda nimalar boʻladi\n\n- Oʻrganish va oʻsish haqida kuzatuvlar\n- Bolalarga dars berish tajribasi\n- Til, kitob va kino haqida qisqa fikrlar\n\nDasturlash haqidagi yozuvlarim alohida boʻlimda turadi — faqat shuni qidirgan odam chalgʻimasin.\n\n> Mukammal yozishni kutmayman. Halol yozishni xohlayman."
+    },
+    {
+        "category": "fikr",
+        "tag": "Oʻsish",
+        "title": "Mustaqil oʻrganishning eng qiyin joyi",
+        "slug": "mustaqil-organish",
+        "status": "published",
+        "published_at": "2026-10-28",
+        "cover": null,
+        "excerpt": "Hech kim keyingi qadamni aytmaydi. Uni oʻzing topishing kerak — har kuni.",
+        "body": "Mustaqil oʻrganishda eng qiyini mavzular emas. Eng qiyini — hech kim keyingi qadamni aytmasligi. Oʻzing oʻrganganda yoʻlni ham, surʼatni ham oʻzing belgilaysan.\n\nBoshida koʻp vaqtni “toʻgʻri” kursni qidirishga sarflardim. Keyin angladim: ideal kurs yoʻq. Bor narsa — boshlash va davom etish.\n\n## Menga yordam bergan uch narsa\n\n1. **Kichik maqsad.** “Laravelni oʻrganaman” emas, “bugun migratsiyalarni tushunaman”.\n2. **Oʻz qoʻlim bilan yozish.** Videoni koʻrib qoʻyish bilimga aylanmaydi — kodni oʻzing yozib, xato qilib koʻrmaguncha.\n3. **Savol berishdan uyalmaslik.** Notoʻgʻri savol yoʻq, soʻralmagan savol bor.\n\nSekin boʻlsa ham har kuni oldinga yurish — tez, lekin haftada bir marta yurishdan yaxshiroq."
+    },
+    {
+        "category": "fikr",
+        "tag": "Ustozlik",
+        "title": "Bolalarga dars berish menga nimani oʻrgatdi",
+        "slug": "bolalarga-dars-berish",
+        "status": "published",
+        "published_at": "2026-10-20",
+        "cover": null,
+        "excerpt": "Biror narsani oddiy tushuntira olmasang, demak uni hali oʻzing ham toʻliq tushunmagansan.",
+        "body": "Hozir 12–18 yoshli bolalarga kompyuter savodxonligi, HTML va Python asoslaridan dars beraman. Ingliz tili grammatikasidan ham guruhlarim bor. Darsga tayyorlanish meni oʻzim kutmagan tarzda oʻzgartirdi.\n\n## Oddiy tushuntirish — eng qiyin ish\n\n`<h1>` va `<p>` teglarini oʻzim bir daqiqada tushunganman. Lekin ularni birinchi marta koʻrayotgan bolaga tushuntirish uchun misol, rasm va hikoya kerak boʻldi. Shunda bildimki, “bilaman” bilan “tushuntira olaman” orasida katta farq bor.\n\n## Sharoitga moslashish\n\nKoʻp oʻquvchilarimning uyida kompyuter yoʻq. Shuning uchun uy vazifalarini qogʻozda beraman: teglarni topish, xatoni aniqlash, sahifani qoʻlda chizish. Bu cheklov meni ijodkorroq boʻlishga majbur qildi.\n\n> Oʻqituvchi boʻlib, oʻzim ham yaxshiroq oʻquvchiga aylanyapman."
+    },
+    {
+        "category": "fikr",
+        "tag": "Oʻsish",
+        "title": "Yolgʻizlik va tanholik — bir narsa emas",
+        "slug": "yolgizlik-va-tanholik",
+        "status": "published",
+        "published_at": "2026-10-12",
+        "cover": null,
+        "excerpt": "Ikkalasida ham yoningda hech kim yoʻq. Lekin biri seni boʻshatadi, ikkinchisi toʻldiradi.",
+        "body": "Yolgʻizlik — atrofingda odam yoʻqligidan kelgan ogʻriq. Tanholik esa — oʻzing bilan qolishni oʻzing tanlaganing.\n\nIkkalasida ham yoningda hech kim yoʻq. Lekin biri seni boʻshatadi, ikkinchisi toʻldiradi.\n\nKoʻpincha eng yaxshi fikrlar telefon chetda turganda keladi. Kod ham, yozuv ham, rejalar ham — tanholikda tugʻiladi. Shovqin ichida esa faqat boshqalarning fikrini eshitamiz.\n\n## Oʻzimga eslatma\n\n- Tanholikdan qoʻrqma — u boʻsh vaqt emas, ichki ish vaqti.\n- Yolgʻizlikka koʻnikib qolma — odamlar bilan aloqa ham oziq.\n- Kuniga hech boʻlmasa yigirma daqiqa ekransiz vaqt.\n\n> Bu mavzuni Telegram kanalimda ingliz tilida ham yozganman."
+    },
+    {
+        "category": "fikr",
+        "tag": "Til",
+        "title": "Ingliz tilini kundalik odatga aylantirish",
+        "slug": "ingliz-tili-odat",
+        "status": "published",
+        "published_at": "2026-10-03",
+        "cover": null,
+        "excerpt": "Til darslikda emas, kundalikda oʻrganiladi: hujjatlar, videolar va kichik odatlar orqali.",
+        "body": "Ingliz tili men uchun fan emas, vosita. Dasturlashdagi eng yaxshi hujjatlar, savol va javoblar ingliz tilida. Shuning uchun uni alohida “dars” emas, kundalik odatga aylantirishga harakat qilyapman.\n\n## Sinab koʻrayotgan usullarim\n\n- **Texnik mavzularni inglizcha manbadan oʻqish.** Masalan, PHP MVCʼni toʻgʻridan-toʻgʻri ingliz tilida.\n- **Har kuni bir nechta yangi soʻz.** Koʻp emas, lekin har kuni.\n- **Jonli til.** Grammatika bilan birga kundalik iboralar va slangni ham — kitobdagi til bilan koʻchadagi til har xil.\n- **Oʻzbekchadan inglizchaga yozish.** Kanalimdagi postlarni avval oʻzbekcha oʻylab, keyin inglizchaga oʻgiraman.\n\nXato qilishdan qoʻrqmaslik kerak. Til — gapirgan sari silliqlanadigan tosh."
+    },
+    {
+        "category": "fikr",
+        "tag": "Hayot",
+        "title": "Solo Leveling va kichik qadamlar",
+        "slug": "solo-leveling-kichik-qadamlar",
+        "status": "published",
+        "published_at": "2026-09-24",
+        "cover": null,
+        "excerpt": "Eng zaif ovchi qanday qilib eng kuchliga aylanadi? Har kuni bir xil mashq bilan.",
+        "body": "Solo Levelingʼni koʻrganlar biladi: eng zaif ovchi har kuni oddiy mashqlarni bajarib, asta-sekin eng kuchliga aylanadi. Hikoya fantastik, lekin gʻoyasi juda real.\n\nSportzalda ham, kodda ham shunday: bir kunda natija koʻrinmaydi. Mushak ham, koʻnikma ham takrorlashdan oʻsadi.\n\n## Mening “kundalik kvestim”\n\n- Mashgʻulot — tana uchun\n- Bitta mavzu — miya uchun\n- Bir sahifa yozuv — fikr uchun\n\nHar kuni hammasini bajara olmayman. Lekin roʻyxat borligi yoʻqligidan yaxshi.\n\n> Level up — bir kunda emas, har kuni ozgina."
+    },
+    {
+        "category": "fikr",
+        "tag": "Oʻsish",
+        "title": "Ikigai: ertalab nima uchun turaman?",
+        "slug": "ikigai",
+        "status": "draft",
+        "published_at": "2026-11-04",
+        "cover": null,
+        "excerpt": "Toʻrt savol va ularning kesishgan joyi.",
+        "body": "## Toʻrt savol\n\n- Nimani yaxshi koʻraman?\n- Nimani yaxshi qila olaman?\n- Dunyoga nima kerak?\n- Nima uchun menga pul toʻlashadi?\n\nDavomi yozilmoqda…"
+    },
+    {
+        "category": "dev",
+        "tag": "Laravel",
+        "title": "Laravel events: post yaratilganda kimga xabar beramiz?",
+        "slug": "laravel-events",
+        "status": "published",
+        "published_at": "2026-11-01",
+        "cover": null,
+        "excerpt": "PostCreated event, ikki listener va nega hozircha SMS emas, email yetarli.",
+        "body": "Blog loyihamda yangi post yaratilganda ikki ish bajarilishi kerak: muallifga email ketishi va adminga bildirishnoma borishi. Buni controller ichiga yozish mumkin, lekin kod tezda chalkashib ketadi. Laravelʼda buning uchun **events** bor.\n\n## Event va listener\n\nEvent — “nimadir sodir boʻldi” degan xabar. Listener — shu xabarga javob beradigan klass.\n\n```bash\nsail artisan make:event PostCreated\nsail artisan make:listener SendEmailToUser --event=PostCreated\nsail artisan make:listener SendNotificationToAdmin --event=PostCreated\n```\n\nController faqat eventʼni chaqiradi:\n\n```php\nPostCreated::dispatch($post);\n```\n\n## Nega SMS emas?\n\nSMS qoʻshish oson koʻrinadi, lekin bu pullik provayder, limitlar va qoʻshimcha xatolar degani. Hozircha email yetarli — kerak boʻlsa, keyin yangi listener qoʻshaman, controllerʼga tegmasdan.\n\n> Eventʼlar kodni “nima boʻldi” va “bunga qanday javob beramiz” degan ikki qismga ajratadi."
+    },
+    {
+        "category": "dev",
+        "tag": "Laravel",
+        "title": "Laravel Sail bilan Docker muhitini sozlash",
+        "slug": "laravel-sail-docker",
+        "status": "published",
+        "published_at": "2026-10-22",
+        "cover": null,
+        "excerpt": "WSLʼda Sailʼni oʻrnatish, birinchi ishga tushirish va qulay alias.",
+        "body": "Laravel Sail — Docker ustiga qurilgan yengil buyruq qatori interfeysi. U PHP, MySQL va Redis kabi servislarni kompyuterga alohida oʻrnatmasdan ishlatish imkonini beradi.\n\n## Nima kerak boʻladi\n\n- Windowsʼda WSL2 va Ubuntu\n- Docker Desktop (WSL integratsiyasi yoqilgan)\n- Terminal va biroz sabr\n\n## Loyihani yaratish\n\n```bash\ncurl -s \"https://laravel.build/erp-brainup\" | bash\ncd erp-brainup\n./vendor/bin/sail up -d\n```\n\nBirinchi ishga tushirish biroz vaqt oladi — Docker imageʼlar yuklab olinadi.\n\n## Qulay alias\n\n```bash\nalias sail='sh $([ -f sail ] && echo sail || echo vendor/bin/sail)'\n```\n\n> Maslahat: loyihani Windows diskida emas, WSL fayl tizimida (`~/projects`) saqlang — tezlik sezilarli farq qiladi."
+    },
+    {
+        "category": "dev",
+        "tag": "SQL",
+        "title": "PostgreSQLʼda JOIN turlari: oddiy misollar bilan",
+        "slug": "postgresql-join-turlari",
+        "status": "published",
+        "published_at": "2026-10-15",
+        "cover": null,
+        "excerpt": "INNER, LEFT, RIGHT va FULL JOIN qachon kerak boʻladi — ikki jadval misolida.",
+        "body": "Ikki jadvalimiz bor: `users` va `orders`. Har bir buyurtma bitta foydalanuvchiga tegishli, lekin hamma foydalanuvchida buyurtma boʻlmasligi mumkin.\n\n## INNER JOIN\n\nFaqat ikkala jadvalda ham mosligi bor qatorlarni qaytaradi.\n\n```sql\nSELECT u.name, o.total\nFROM users u\nINNER JOIN orders o ON o.user_id = u.id;\n```\n\n## LEFT JOIN\n\nChap jadvaldagi barcha qatorlar qaytadi. Mos buyurtma boʻlmasa, `o.total` qiymati `NULL` boʻladi.\n\n```sql\nSELECT u.name, o.total\nFROM users u\nLEFT JOIN orders o ON o.user_id = u.id;\n```\n\n## RIGHT va FULL JOIN\n\n**RIGHT JOIN** — LEFT JOINʼning teskarisi. **FULL JOIN** esa ikkala tomondagi barcha qatorlarni qaytaradi, mos kelmaganlarini `NULL` bilan toʻldiradi."
+    },
+    {
+        "category": "dev",
+        "tag": "SQL",
+        "title": "Normalizatsiya oddiy tilda",
+        "slug": "normalizatsiya-oddiy-tilda",
+        "status": "published",
+        "published_at": "2026-10-08",
+        "cover": null,
+        "excerpt": "1NF, 2NF va 3NF: jadvallarni nega boʻlib chiqamiz va bu nima beradi.",
+        "body": "Normalizatsiya — maʼlumotlar bazasidagi takrorlanishni kamaytirish va jadvallarni mantiqan toʻgʻri boʻlib chiqish jarayoni.\n\n## Muammo\n\nTasavvur qiling, `orders` jadvalida har bir buyurtma bilan birga mijozning ismi va telefoni ham saqlanadi. Mijoz telefonini oʻzgartirsa, uni yuzlab qatorda yangilash kerak boʻladi.\n\n## Uch asosiy qadam\n\n1. **1NF** — har bir katakda bitta qiymat.\n2. **2NF** — barcha ustunlar butun asosiy kalitga bogʻliq.\n3. **3NF** — ustunlar faqat kalitga bogʻliq, boshqa oddiy ustunga emas.\n\n> Normalizatsiya — maqsad emas, vosita. Baʼzan tezlik uchun ataylab denormalizatsiya qilinadi."
+    },
+    {
+        "category": "dev",
+        "tag": "PHP",
+        "title": "PHPʼda interfeys va abstrakt klass: qachon qaysi biri?",
+        "slug": "interfeys-va-abstrakt-klass",
+        "status": "published",
+        "published_at": "2026-09-30",
+        "cover": null,
+        "excerpt": "Ikkalasi ham shartnoma vazifasini bajaradi, lekin farqi katta.",
+        "body": "PHPʼda interfeys ham, abstrakt klass ham “shartnoma” vazifasini bajaradi. Lekin ular turli vaziyatlar uchun moʻljallangan.\n\n## Interfeys\n\nInterfeys faqat *nima* qilish kerakligini aytadi. Bitta klass bir nechta interfeysni amalga oshirishi mumkin.\n\n```php\ninterface Notifier\n{\n    public function send(string $to, string $message): void;\n}\n```\n\n## Abstrakt klass\n\nAbstrakt klass umumiy kodni ham saqlaydi, lekin klass faqat bitta klassdan meros olishi mumkin.\n\n```php\nabstract class Report\n{\n    abstract protected function rows(): array;\n}\n```\n\n## Qachon qaysi biri?\n\n- Turli klasslar bir xil **xatti-harakatga** ega boʻlishi kerak boʻlsa — interfeys.\n- Bir oila klasslar **umumiy kod** bilan boʻlishishi kerak boʻlsa — abstrakt klass."
+    },
+    {
+        "category": "dev",
+        "tag": "Laravel",
+        "title": "Laravelʼda queue bilan ishlash",
+        "slug": "laravel-queue",
+        "status": "draft",
+        "published_at": "2026-11-03",
+        "cover": null,
+        "excerpt": "Uzoq davom etadigan ishlarni fonga oʻtkazish.",
+        "body": "## Queue nima?\n\nFormadan keyin email yoki Telegram xabarini darhol joʻnatish sahifani sekinlashtiradi. Queue bu ishni fonga oʻtkazadi.\n\nDavomi yozilmoqda…"
+    }
+]
