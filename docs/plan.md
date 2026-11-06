@@ -2,7 +2,7 @@
 
 Har bosqich alohida branch, commit va qo'lda tekshiruv bilan yopiladi.
 
-1. Muhit: Laravel 11 + Sail (nginx, php-fpm, MySQL, Redis), auth (bitta admin), `.env.example`
+1. Muhit: Laravel 12 + Sail (nginx, php-fpm, MySQL, Redis), auth (bitta admin), `.env.example`
 2. Ma'lumotlar bazasi: migratsiyalar (posts, projects, settings), modellar, seeder (prototipdagi namuna ma'lumotlar)
 3. Layout: Blade komponentlari (tnav, tmini, karta, ⌘K), mavzu almashtirish, dizayn tokenlari
 4. Bosh sahifa: bento kartalar (hero, hozir, o'rganyapman, telegram, faollik)

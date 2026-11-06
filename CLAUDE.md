@@ -3,7 +3,7 @@
 Utkirbek'ning shaxsiy blog va portfolio sayti. Prototip: `design/utkirbek-blog-bento.html` (bitta fayl, sayt + admin, localStorage'da ishlaydi). Vazifa: shuni Laravel'ga o'tkazish. Dizayn va matnlar prototipdan o'zgarmaydi.
 
 ## Stek
-- Laravel 11, PHP 8.3, Blade, Tailwind (yoki prototipdagi CSS tokenlari), Alpine.js
+- Laravel 12, PHP 8.3, Blade, Tailwind (yoki prototipdagi CSS tokenlari), Alpine.js
 - MySQL, Redis (kesh), Docker/Sail
 - Test: Pest yoki PHPUnit, Playwright (ko'rinish tekshiruvi)
 
