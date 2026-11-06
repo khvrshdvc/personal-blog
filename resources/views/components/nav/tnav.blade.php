@@ -11,7 +11,7 @@
         <button class="tn-ib" type="button" x-on:click="toggleTheme()" aria-label="Mavzuni almashtirish"><x-icon name="moon" class="t-moon" /><x-icon name="sun" class="t-sun" /></button>
     </x-card>
     @foreach ($navItems as $item)
-        @php $active = request()->routeIs($item['match']); @endphp
+        @php $active = $item['active']; @endphp
         <x-card tag="a" :href="$item['href']" class="tn{{ $active ? ' on' : '' }}" :aria-current="$active ? 'page' : null">
             <span class="tn-t"><x-icon :name="$item['icon']" /><span>{{ $item['count'] }}</span></span>
             <b>{{ $item['label'] }}</b>

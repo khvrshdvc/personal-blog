@@ -3,6 +3,42 @@ import Alpine from 'alpinejs';
 window.Alpine = Alpine;
 
 const THEME_KEY = 'ut4_theme';
+const MONTHS = ['yanvar', 'fevral', 'mart', 'aprel', 'may', 'iyun', 'iyul', 'avgust', 'sentabr', 'oktabr', 'noyabr', 'dekabr'];
+const reducedMotion = () => window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+Alpine.store('theme', {
+    mode: 'dark',
+    query: null,
+
+    init() {
+        try {
+            this.mode = localStorage.getItem(THEME_KEY) || 'dark';
+        } catch (e) {}
+        this.query = window.matchMedia ? matchMedia('(prefers-color-scheme: dark)') : null;
+        if (this.query && this.query.addEventListener) {
+            this.query.addEventListener('change', () => {
+                if (this.mode === 'auto') this.apply();
+            });
+        }
+    },
+
+    apply() {
+        const dark = this.mode === 'dark' || (this.mode === 'auto' && this.query && this.query.matches);
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+    },
+
+    set(mode) {
+        this.mode = mode;
+        try {
+            localStorage.setItem(THEME_KEY, mode);
+        } catch (e) {}
+        this.apply();
+    },
+
+    toggle() {
+        this.set(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+    },
+});
 
 Alpine.data('clock', () => ({
     time: '',
@@ -22,8 +58,7 @@ Alpine.data('rotator', (count) => ({
     prev: null,
 
     init() {
-        const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (count < 2 || reduce) return;
+        if (count < 2 || reducedMotion()) return;
         setInterval(() => {
             if (!document.hidden) this.show(this.cur + 1);
         }, 4200);
@@ -35,10 +70,111 @@ Alpine.data('rotator', (count) => ({
     },
 }));
 
+Alpine.data('seg', (initial = null) => ({
+    cur: initial,
+
+    init() {
+        this.$nextTick(() => this.place());
+        window.addEventListener('resize', () => this.place());
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => this.place());
+    },
+
+    place() {
+        const el = this.$el;
+        const active = el.querySelector('[aria-pressed="true"], [aria-current="page"]');
+        const knob = el.querySelector('.knob');
+        if (!active || !knob) return;
+        knob.style.width = active.offsetWidth + 'px';
+        knob.style.transform = 'translateX(' + active.offsetLeft + 'px)';
+        if (!el.classList.contains('ready')) {
+            requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('ready')));
+        }
+    },
+
+    pick(value) {
+        this.cur = value;
+        this.$nextTick(() => this.place());
+    },
+}));
+
+Alpine.data('fikrlar', (items, searchUrl) => ({
+    items,
+    tag: 'all',
+    q: '',
+    hits: null,
+    controller: null,
+
+    get featured() {
+        return this.tag === 'all' && !this.q.trim();
+    },
+
+    shown(slug, tag) {
+        const tagOk = this.tag === 'all' || this.tag === tag;
+        const textOk = !this.q.trim() || this.hits === null || this.hits.includes(slug);
+        return tagOk && textOk;
+    },
+
+    get visibleCount() {
+        return this.items.filter((i) => this.shown(i.slug, i.tag)).length;
+    },
+
+    async query() {
+        if (this.controller) this.controller.abort();
+        if (!this.q.trim()) {
+            this.hits = null;
+            return;
+        }
+        this.controller = new AbortController();
+        try {
+            const res = await fetch(searchUrl + '?q=' + encodeURIComponent(this.q), {
+                headers: { Accept: 'application/json' },
+                signal: this.controller.signal,
+            });
+            if (res.ok) this.hits = await res.json();
+        } catch (e) {}
+    },
+
+    clear() {
+        this.q = '';
+        this.hits = null;
+        document.getElementById('bq').focus();
+    },
+}));
+
+Alpine.data('heatmap', () => ({
+    tip: { show: false, text: '', x: 0, y: 0 },
+
+    init() {
+        this.$nextTick(() => {
+            const wrap = this.$refs.wrap;
+            if (wrap) wrap.scrollLeft = wrap.scrollWidth;
+        });
+    },
+
+    show(e) {
+        const cell = e.target.closest('i[data-d]');
+        if (!cell) return;
+        const count = +cell.dataset.c;
+        const [y, m, d] = cell.dataset.d.split('-').map(Number);
+        this.tip.text = (count ? count + ' ta hissa' : 'Hissa yoʻq') + ' · ' + d + '-' + MONTHS[m - 1] + ', ' + y;
+        const r = cell.getBoundingClientRect();
+        this.tip.x = r.left + r.width / 2;
+        this.tip.y = r.top;
+        this.tip.show = true;
+    },
+
+    hide() {
+        this.tip.show = false;
+    },
+}));
+
 Alpine.data('site', (icons, searchUrl) => ({
     icons,
     mini: false,
+    lastY: 0,
+    miniDir: '',
     toastText: '',
+    toastAction: null,
     toastTimer: null,
     glowEl: null,
     palette: { open: false, q: '', items: [], i: 0, loaded: false, prev: null },
@@ -51,25 +187,69 @@ Alpine.data('site', (icons, searchUrl) => ({
             document.addEventListener('pointermove', (e) => this.onPointer(e), { passive: true });
         }
         document.addEventListener('keydown', (e) => this.onKey(e));
+        document.addEventListener('click', (e) => this.onClick(e));
     },
 
-    notify(text) {
+    notify(text, action = null) {
         this.toastText = text;
+        this.toastAction = action;
         clearTimeout(this.toastTimer);
         this.toastTimer = setTimeout(() => (this.toastText = ''), 3000);
     },
 
     toggleTheme() {
-        const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
-        document.documentElement.dataset.theme = next;
+        Alpine.store('theme').toggle();
+    },
+
+    async share() {
+        if (navigator.share) {
+            try {
+                await navigator.share({ title: document.title, url: location.href });
+                return;
+            } catch (e) {
+                if (e && e.name === 'AbortError') return;
+            }
+        }
         try {
-            localStorage.setItem(THEME_KEY, next);
+            await navigator.clipboard.writeText(location.href);
         } catch (e) {}
+        this.notify('Havola nusxalandi');
+    },
+
+    onClick(e) {
+        const button = e.target.closest('.copy-code');
+        if (!button) return;
+        const pre = button.closest('.code-wrap').querySelector('pre');
+        const label = button.querySelector('span');
+        const done = () => {
+            label.textContent = 'Nusxalandi';
+            setTimeout(() => (label.textContent = 'Nusxalash'), 1400);
+        };
+        navigator.clipboard.writeText(pre.innerText).then(done, done);
     },
 
     onScroll() {
+        const y = window.scrollY;
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = max > 0 ? Math.min(1, Math.max(0, y / max)) : 0;
+        const bar = document.getElementById('progress');
+        if (bar) bar.style.width = progress * 100 + '%';
+
         const nav = document.getElementById('tnav');
-        this.mini = nav ? nav.getBoundingClientRect().bottom < -6 : false;
+        const out = nav ? nav.getBoundingClientRect().bottom < -6 : false;
+        let show = out;
+
+        if (out && document.body.dataset.route === 'post' && progress < 0.98) {
+            if (Math.abs(y - this.lastY) > 10) {
+                this.miniDir = y > this.lastY ? 'down' : 'up';
+                this.lastY = y;
+            }
+            show = this.miniDir !== 'down';
+        } else {
+            this.lastY = y;
+        }
+
+        this.mini = show;
     },
 
     onPointer(e) {
@@ -90,6 +270,16 @@ Alpine.data('site', (icons, searchUrl) => ({
         if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
             e.preventDefault();
             this.palette.open ? this.closePalette() : this.openPalette();
+            return;
+        }
+        const active = document.activeElement;
+        const typing = active && (/INPUT|TEXTAREA|SELECT/.test(active.tagName) || active.isContentEditable);
+        if (e.key === '/' && !typing) {
+            const input = document.getElementById('bq');
+            if (input) {
+                e.preventDefault();
+                input.focus();
+            }
         }
     },
 

@@ -1,7 +1,7 @@
 <nav class="tmini" :class="{ show: mini }" id="tmini" aria-label="Boʻlimlar (ixcham)">
     <a class="tmi-h" href="{{ route('home') }}" aria-label="Bosh sahifa"><span class="av">U</span></a>
     @foreach ($navItems as $item)
-        @php $active = request()->routeIs($item['match']); @endphp
+        @php $active = $item['active']; @endphp
         <a @class(['tmi', 'on' => $active]) href="{{ $item['href'] }}" aria-label="{{ $item['label'] }}" @if ($active) aria-current="page" @endif>
             <x-icon :name="$item['icon']" /><span>{{ $item['label'] }}</span>
         </a>

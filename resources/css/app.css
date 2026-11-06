@@ -1189,3 +1189,6 @@ button.as-b{font-family:inherit}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 
 [x-cloak]{display:none!important}
+.segc a{position:relative;z-index:1;display:inline-flex;align-items:center;justify-content:center;height:32px;padding:0 16px;border-radius:999px;font-size:14px;font-weight:500;color:var(--label);white-space:nowrap}
+.segc a[aria-current="page"]{font-weight:600}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}

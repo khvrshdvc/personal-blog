@@ -17,6 +17,14 @@ class DemoActivityProvider implements ActivityProvider
         ['symfony-blog', 'CI', 'chore: bogʻliqliklarni yangilash', 'main', 9, 'skipped', null, 30],
     ];
 
+    private const INFO = [
+        'crm-system' => ['PHP', 2, 1.2],
+        'erp-brainup' => ['PHP', 1, .02],
+        'blog-tulqinov' => ['PHP', 0, .3],
+        'symfony-blog' => ['PHP', 3, 62],
+        'telegram-task-bot' => ['Python', 0, 4],
+    ];
+
     public function get(): array
     {
         $now = now();
@@ -44,7 +52,17 @@ class DemoActivityProvider implements ActivityProvider
             'at' => $now->copy()->subSeconds((int) round($r[7] * 86400)),
         ], self::RUNS);
 
-        return ['days' => $days, 'runs' => $runs, 'range' => 'soʻnggi yil'];
+        $info = [];
+        foreach (self::INFO as $key => [$lang, $stars, $pushed]) {
+            $info[$key] = [
+                'lang' => $lang,
+                'stars' => $stars,
+                'pushed' => $now->copy()->subSeconds((int) round($pushed * 86400)),
+                'url' => null,
+            ];
+        }
+
+        return ['real' => false, 'login' => null, 'days' => $days, 'runs' => $runs, 'info' => $info, 'range' => 'soʻnggi yil'];
     }
 
     private function gridDays(callable $count): array

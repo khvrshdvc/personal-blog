@@ -17,13 +17,19 @@ class NavComposer
 
     public function compose(View $view): void
     {
+        $section = $view->getFactory()->shared('navSection');
+
+        $items = [
+            ['key' => 'home', 'label' => 'Asosiy', 'icon' => 'grid', 'href' => route('home'), 'match' => ['home'], 'count' => null],
+            ['key' => 'fikrlar', 'label' => 'Fikrlar', 'icon' => 'bookOpen', 'href' => route('fikrlar'), 'match' => ['fikrlar'], 'count' => $this->stats->postCount(PostCategory::Fikr)],
+            ['key' => 'dasturlash', 'label' => 'Dasturlash', 'icon' => 'code', 'href' => route('dasturlash'), 'match' => ['dasturlash', 'yozuvlar', 'loyihalar', 'faollik'], 'count' => $this->stats->postCount(PostCategory::Dev)],
+            ['key' => 'men', 'label' => 'Men haqimda', 'icon' => 'person', 'href' => route('men'), 'match' => ['men'], 'count' => null],
+        ];
+
         $view->with([
-            'navItems' => [
-                ['label' => 'Asosiy', 'icon' => 'grid', 'href' => route('home'), 'match' => ['home'], 'count' => null],
-                ['label' => 'Fikrlar', 'icon' => 'bookOpen', 'href' => route('fikrlar'), 'match' => ['fikrlar'], 'count' => $this->stats->postCount(PostCategory::Fikr)],
-                ['label' => 'Dasturlash', 'icon' => 'code', 'href' => route('dasturlash'), 'match' => ['dasturlash', 'yozuvlar', 'loyihalar', 'faollik'], 'count' => $this->stats->postCount(PostCategory::Dev)],
-                ['label' => 'Men haqimda', 'icon' => 'person', 'href' => route('men'), 'match' => ['men'], 'count' => null],
-            ],
+            'navItems' => array_map(fn (array $item) => $item + [
+                'active' => request()->routeIs($item['match']) || $item['key'] === $section,
+            ], $items),
             'isOpen' => (bool) $this->settings->get('open', true),
         ]);
     }

@@ -32,7 +32,7 @@
         <main id="view" class="view-in">{{ $slot }}</main>
         <footer class="foot">© {{ now()->year }} Utkirbek · Toshkent</footer>
     </div>
-    <div class="toast glass" :class="{ show: toastText }" role="status" aria-live="polite"><span x-text="toastText"></span></div>
+    <div class="toast glass" :class="{ show: toastText }" role="status" aria-live="polite"><span x-text="toastText"></span><template x-if="toastAction"><a :href="toastAction.href" x-text="toastAction.label"></a></template></div>
     <x-palette />
 </body>
 </html>

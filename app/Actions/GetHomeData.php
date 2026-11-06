@@ -8,17 +8,11 @@ use App\Models\Project;
 use App\Services\Activity\ActivityProvider;
 use App\Services\SettingsService;
 use App\Support\ActivityStats;
+use App\Support\RunStatus;
 use App\Support\Uz;
 
 class GetHomeData
 {
-    private const CI_LABELS = [
-        'success' => 'CI oʻtdi',
-        'failure' => 'CI xato',
-        'running' => 'CI ishlamoqda',
-        'skipped' => 'CI oʻtkazildi',
-    ];
-
     public function __construct(
         private SettingsService $settings,
         private ActivityProvider $activity,
@@ -93,7 +87,7 @@ class GetHomeData
 
         foreach ($runs as $run) {
             if (strtolower($run['key']) === $key) {
-                return ['status' => $run['status'], 'label' => self::CI_LABELS[$run['status']]];
+                return ['status' => $run['status'], 'label' => RunStatus::ci($run['status'])];
             }
         }
 

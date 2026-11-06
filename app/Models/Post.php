@@ -54,6 +54,25 @@ class Post extends Model
         return max(1, (int) round($words / 200));
     }
 
+    public function coverUrl(): ?string
+    {
+        if (! $this->cover) {
+            return null;
+        }
+
+        return preg_match('#^(https?://|/(?!/))#i', $this->cover) ? $this->cover : asset('storage/'.$this->cover);
+    }
+
+    public function isPublished(): bool
+    {
+        return $this->status === PostStatus::Published;
+    }
+
+    public function tagColor(): string
+    {
+        return config('site.tag_colors.'.$this->tag, '#8e8e93');
+    }
+
     public function hasPending(): bool
     {
         return $this->pending !== null;

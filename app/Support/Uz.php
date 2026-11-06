@@ -7,7 +7,7 @@ use Carbon\CarbonInterface;
 
 class Uz
 {
-    private const SHORT = ['Yan', 'Fev', 'Mar', 'Apr', 'May', 'Iyn', 'Iyl', 'Avg', 'Sen', 'Okt', 'Noy', 'Dek'];
+    public const SHORT = ['Yan', 'Fev', 'Mar', 'Apr', 'May', 'Iyn', 'Iyl', 'Avg', 'Sen', 'Okt', 'Noy', 'Dek'];
 
     private const MONTHS = ['yanvar', 'fevral', 'mart', 'aprel', 'may', 'iyun', 'iyul', 'avgust', 'sentabr', 'oktabr', 'noyabr', 'dekabr'];
 
@@ -63,6 +63,19 @@ class Uz
         }
 
         return intdiv($days, 365).' yil oldin';
+    }
+
+    public static function duration(?float $seconds): string
+    {
+        if ($seconds === null) {
+            return '—';
+        }
+
+        $seconds = max(0, (int) round($seconds));
+        $minutes = intdiv($seconds, 60);
+        $rest = $seconds % 60;
+
+        return $minutes ? $minutes.'m '.str_pad((string) $rest, 2, '0', STR_PAD_LEFT).'s' : $rest.'s';
     }
 
     public static function initials(?string $name): string

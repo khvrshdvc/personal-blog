@@ -2,17 +2,25 @@
 
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\DasturlashController;
+use App\Http\Controllers\FikrlarController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MenController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
-Route::view('/fikrlar', 'pages.fikrlar')->name('fikrlar');
-Route::view('/dasturlash', 'pages.dasturlash')->name('dasturlash');
-Route::view('/yozuvlar', 'pages.dasturlash')->name('yozuvlar');
-Route::view('/loyihalar', 'pages.dasturlash')->name('loyihalar');
-Route::view('/faollik', 'pages.dasturlash')->name('faollik');
-Route::view('/men', 'pages.men')->name('men');
+Route::get('/fikrlar', [FikrlarController::class, 'index'])->name('fikrlar');
+Route::get('/fikrlar/qidiruv', [FikrlarController::class, 'search'])
+    ->middleware('throttle:60,1')
+    ->name('fikrlar.search');
+Route::get('/dasturlash', [DasturlashController::class, 'yozuvlar'])->name('dasturlash');
+Route::get('/yozuvlar', [DasturlashController::class, 'yozuvlar'])->name('yozuvlar');
+Route::get('/loyihalar', [DasturlashController::class, 'loyihalar'])->name('loyihalar');
+Route::get('/faollik', [DasturlashController::class, 'faollik'])->name('faollik');
+Route::get('/men', MenController::class)->name('men');
+Route::get('/post/{slug}', [PostController::class, 'show'])->name('post.show');
 
 Route::get('/qidiruv', SearchController::class)
     ->middleware('throttle:60,1')
