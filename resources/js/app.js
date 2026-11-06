@@ -4,9 +4,42 @@ window.Alpine = Alpine;
 
 const THEME_KEY = 'ut4_theme';
 
+Alpine.data('clock', () => ({
+    time: '',
+
+    init() {
+        const fmt = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Tashkent' });
+        this.time = this.$el.querySelector('#ltm').textContent.trim();
+        setInterval(() => {
+            const v = fmt.format(new Date());
+            if (v !== this.time) this.time = v;
+        }, 5000);
+    },
+}));
+
+Alpine.data('rotator', (count) => ({
+    cur: 0,
+    prev: null,
+
+    init() {
+        const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (count < 2 || reduce) return;
+        setInterval(() => {
+            if (!document.hidden) this.show(this.cur + 1);
+        }, 4200);
+    },
+
+    show(n) {
+        this.prev = this.cur;
+        this.cur = (n + count) % count;
+    },
+}));
+
 Alpine.data('site', (icons, searchUrl) => ({
     icons,
     mini: false,
+    toastText: '',
+    toastTimer: null,
     glowEl: null,
     palette: { open: false, q: '', items: [], i: 0, loaded: false, prev: null },
     controller: null,
@@ -18,6 +51,12 @@ Alpine.data('site', (icons, searchUrl) => ({
             document.addEventListener('pointermove', (e) => this.onPointer(e), { passive: true });
         }
         document.addEventListener('keydown', (e) => this.onKey(e));
+    },
+
+    notify(text) {
+        this.toastText = text;
+        clearTimeout(this.toastTimer);
+        this.toastTimer = setTimeout(() => (this.toastText = ''), 3000);
     },
 
     toggleTheme() {

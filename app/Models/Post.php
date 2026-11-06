@@ -47,6 +47,13 @@ class Post extends Model
         return $query->orderByDesc('published_at')->orderByDesc('id');
     }
 
+    public function readMinutes(): int
+    {
+        $words = preg_match_all('/\S+/u', (string) $this->body);
+
+        return max(1, (int) round($words / 200));
+    }
+
     public function hasPending(): bool
     {
         return $this->pending !== null;

@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\Activity\ActivityProvider;
+use App\Services\Activity\DemoActivityProvider;
 use App\View\Composers\NavComposer;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
@@ -13,6 +15,7 @@ class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
+        $this->app->bind(ActivityProvider::class, DemoActivityProvider::class);
     }
 
     public function boot(): void

@@ -2,10 +2,11 @@
 
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SearchController;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'pages.home')->name('home');
+Route::get('/', HomeController::class)->name('home');
 Route::view('/fikrlar', 'pages.fikrlar')->name('fikrlar');
 Route::view('/dasturlash', 'pages.dasturlash')->name('dasturlash');
 Route::view('/yozuvlar', 'pages.dasturlash')->name('yozuvlar');
