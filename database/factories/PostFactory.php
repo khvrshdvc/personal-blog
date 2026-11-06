@@ -18,7 +18,7 @@ class PostFactory extends Factory
 
         return [
             'category' => PostCategory::Fikr,
-            'tag' => fake()->word(),
+            'tag' => 'Hayot',
             'title' => $title,
             'slug' => Str::slug($title).'-'.fake()->unique()->numberBetween(1, 99999),
             'status' => PostStatus::Published,
@@ -35,6 +35,6 @@ class PostFactory extends Factory
 
     public function dev(): static
     {
-        return $this->state(['category' => PostCategory::Dev]);
+        return $this->state(['category' => PostCategory::Dev, 'tag' => 'Laravel']);
     }
 }

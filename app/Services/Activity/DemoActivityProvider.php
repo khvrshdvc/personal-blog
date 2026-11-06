@@ -2,6 +2,7 @@
 
 namespace App\Services\Activity;
 
+use App\Support\ActivityStats;
 use Carbon\Carbon;
 
 class DemoActivityProvider implements ActivityProvider
@@ -30,7 +31,7 @@ class DemoActivityProvider implements ActivityProvider
         $now = now();
         $random = $this->random(20261105);
 
-        $days = $this->gridDays(function (Carbon $date) use ($now, $random) {
+        $days = ActivityStats::gridDays(function (Carbon $date) use ($now, $random) {
             $age = $date->diffInSeconds($now, false) / 86400;
             $g = max(.08, 1 - $age / 400);
             $w = (($date->dayOfWeek + 6) % 7) >= 5 ? .5 : 1;
@@ -63,21 +64,6 @@ class DemoActivityProvider implements ActivityProvider
         }
 
         return ['real' => false, 'login' => null, 'days' => $days, 'runs' => $runs, 'info' => $info, 'range' => 'soʻnggi yil'];
-    }
-
-    private function gridDays(callable $count): array
-    {
-        $end = now()->startOfDay();
-        $offset = ($end->dayOfWeek + 6) % 7;
-        $start = $end->copy()->subDays(52 * 7 + $offset);
-        $out = [];
-
-        for ($i = 0; $i < 371; $i++) {
-            $date = $start->copy()->addDays($i);
-            $out[] = $date->gt($end) ? null : ['d' => $date->toDateString(), 'c' => $count($date)];
-        }
-
-        return $out;
     }
 
     private function random(int $seed): \Closure

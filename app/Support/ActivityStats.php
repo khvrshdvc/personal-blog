@@ -27,6 +27,21 @@ class ActivityStats
         return ['total' => $total, 'streak' => $current];
     }
 
+    public static function gridDays(callable $count, int $limit = 371): array
+    {
+        $end = now()->startOfDay();
+        $offset = ($end->dayOfWeek + 6) % 7;
+        $start = $end->copy()->subDays(52 * 7 + $offset);
+        $out = [];
+
+        for ($i = 0; $i < 371; $i++) {
+            $date = $start->copy()->addDays($i);
+            $out[] = $date->gt($end) ? null : ['d' => $date->toDateString(), 'c' => $count($date)];
+        }
+
+        return array_slice($out, -$limit);
+    }
+
     public static function level(int $count): int
     {
         return match (true) {

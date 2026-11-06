@@ -28,7 +28,7 @@ class AuthController extends Controller
         if (! $ok) {
             return back()
                 ->withInput($request->only('email'))
-                ->withErrors(['email' => 'Email yoki parol noto\'g\'ri.']);
+                ->withErrors(['email' => 'Email yoki parol notoʻgʻri.']);
         }
 
         return redirect()->intended(route('admin.dashboard'));

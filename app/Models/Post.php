@@ -56,11 +56,16 @@ class Post extends Model
 
     public function coverUrl(): ?string
     {
-        if (! $this->cover) {
+        return self::resolveCoverUrl($this->cover);
+    }
+
+    public static function resolveCoverUrl(?string $cover): ?string
+    {
+        if (! $cover) {
             return null;
         }
 
-        return preg_match('#^(https?://|/(?!/))#i', $this->cover) ? $this->cover : asset('storage/'.$this->cover);
+        return preg_match('#^(https?://|/(?!/))#i', $cover) ? $cover : asset('storage/'.$cover);
     }
 
     public function isPublished(): bool
@@ -71,6 +76,55 @@ class Post extends Model
     public function tagColor(): string
     {
         return config('site.tag_colors.'.$this->tag, '#8e8e93');
+    }
+
+    public const FIELDS = ['category', 'title', 'slug', 'tag', 'excerpt', 'body', 'published_at', 'cover'];
+
+    public function fields(): array
+    {
+        return [
+            'category' => $this->category->value,
+            'title' => (string) $this->title,
+            'slug' => (string) $this->slug,
+            'tag' => (string) $this->tag,
+            'excerpt' => (string) $this->excerpt,
+            'body' => (string) $this->body,
+            'published_at' => $this->published_at?->toDateString() ?? '',
+            'cover' => (string) $this->cover,
+        ];
+    }
+
+    public function view(): array
+    {
+        $fields = $this->fields();
+
+        if (! $this->hasPending()) {
+            return $fields;
+        }
+
+        foreach (self::FIELDS as $key) {
+            $fields[$key] = (string) ($this->pending[$key] ?? '');
+        }
+
+        return $fields;
+    }
+
+    public function statusKey(): string
+    {
+        if (! $this->isPublished()) {
+            return 'draft';
+        }
+
+        return $this->hasPending() ? 'chg' : 'pub';
+    }
+
+    public function statusLabel(): string
+    {
+        return match ($this->statusKey()) {
+            'draft' => 'Qoralama',
+            'chg' => 'Oʻzgarish bor',
+            default => 'Chop etilgan',
+        };
     }
 
     public function hasPending(): bool

@@ -24,7 +24,7 @@ class LoginRequest extends FormRequest
     {
         return [
             'email.required' => 'Email kiriting.',
-            'email.email' => 'Email noto\'g\'ri formatda.',
+            'email.email' => 'Email notoʻgʻri formatda.',
             'password.required' => 'Parol kiriting.',
         ];
     }

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Services\Activity\ActivityProvider;
 use App\Services\Activity\DemoActivityProvider;
+use App\View\Composers\AdminNavComposer;
 use App\View\Composers\NavComposer;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
@@ -25,5 +26,6 @@ class AppServiceProvider extends ServiceProvider
         });
 
         View::composer('components.nav.*', NavComposer::class);
+        View::composer('components.layouts.admin', AdminNavComposer::class);
     }
 }

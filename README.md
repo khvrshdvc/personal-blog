@@ -15,6 +15,7 @@ docker run --rm -u "$(id -u):$(id -g)" -v "$(pwd):/var/www/html" -w /var/www/htm
 ./vendor/bin/sail up -d
 ./vendor/bin/sail artisan key:generate
 ./vendor/bin/sail artisan migrate --seed
+./vendor/bin/sail artisan storage:link
 ```
 `.env` da `ADMIN_EMAIL` va `ADMIN_PASSWORD` ni to'ldiring, so'ng `migrate --seed` admin foydalanuvchini yaratadi. Kirish: `/admin/login`.
 

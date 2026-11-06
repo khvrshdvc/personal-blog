@@ -18,6 +18,22 @@ class Markdown
         return ['html' => $html, 'headings' => $renderer->headings];
     }
 
+    public static function excerpt(?string $body): string
+    {
+        $text = (string) $body;
+        $text = preg_replace('/```[\s\S]*?```/u', ' ', $text);
+        $text = preg_replace('/!\[[^\]]*\]\([^)]*\)/u', ' ', $text);
+        $text = preg_replace('/\[([^\]]+)\]\([^)]*\)/u', '$1', $text);
+        $text = preg_replace('/[#>*`_]/u', '', $text);
+        $text = trim(preg_replace('/\s+/u', ' ', $text));
+
+        if (mb_strlen($text) <= 160) {
+            return $text;
+        }
+
+        return preg_replace('/\s+\S*$/u', '', mb_substr($text, 0, 157)).'…';
+    }
+
     public static function slugify(string $text): string
     {
         $text = mb_strtolower($text);
