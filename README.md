@@ -1,9 +1,11 @@
 # personal-blog
 
-Shaxsiy blog va portfolio sayti (Laravel). Prototip `design/` papkasida.
+Shaxsiy blog va portfolio sayti. Monorepo: `backend/` (Laravel API) va `frontend/` (Next.js).
 
 ## Prototipni ko'rish
 `design/utkirbek-blog-bento.html` faylini brauzerda oching. Admin: `#/admin`, parol `admin` (faqat prototip).
 
-## Holat
-Laravel'ga o'tkazish bosqichlari `docs/plan.md` da.
+## Hujjatlar
+- `docs/plan.md`: bosqichlar
+- `docs/api.md`: API shartnomasi
+- `CLAUDE.md`: Claude Code uchun qoidalar
