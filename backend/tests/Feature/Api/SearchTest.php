@@ -31,8 +31,8 @@ it('returns documented item shape for posts and projects', function () {
     $items = $this->getJson('/api/search?q=crm')->json();
 
     expect($items)->toContain(
-        ['type' => 'post', 'title' => 'CRM yozuvi', 'subtitle' => 'Laravel', 'path' => '/post/'.$post->slug],
-        ['type' => 'project', 'title' => 'CRM tizimi', 'subtitle' => 'Mijozlar', 'path' => '/loyihalar'],
+        ['type' => 'post', 'category' => 'fikr', 'title' => 'CRM yozuvi', 'subtitle' => 'Laravel', 'path' => '/post/'.$post->slug],
+        ['type' => 'project', 'category' => null, 'title' => 'CRM tizimi', 'subtitle' => 'Mijozlar', 'path' => '/loyihalar'],
     );
 });
 

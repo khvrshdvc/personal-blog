@@ -1,6 +1,5 @@
 import { Suspense } from "react";
 import { connection } from "next/server";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { api } from "@/lib/api";
 import type { PostListItem } from "@/lib/api";
 
@@ -51,13 +50,8 @@ function PostsSkeleton() {
 
 export default function Home() {
   return (
-    <main className="wrapx py-12">
-      <div className="flex items-center justify-between gap-4">
-        <span className="font-mono text-[13px] text-t3">utkirbek.uz</span>
-        <ThemeToggle />
-      </div>
-
-      <section className="mt-12 mb-8">
+    <div className="wrapx">
+      <section className="hero">
         <h1 className="max-w-[1000px] text-[clamp(40px,4.6vw,58px)] max-[760px]:text-[34px] leading-[1.03] font-semibold tracking-[-0.045em]">
           Salom, men Utkirbek. <span className="text-t3">Oʻrganaman va yozaman.</span>
         </h1>
@@ -69,6 +63,6 @@ export default function Home() {
       <Suspense fallback={<PostsSkeleton />}>
         <Posts />
       </Suspense>
-    </main>
+    </div>
   );
 }

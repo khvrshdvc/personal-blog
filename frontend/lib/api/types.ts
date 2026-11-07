@@ -52,6 +52,7 @@ export interface TagCount {
 
 export interface SearchItem {
   type: "post" | "project";
+  category: Category | null;
   title: string;
   subtitle: string;
   path: string;
@@ -82,4 +83,10 @@ export interface Api {
   search(q: string): Promise<SearchItem[]>;
   getProjects(): Promise<Project[]>;
   getSettings(): Promise<Settings>;
+  getCounts(): Promise<CategoryCounts>;
+}
+
+export interface CategoryCounts {
+  fikr: number;
+  dev: number;
 }

@@ -1,4 +1,4 @@
-import type { Api, PostDetail, PostsQuery } from "./types";
+import type { Api, PostDetail, PostListItem, Paginated, PostsQuery } from "./types";
 
 export class ApiError extends Error {
   constructor(
@@ -65,5 +65,16 @@ export const httpApi: Api = {
   },
   async getSettings() {
     return (await request("/settings"))!;
+  },
+  async getCounts() {
+    const [fikr, dev] = await Promise.all(
+      (["fikr", "dev"] as const).map(async (category) => {
+        const page = (await request<Paginated<PostListItem>>(`/posts${toSearch({ category, per_page: 1 })}`))!;
+
+        return page.meta.total;
+      }),
+    );
+
+    return { fikr, dev };
   },
 };

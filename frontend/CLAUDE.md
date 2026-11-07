@@ -19,3 +19,8 @@ Next.js (App Router), TypeScript, Tailwind. Umumiy qoidalar ildizdagi `../CLAUDE
 - `npm run dev`: `http://localhost:3000`, backend `API_URL` (birlamchi `http://localhost`).
 - `API_MOCK=1` backend'siz mock ma'lumot bilan ishlaydi.
 - Tekshiruv: `npx tsc --noEmit`, `npm run lint`, `npx playwright test` (production build'ni 3100 portda ishga tushiradi).
+
+## Layout (F2)
+- Ommaviy sahifalar `app/(site)/` guruhida: `SiteNav` (`tnav` + scroll'da `tmini`), ⌘K paneli (`/api/search` route handler orqali, mock ham ishlaydi), kursorga ergashuvchi nur (`Glow`), footer. Admin keyin alohida guruhda.
+- Faol bo'lim URL'dan olinadi. `/post/[slug]` uchun bo'lim (fikr yoki dev) F4'da post kategoriyasidan beriladi.
+- Telefon chegarasi nav va chekkalar uchun 760px (prototipdagidek).

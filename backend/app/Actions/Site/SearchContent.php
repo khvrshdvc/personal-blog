@@ -42,6 +42,7 @@ class SearchContent
             ->get()
             ->map(fn (Project $project) => [
                 'type' => 'project',
+                'category' => null,
                 'title' => $project->name,
                 'subtitle' => (string) $project->description,
                 'path' => '/loyihalar',
@@ -54,6 +55,7 @@ class SearchContent
     {
         return [
             'type' => 'post',
+            'category' => $post->category->value,
             'title' => $post->title,
             'subtitle' => (string) $post->tag,
             'path' => '/post/'.$post->slug,

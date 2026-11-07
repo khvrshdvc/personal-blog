@@ -120,12 +120,18 @@ export const mockApi: Api = {
     return posts
       .filter((post) => needle === "" || post.title.toLowerCase().includes(needle))
       .slice(0, 8)
-      .map((post) => ({ type: "post" as const, title: post.title, subtitle: post.tag ?? "", path: `/post/${post.slug}` }));
+      .map((post) => ({ type: "post" as const, category: post.category, title: post.title, subtitle: post.tag ?? "", path: `/post/${post.slug}` }));
   },
   async getProjects() {
     return projects;
   },
   async getSettings() {
     return settings;
+  },
+  async getCounts() {
+    return {
+      fikr: posts.filter((post) => post.category === "fikr").length,
+      dev: posts.filter((post) => post.category === "dev").length,
+    };
   },
 };

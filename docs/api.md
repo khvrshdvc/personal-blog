@@ -24,7 +24,7 @@ Settings (ommaviy): `github, open, bio, now [{k, v}], learn [{n, p}], telegram {
 | GET | `/posts` | Chop etilganlar, yangisi birinchi. Query: `category` (`fikr`\|`dev`), `tag`, `q`, `page`, `per_page` (birlamchi 12, eng ko'pi 50). Javob: `{data: [Post], meta: {current_page, last_page, per_page, total}}` |
 | GET | `/posts/{slug}` | To'liq post. `prev` (bir xil kategoriyadagi oldingi, eskiroq) va `next` (keyingi, yangiroq): ro'yxat shaklidagi post yoki `null`. Chop etilmagan bo'lsa 404 |
 | GET | `/tags` | `[{tag, count}]`, soni bo'yicha kamayish tartibida. Query: `category` |
-| GET | `/search?q=` | ⌘K uchun, eng ko'pi 8 ta: `[{type: "post"\|"project", title, subtitle, path}]`. `q` bo'sh bo'lsa so'nggi 5 ta post. `path` frontend yo'li |
+| GET | `/search?q=` | ⌘K uchun, eng ko'pi 8 ta: `[{type: "post"\|"project", category: "fikr"\|"dev"\|null, title, subtitle, path}]` (`category` faqat postda). `q` bo'sh bo'lsa so'nggi 5 ta post. `path` frontend yo'li |
 | GET | `/projects` | `[Project]` |
 | GET | `/settings` | Ommaviy sozlamalar (yuqoridagi Settings shakli) |
 | GET | `/activity` | GitHub faollik xaritasi `{days: [{d, c}], total}` (keshlangan) |

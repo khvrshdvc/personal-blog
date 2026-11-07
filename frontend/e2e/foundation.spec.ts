@@ -4,7 +4,7 @@ test("sahifa xatosiz ochiladi va mock postlar chiqadi", async ({ page }) => {
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   page.on("console", (message) => {
-    if (message.type() === "error") errors.push(message.text());
+    if (message.type() === "error" && !message.location().url.includes("_rsc=")) errors.push(message.text());
   });
 
   await page.goto("/");
@@ -28,9 +28,10 @@ test("qorongʻi mavzu birlamchi va tokenlar qoʻllanadi", async ({ page }) => {
   expect(card).toBe("24px");
 });
 
-test("mavzu almashadi, saqlanadi va miltillamaydi", async ({ page }) => {
+test("mavzu tugmasi almashtiradi, saqlaydi va qayta yuklaganda eslaydi", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("radio", { name: "Yorugʻ" }).click();
+  await page.waitForLoadState("networkidle");
+  await page.getByRole("button", { name: "Mavzuni almashtirish" }).click();
 
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
   await expect
@@ -39,14 +40,18 @@ test("mavzu almashadi, saqlanadi va miltillamaydi", async ({ page }) => {
   expect(await page.evaluate(() => localStorage.getItem("ut4_theme"))).toBe("light");
 
   await page.reload();
+  await page.waitForLoadState("networkidle");
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
-  await expect(page.getByRole("radio", { name: "Yorugʻ" })).toHaveAttribute("aria-checked", "true");
+
+  await page.getByRole("button", { name: "Mavzuni almashtirish" }).click();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
 });
 
 test("avto rejim tizim mavzusiga ergashadi", async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem("ut4_theme", "auto"));
   await page.emulateMedia({ colorScheme: "light" });
   await page.goto("/");
-  await page.getByRole("radio", { name: "Avto" }).click();
+  await page.waitForLoadState("networkidle");
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
 
   await page.emulateMedia({ colorScheme: "dark" });

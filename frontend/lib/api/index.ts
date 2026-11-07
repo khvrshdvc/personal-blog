@@ -50,7 +50,15 @@ async function getSettings() {
   return source.getSettings();
 }
 
-export const api = { getPosts, getPost, getTags, search, getProjects, getSettings };
+async function getCounts() {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("posts");
+
+  return source.getCounts();
+}
+
+export const api = { getPosts, getPost, getTags, search, getProjects, getSettings, getCounts };
 
 export { ApiError } from "./http";
 export type * from "./types";
