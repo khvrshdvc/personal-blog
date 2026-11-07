@@ -1,4 +1,4 @@
-import type { Api, PostDetail, PostListItem, Paginated, PostsQuery } from "./types";
+import type { Activity, Api, PostDetail, PostListItem, Paginated, PostsQuery, RepoInfo, Run, Telegram } from "./types";
 
 export class ApiError extends Error {
   constructor(
@@ -76,5 +76,17 @@ export const httpApi: Api = {
     );
 
     return { fikr, dev };
+  },
+  async getActivity() {
+    return request<Activity>("/activity", true);
+  },
+  async getRuns() {
+    return (await request<Run[]>("/runs", true)) ?? [];
+  },
+  async getRepoInfo(projectId) {
+    return request<RepoInfo>(`/projects/${projectId}/github`, true);
+  },
+  async getTelegram() {
+    return request<Telegram>("/telegram", true);
   },
 };

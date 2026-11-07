@@ -3,9 +3,11 @@ import { Glow } from "@/components/glow";
 import { NavLoader } from "@/components/nav/nav-loader";
 import { PaletteProvider } from "@/components/nav/palette-context";
 import { SiteNav } from "@/components/nav/site-nav";
+import { ToastProvider } from "@/components/toast";
 
 export default function SiteLayout({ children }: LayoutProps<"/">) {
   return (
+    <ToastProvider>
     <PaletteProvider>
       <div id="site">
         <a className="skip" href="#view">
@@ -19,5 +21,6 @@ export default function SiteLayout({ children }: LayoutProps<"/">) {
       </div>
       <Glow />
     </PaletteProvider>
+    </ToastProvider>
   );
 }

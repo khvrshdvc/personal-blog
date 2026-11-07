@@ -58,7 +58,51 @@ async function getCounts() {
   return source.getCounts();
 }
 
-export const api = { getPosts, getPost, getTags, search, getProjects, getSettings, getCounts };
+async function getActivity() {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("settings");
+
+  return source.getActivity();
+}
+
+async function getRuns() {
+  "use cache";
+  cacheLife("minutes");
+  cacheTag("projects", "settings");
+
+  return source.getRuns();
+}
+
+async function getRepoInfo(projectId: number) {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("projects", "settings");
+
+  return source.getRepoInfo(projectId);
+}
+
+async function getTelegram() {
+  "use cache";
+  cacheLife("hours");
+  cacheTag("settings");
+
+  return source.getTelegram();
+}
+
+export const api = {
+  getPosts,
+  getPost,
+  getTags,
+  search,
+  getProjects,
+  getSettings,
+  getCounts,
+  getActivity,
+  getRuns,
+  getRepoInfo,
+  getTelegram,
+};
 
 export { ApiError } from "./http";
 export type * from "./types";

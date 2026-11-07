@@ -76,6 +76,39 @@ export interface Settings {
   telegram: { u: string; n: string; posts: { t: string; d: string }[] } | null;
 }
 
+export type RunStatus = "success" | "failure" | "running" | "skipped";
+
+export interface Run {
+  status: RunStatus;
+  workflow: string;
+  title: string;
+  repo: string;
+  branch: string | null;
+  num: number | null;
+  url: string | null;
+  at: string;
+  dur: number | null;
+}
+
+export interface Activity {
+  days: { d: string; c: number }[];
+  total: number;
+  real: boolean;
+}
+
+export interface RepoInfo {
+  lang: string | null;
+  stars: number | null;
+  pushed_at: string | null;
+  run: { status: RunStatus; at: string } | null;
+}
+
+export interface Telegram {
+  u: string;
+  n: string;
+  posts: { t: string; d: string }[];
+}
+
 export interface Api {
   getPosts(query?: PostsQuery): Promise<Paginated<PostListItem>>;
   getPost(slug: string): Promise<PostDetail | null>;
@@ -84,6 +117,10 @@ export interface Api {
   getProjects(): Promise<Project[]>;
   getSettings(): Promise<Settings>;
   getCounts(): Promise<CategoryCounts>;
+  getActivity(): Promise<Activity | null>;
+  getRuns(): Promise<Run[]>;
+  getRepoInfo(projectId: number): Promise<RepoInfo | null>;
+  getTelegram(): Promise<Telegram | null>;
 }
 
 export interface CategoryCounts {

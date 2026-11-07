@@ -15,6 +15,14 @@ Post (qisqa, dashboard): `id, title, excerpt, tag, status ("draft"|"published"|"
 
 Project: `id, name, repo, description, stack [string], demo_url`
 
+Activity: `{days: [{d, c}], total, real}`. `days` oxirgi 365 kun (eskisidan yangisiga, `d` sana, `c` hissa soni), `total` yillik jami, `real: false` bo'lsa namuna ma'lumot (GitHub username kiritilmagan yoki GitHub javob bermadi).
+
+Run (GitHub Actions): `{status ("success"|"failure"|"running"|"skipped"), workflow, title, repo, branch, num, url, at (ISO 8601), dur (soniya|null)}`
+
+RepoInfo: `{lang, stars, pushed_at, run: {status, at}|null}`. Repo yo'q yoki GitHub javob bermasa barcha maydon `null`.
+
+Telegram: `{u, n, posts: [{t, d}]}` (`u` kanal username, `n` nomi, `d` sana `YYYY-MM-DD`).
+
 Settings (ommaviy): `github, open, bio, now [{k, v}], learn [{n, p}], telegram {u, n, posts [{t, d}]}`
 
 ## Ommaviy
@@ -27,9 +35,11 @@ Settings (ommaviy): `github, open, bio, now [{k, v}], learn [{n, p}], telegram {
 | GET | `/search?q=` | ⌘K uchun, eng ko'pi 8 ta: `[{type: "post"\|"project", category: "fikr"\|"dev"\|null, title, subtitle, path}]` (`category` faqat postda). `q` bo'sh bo'lsa so'nggi 5 ta post. `path` frontend yo'li |
 | GET | `/projects` | `[Project]` |
 | GET | `/settings` | Ommaviy sozlamalar (yuqoridagi Settings shakli) |
-| GET | `/activity` | GitHub faollik xaritasi `{days: [{d, c}], total}` (keshlangan) |
-| GET | `/projects/{id}/runs` | GitHub Actions natijalari (keshlangan) |
-| GET | `/telegram` | Kanal so'nggi postlari (keshlangan) |
+| GET | `/activity` | GitHub faollik xaritasi (Activity, keshlangan) |
+| GET | `/runs` | Barcha loyihalar bo'yicha so'nggi 8 ta Actions ishi, yangisi birinchi: `[Run]` (keshlangan) |
+| GET | `/projects/{id}/runs` | Bitta loyiha Actions ishlari: `[Run]` (keshlangan) |
+| GET | `/projects/{id}/github` | Loyiha repo ma'lumoti va oxirgi ish: RepoInfo (keshlangan) |
+| GET | `/telegram` | Kanal so'nggi postlari: Telegram (keshlangan). Kanal o'qilmasa sozlamalardagi `telegram` qaytadi |
 
 ## Autentifikatsiya (Sanctum SPA, cookie)
 

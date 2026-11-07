@@ -10,7 +10,7 @@ test("sahifa xatosiz ochiladi va mock postlar chiqadi", async ({ page }) => {
   await page.goto("/");
   await page.waitForLoadState("networkidle");
 
-  await expect(page.getByTestId("post-card")).toHaveCount(3);
+  await expect(page.locator(".b-post")).toBeVisible();
   await expect(page.locator("html")).toHaveAttribute("lang", "uz");
   expect(errors).toEqual([]);
 
@@ -61,14 +61,14 @@ test("avto rejim tizim mavzusiga ergashadi", async ({ page }) => {
 test("saqlangan mavzu birinchi bo‘yashdan oldin qoʻllanadi", async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem("ut4_theme", "light"));
   await page.goto("/", { waitUntil: "commit" });
-  await page.waitForFunction(() => document.documentElement.dataset.theme === "light");
+  await page.waitForFunction(() => document.documentElement?.dataset.theme === "light");
 });
 
 test("shriftlar yuklanadi", async ({ page }) => {
   await page.goto("/");
   const families = await page.evaluate(() => ({
     body: getComputedStyle(document.body).fontFamily,
-    title: getComputedStyle(document.querySelector("h2")!).fontFamily,
+    title: getComputedStyle(document.querySelector(".b-post h2")!).fontFamily,
   }));
 
   expect(families.body).toContain("Inter");

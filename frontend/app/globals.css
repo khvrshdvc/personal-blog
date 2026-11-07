@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./site.css";
 
 :root {
   color-scheme: light;
@@ -177,67 +178,11 @@ button {
   padding: 0 32px;
 }
 
-.c {
-  position: relative;
-  isolation: isolate;
-  display: block;
-  min-width: 0;
-  overflow: hidden;
-  padding: 20px 22px;
-  border-radius: 24px;
-  background: linear-gradient(180deg, var(--card), var(--card2));
-  box-shadow:
-    inset 0 0 0 1px var(--line),
-    inset 0 1px 0 var(--hi);
-  color: var(--t1);
-  --x: -600px;
-  --y: -600px;
-  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
 
-.c::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: inherit;
-  background: radial-gradient(420px circle at var(--x) var(--y), var(--glowf), transparent 60%);
-  pointer-events: none;
-}
 
-.c::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  border-radius: inherit;
-  padding: 1px;
-  background: radial-gradient(260px circle at var(--x) var(--y), var(--glowc), transparent 60%);
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-}
 
-a.c:hover {
-  transform: translateY(-2px);
-}
 
-a.c:active {
-  transform: scale(0.99);
-}
 
-.ck {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 12.5px;
-  font-weight: 500;
-  letter-spacing: 0.01em;
-  color: var(--t3);
-}
 
 .t-sun {
   display: none;
@@ -311,9 +256,6 @@ kbd {
   letter-spacing: 0;
 }
 
-.hero {
-  margin: 44px 0 28px;
-}
 
 .foot {
   padding: 40px 20px 48px;
@@ -723,14 +665,7 @@ button.c {
     padding: 0 14px;
   }
 
-  .hero {
-    display: block;
-    margin: 28px 0 18px;
-  }
 
-  .hero p {
-    display: none;
-  }
 
   .kp-back {
     padding: 10px;

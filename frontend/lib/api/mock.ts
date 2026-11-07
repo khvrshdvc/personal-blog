@@ -1,4 +1,4 @@
-import type { Api, PostDetail, PostListItem, Project, Settings } from "./types";
+import type { Activity, Api, PostDetail, PostListItem, Project, RepoInfo, Run, RunStatus, Settings, Telegram } from "./types";
 
 const posts: PostListItem[] = [
   {
@@ -40,7 +40,7 @@ const projects: Project[] = [
   {
     id: 1,
     name: "Shaxsiy blog",
-    repo: "utkirbek/personal-blog",
+    repo: "utkirbek/blog-tulqinov",
     description: "Laravel API va Next.js frontend.",
     stack: ["Laravel", "Next.js", "MySQL"],
     demo_url: null,
@@ -62,8 +62,74 @@ const settings: Settings = {
     { n: "PostgreSQL", p: 48 },
     { n: "Docker", p: 35 },
   ],
-  telegram: { u: "", n: "", posts: [] },
+  telegram: { u: "ingliz_kanal", n: "Ingliz tili — kundalik", posts: [] },
 };
+
+function mulberry(seed: number) {
+  let a = seed;
+
+  return () => {
+    a = (a + 0x6d2b79f5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function isoDay(date: Date) {
+  return date.toISOString().slice(0, 10);
+}
+
+function buildActivity(): Activity {
+  const random = mulberry(20261105);
+  const today = new Date();
+  today.setUTCHours(0, 0, 0, 0);
+  const days: Activity["days"] = [];
+  let total = 0;
+
+  for (let i = 364; i >= 0; i--) {
+    const date = new Date(today.getTime() - i * 86400000);
+    const growth = Math.max(0.08, 1 - i / 400);
+    const weekday = (date.getUTCDay() + 6) % 7 >= 5 ? 0.5 : 1;
+    const count =
+      random() < 0.1 + growth * 0.62 * weekday
+        ? 1 + Math.floor(random() * random() * 11 * growth * weekday + random() * 2)
+        : 0;
+
+    total += count;
+    days.push({ d: isoDay(date), c: count });
+  }
+
+  return { days, total, real: false };
+}
+
+const RUNS: [string, string, string, string, number, RunStatus, number | null, number][] = [
+  ["erp-brainup", "Tests", "feat: kurslar uchun CRUD va validatsiya", "main", 48, "running", null, 0.01],
+  ["blog-tulqinov", "Deploy", "feat: fikrlar va dasturlash boʻlimlari", "main", 31, "success", 96, 0.3],
+  ["blog-tulqinov", "Tests", "feat: fikrlar va dasturlash boʻlimlari", "main", 57, "success", 74, 0.31],
+  ["crm-system", "Tests", "fix: bitim summasini hisoblash", "fix/deal-total", 112, "failure", 131, 1.2],
+  ["crm-system", "Laravel Pint", "fix: bitim summasini hisoblash", "fix/deal-total", 89, "success", 21, 1.21],
+  ["erp-brainup", "Tests", "refactor: StudentService ajratildi", "main", 47, "success", 83, 2.1],
+  ["telegram-task-bot", "Lint", "feat: kunlik vazifalar jadvali", "main", 12, "success", 18, 4],
+  ["symfony-blog", "CI", "chore: bogʻliqliklarni yangilash", "main", 9, "skipped", null, 30],
+];
+
+function buildRuns(): Run[] {
+  const now = Date.now();
+
+  return RUNS.map(([repo, workflow, title, branch, num, status, dur, ageDays]) => ({
+    status,
+    workflow,
+    title,
+    repo,
+    branch,
+    num,
+    url: null,
+    at: new Date(now - ageDays * 86400000).toISOString(),
+    dur,
+  }));
+}
 
 export const mockApi: Api = {
   async getPosts(query = {}) {
@@ -127,6 +193,33 @@ export const mockApi: Api = {
   },
   async getSettings() {
     return settings;
+  },
+  async getActivity() {
+    return buildActivity();
+  },
+  async getRuns() {
+    return buildRuns();
+  },
+  async getRepoInfo(projectId) {
+    const project = projects.find((item) => item.id === projectId);
+    const name = project?.repo?.split("/").pop();
+    const run = buildRuns().find((item) => item.repo === name);
+
+    if (!project || !run) {
+      return { lang: project ? "PHP" : null, stars: project ? 0 : null, pushed_at: null, run: null } satisfies RepoInfo;
+    }
+
+    return { lang: "PHP", stars: 1, pushed_at: run.at, run: { status: run.status, at: run.at } } satisfies RepoInfo;
+  },
+  async getTelegram() {
+    return {
+      u: "ingliz_kanal",
+      n: "Ingliz tili — kundalik",
+      posts: [
+        { t: "Bugungi soʻz: resilient — chidamli.", d: "2026-11-03" },
+        { t: "Texnik hujjatni oʻqishning 3 qoidasi.", d: "2026-11-05" },
+      ],
+    } satisfies Telegram;
   },
   async getCounts() {
     return {
