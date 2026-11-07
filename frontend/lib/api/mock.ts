@@ -1,4 +1,4 @@
-import type { Activity, Api, PostDetail, PostListItem, Project, RepoInfo, Run, RunStatus, Settings, Telegram } from "./types";
+import type { Activity, Api, PostDetail, PostListItem, Project, RepoInfo, Run, RunStatus, Settings, Telegram, TelegramFeed } from "./types";
 
 const posts: PostListItem[] = [
   {
@@ -231,6 +231,16 @@ export const mockApi: Api = {
         { t: "Texnik hujjatni oʻqishning 3 qoidasi.", d: "2026-11-05" },
       ],
     } satisfies Telegram;
+  },
+  async getTelegramFeed() {
+    return {
+      u: "ingliz_kanal",
+      n: "Ingliz tili — kundalik",
+      posts: [
+        { id: 12, t: "Texnik hujjatni oʻqishning 3 qoidasi.\nAvval mundarija, keyin misollar, oxirida tafsilotlar.", d: "2026-11-05", url: "https://t.me/ingliz_kanal/12" },
+        { id: 11, t: "Bugungi soʻz: resilient — chidamli.", d: "2026-11-03", url: "https://t.me/ingliz_kanal/11" },
+      ],
+    } satisfies TelegramFeed;
   },
   async getCounts() {
     return {

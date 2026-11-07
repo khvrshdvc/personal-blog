@@ -34,6 +34,7 @@ Next.js (App Router), TypeScript, Tailwind. Umumiy qoidalar ildizdagi `../CLAUDE
 - `/post/[slug]`: backend'ning `body_html` (allaqachon tozalangan) `lib/post-html.ts` orqali kod bloklari bilan boyitiladi, nusxalash `Prose` komponentida. Mundarija faqat dasturlash postlarida (2 va undan ko'p bo'lim).
 - Yo'q post uchun to'g'ri 404 statusi `proxy.ts` da beriladi (oqim boshlangandan keyin `notFound()` statusni o'zgartirmaydi). Noma'lum manzillar `app/(site)/[...rest]` orqali sayt layout'i bilan 404 beradi.
 - Sahifa `metadata.alternates` ildizdagini to'liq almashtiradi, shuning uchun `pageAlternates()` (canonical + RSS) ishlatiladi. `openGraph` uchun ham shunday: `siteName` va `locale` har safar yoziladi.
+- `/fikrlar` Telegram kanal postlarini ko'rsatadi (`api.getTelegramFeed()` → `GET /telegram/posts`), kartalar t.me havolasiga olib boradi, qidiruv mijoz tomonda. Bazadagi `fikr` yozuvlari bu sahifada chiqmaydi.
 - `sitemap.xml`, `rss.xml` route handler'lari, `robots.ts`. `SITE_URL` `.env` da (mutlaq URL'lar uchun).
 
 ## Admin (F5)

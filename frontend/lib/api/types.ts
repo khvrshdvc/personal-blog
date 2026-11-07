@@ -109,6 +109,12 @@ export interface Telegram {
   posts: { t: string; d: string }[];
 }
 
+export interface TelegramFeed {
+  u: string;
+  n: string;
+  posts: { id: number; t: string; d: string; url: string }[];
+}
+
 export interface Api {
   getPosts(query?: PostsQuery): Promise<Paginated<PostListItem>>;
   getPost(slug: string): Promise<PostDetail | null>;
@@ -121,6 +127,7 @@ export interface Api {
   getRuns(): Promise<Run[]>;
   getRepoInfo(projectId: number): Promise<RepoInfo | null>;
   getTelegram(): Promise<Telegram | null>;
+  getTelegramFeed(): Promise<TelegramFeed | null>;
 }
 
 export interface CategoryCounts {

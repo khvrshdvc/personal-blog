@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { connection } from "next/server";
-import { FikrlarBrowser } from "@/components/fikrlar-browser";
+import { TelegramFeedList } from "@/components/telegram-feed";
 import { api } from "@/lib/api";
-import type { PostListItem } from "@/lib/api";
+import type { TelegramFeed } from "@/lib/api";
 import { pageAlternates } from "@/lib/seo";
 
 export const metadata: Metadata = {
@@ -11,34 +11,30 @@ export const metadata: Metadata = {
   alternates: pageAlternates("/fikrlar"),
 };
 
-const FIKR_TAGS = ["Hayot", "Oʻsish", "Ustozlik", "Til"];
-
 async function Content() {
   await connection();
 
-  let posts: PostListItem[] | null = null;
+  let feed: TelegramFeed | null = null;
 
   try {
-    posts = (await api.getPosts({ category: "fikr", per_page: 50 })).data;
+    feed = await api.getTelegramFeed();
   } catch {
-    posts = null;
+    feed = null;
   }
 
-  if (posts === null) {
-    return <p className="empty">Yozuvlarni yuklab boʻlmadi. Birozdan keyin qayta urinib koʻring.</p>;
+  if (feed === null) {
+    return <p className="empty">Fikrlarni yuklab boʻlmadi. Birozdan keyin qayta urinib koʻring.</p>;
   }
-
-  const present = new Set(posts.map((post) => post.tag));
 
   return (
     <>
       <header className="ph">
         <p className="eyebrow">Fikrlar</p>
         <h1>
-          Oʻrganish, ustozlik, til va hayot haqida. <span>{posts.length} ta yozuv.</span>
+          Telegram kanalimdan so&apos;nggi fikrlar. <span>{feed.posts.length} ta yozuv.</span>
         </h1>
       </header>
-      <FikrlarBrowser posts={posts} tags={FIKR_TAGS.filter((tag) => present.has(tag))} />
+      <TelegramFeedList posts={feed.posts} />
     </>
   );
 }

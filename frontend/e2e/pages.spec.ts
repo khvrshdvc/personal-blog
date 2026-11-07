@@ -64,35 +64,20 @@ test("bosh sahifa: o'rganyapman kartasi aylanadi", async ({ page }) => {
   expect(await page.locator(".b-lrn .lp.on .ring").evaluate((el) => getComputedStyle(el).boxShadow)).toBe("none");
 });
 
-test("fikrlar: sarlavha, teglar va tanlash", async ({ page }) => {
+test("fikrlar: Telegram kanal postlari va qidiruv", async ({ page }) => {
   await page.goto("/fikrlar");
   await page.waitForLoadState("networkidle");
 
   await expect(page.getByRole("heading", { level: 1 })).toContainText("2 ta yozuv");
   await expect(page.locator(".pgrid .pc")).toHaveCount(2);
   await expect(page.locator(".pgrid .pc").first()).toHaveClass(/big/);
-
-  const tabs = page.getByRole("group", { name: "Mavzular" });
-  await expect(tabs.getByRole("button")).toHaveText(["Barchasi", "Hayot", "Oʻsish"]);
-  await expect(tabs.getByRole("button", { name: "Barchasi" })).toHaveAttribute("aria-pressed", "true");
-
-  await tabs.getByRole("button", { name: "Hayot" }).click();
-  await expect(page.locator(".pgrid .pc")).toHaveCount(1);
-  await expect(page.locator(".pgrid .pc")).toContainText("Nega fikrlarimni");
-  await expect(page.locator(".pgrid .pc").first()).not.toHaveClass(/big/);
-
-  await tabs.getByRole("button", { name: "Barchasi" }).click();
-  await expect(page.locator(".pgrid .pc")).toHaveCount(2);
-});
-
-test("fikrlar: qidiruv va tozalash", async ({ page }) => {
-  await page.goto("/fikrlar");
-  await page.waitForLoadState("networkidle");
+  await expect(page.locator(".pgrid .pc").first()).toHaveAttribute("href", "https://t.me/ingliz_kanal/12");
+  await expect(page.locator(".pgrid .pc").first()).toContainText("Telegram");
 
   const input = page.getByRole("searchbox");
-  await input.fill("kichik");
+  await input.fill("resilient");
   await expect(page.locator(".pgrid .pc")).toHaveCount(1);
-  await expect(page.locator(".pgrid .pc")).toContainText("Kichik odatlar");
+  await expect(page.locator(".pgrid .pc")).toContainText("chidamli");
 
   await input.fill("yoqqiydirsoz");
   await expect(page.getByText("Hech narsa topilmadi. Boshqa soʻz bilan qidirib koʻring.")).toBeVisible();

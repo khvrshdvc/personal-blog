@@ -111,3 +111,28 @@ it('returns an empty shape when nothing is configured', function () {
 
     $this->getJson('/api/telegram')->assertOk()->assertExactJson(['u' => '', 'n' => '', 'posts' => []]);
 });
+
+it('serves the channel feed newest first with full text and links', function () {
+    Http::fake(['t.me/s/selfdev' => Http::response(channelHtml())]);
+    setChannel();
+
+    $this->getJson('/api/telegram/posts')
+        ->assertOk()
+        ->assertJsonPath('u', 'selfdev')
+        ->assertJsonCount(3, 'posts')
+        ->assertJsonPath('posts.0', ['id' => 4, 't' => 'Learn in public', 'd' => '2026-11-04', 'url' => 'https://t.me/selfdev/4'])
+        ->assertJsonPath('posts.2.t', "Eng eski post\nikkinchi qator");
+    $this->getJson('/api/telegram/posts')->assertOk();
+
+    Http::assertSentCount(1);
+});
+
+it('returns an empty feed without a username or when the channel fails', function () {
+    Http::fake(['t.me/*' => Http::response('xato', 500)]);
+
+    $this->getJson('/api/telegram/posts')->assertOk()->assertExactJson(['u' => '', 'n' => '', 'posts' => []]);
+
+    setChannel();
+
+    $this->getJson('/api/telegram/posts')->assertOk()->assertJsonPath('posts', []);
+});

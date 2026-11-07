@@ -90,6 +90,14 @@ async function getTelegram() {
   return source.getTelegram();
 }
 
+async function getTelegramFeed() {
+  "use cache";
+  cacheLife("minutes");
+  cacheTag("settings");
+
+  return source.getTelegramFeed();
+}
+
 export const api = {
   getPosts,
   getPost,
@@ -102,6 +110,7 @@ export const api = {
   getRuns,
   getRepoInfo,
   getTelegram,
+  getTelegramFeed,
 };
 
 export { ApiError } from "./http";

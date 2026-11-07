@@ -1,4 +1,4 @@
-import type { Activity, Api, PostDetail, PostListItem, Paginated, PostsQuery, RepoInfo, Run, Telegram } from "./types";
+import type { Activity, Api, PostDetail, PostListItem, Paginated, PostsQuery, RepoInfo, Run, Telegram, TelegramFeed } from "./types";
 
 export class ApiError extends Error {
   constructor(
@@ -92,5 +92,8 @@ export const httpApi: Api = {
   },
   async getTelegram() {
     return request<Telegram>("/telegram", true);
+  },
+  async getTelegramFeed() {
+    return request<TelegramFeed>("/telegram/posts", true);
   },
 };

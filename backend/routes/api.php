@@ -24,6 +24,7 @@ Route::middleware('throttle:public')->group(function () {
     Route::get('projects/{project}/runs', [ExternalController::class, 'projectRuns'])->whereNumber('project');
     Route::get('projects/{project}/github', [ExternalController::class, 'projectGithub'])->whereNumber('project');
     Route::get('telegram', [ExternalController::class, 'telegram']);
+    Route::get('telegram/posts', [ExternalController::class, 'telegramPosts']);
 });
 
 Route::prefix('admin')->group(function () {

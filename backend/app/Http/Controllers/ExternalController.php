@@ -6,6 +6,7 @@ use App\Actions\Site\GetActivity;
 use App\Actions\Site\GetRepoInfo;
 use App\Actions\Site\GetRuns;
 use App\Actions\Site\GetTelegram;
+use App\Actions\Site\GetTelegramPosts;
 use App\Models\Project;
 use Illuminate\Http\JsonResponse;
 
@@ -34,5 +35,10 @@ class ExternalController extends Controller
     public function telegram(GetTelegram $getTelegram): JsonResponse
     {
         return response()->json($getTelegram());
+    }
+
+    public function telegramPosts(GetTelegramPosts $getPosts): JsonResponse
+    {
+        return response()->json($getPosts());
     }
 }
