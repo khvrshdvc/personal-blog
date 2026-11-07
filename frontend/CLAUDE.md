@@ -35,3 +35,9 @@ Next.js (App Router), TypeScript, Tailwind. Umumiy qoidalar ildizdagi `../CLAUDE
 - Yo'q post uchun to'g'ri 404 statusi `proxy.ts` da beriladi (oqim boshlangandan keyin `notFound()` statusni o'zgartirmaydi). Noma'lum manzillar `app/(site)/[...rest]` orqali sayt layout'i bilan 404 beradi.
 - Sahifa `metadata.alternates` ildizdagini to'liq almashtiradi, shuning uchun `pageAlternates()` (canonical + RSS) ishlatiladi. `openGraph` uchun ham shunday: `siteName` va `locale` har safar yoziladi.
 - `sitemap.xml`, `rss.xml` route handler'lari, `robots.ts`. `SITE_URL` `.env` da (mutlaq URL'lar uchun).
+
+## Admin (F5)
+- `app/(admin)/admin/` guruhi to'liq klient tomonda, `noindex`. Kirish faqat parol bilan: `lib/admin/api.ts` Sanctum cookie + CSRF (`/sanctum/csrf-cookie` → `X-XSRF-TOKEN`) bilan ishlaydi, 419 bo'lsa bir marta qayta urinadi, 401 bo'lsa login'ga qaytaradi. `NEXT_PUBLIC_API_URL` backend manzili (build vaqtida o'rnatiladi).
+- Muharrir avtosaqlashi 600ms; so'rovlar ketma-ket (navbat), yangi yozuv birinchi bo'sh bo'lmagan o'zgarishda yaratiladi. Chop etilgan yozuv o'zgarishlari `pending`ga yoziladi ("Yangilash" qo'llaydi, "Bekor qilish" o'chiradi). Ctrl+S saqlaydi, Ctrl+Enter chop etadi/yangilaydi, `N` yangi yozuv.
+- `app/admin.css`: prototipning admin qoidalari (iOS tokenlari faqat `#admin` ichida).
+- Testlar: `e2e/admin.spec.ts` tarmoqni `e2e/admin-mock.ts` (holatli soxta API) bilan almashtiradi, shuning uchun backend kerak emas. Haqiqiy backend bilan jonli tekshiruv qo'lda o'tkazilgan (vaqtinchalik admin yaratib).

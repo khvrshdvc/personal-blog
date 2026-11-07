@@ -10,3 +10,7 @@ Laravel 12, PHP 8.3. Faqat JSON API, Blade yo'q. MySQL, Redis, Sail. Umumiy qoid
 - Chop etish, yangilash, o'chirish va sozlama o'zgarganda frontend'ga revalidate so'rovi yuboriladi.
 - Test: Pest. Har endpoint uchun muvaffaqiyat, validatsiya va ruxsat testi.
 - Har yangi endpoint avval `../docs/api.md` ga yoziladi.
+
+## Mahalliy sozlash
+- Muqova rasmlari `public` diskka yoziladi. Brauzerda ochilishi uchun bir marta `sail artisan storage:link` kerak (production deploy'da ham).
+- Admin SPA (frontend) cookie bilan ishlaydi: `.env` da `FRONTEND_URL` va `SANCTUM_STATEFUL_DOMAINS` frontend manziliga mos bo'lishi shart (mahalliy: `localhost:3000`).
