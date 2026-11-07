@@ -159,6 +159,8 @@ test("faollik: yig'indi, issiqlik xaritasi, tooltip va Actions", async ({ page }
   expect(cells).toBeGreaterThanOrEqual(120);
   expect(cells).toBeLessThanOrEqual(185);
   expect((await page.locator(".hm-grid i").count()) % 7).toBe(0);
+  await expect(page.locator(".hm-grid i.x")).toHaveCount(0);
+  await expect(page.locator(".hm-grid i")).toHaveCount(cells);
 
   const future = page.locator(".hm-grid i[data-f]");
   expect(await future.count()).toBeGreaterThan(20);
@@ -189,7 +191,10 @@ test("faollik: yig'indi, issiqlik xaritasi, tooltip va Actions", async ({ page }
   }
 
   await expect(page.getByRole("button", { name: "Oldingi oyni ochish" })).toHaveCount(0);
-  expect(await page.locator(".hm-grid i[data-d]:not([data-f])").count()).toBe(365);
+  const realCells = await page.locator(".hm-grid i[data-d]:not([data-f])").count();
+  expect(realCells).toBeGreaterThanOrEqual(365);
+  expect(realCells).toBeLessThanOrEqual(371);
+  await expect(page.locator(".hm-grid i.x")).toHaveCount(0);
   expect((await page.locator(".hm-grid i").count()) % 7).toBe(0);
   const wrap = await page.locator(".hm-wrap").evaluate((el) => ({ client: el.clientWidth, scroll: el.scrollWidth }));
   if (page.viewportSize()!.width > 760) expect(wrap.scroll).toBeLessThanOrEqual(wrap.client + 1);

@@ -3,6 +3,7 @@
 use App\Models\Project;
 use App\Models\Setting;
 use App\Services\Activity\ActivityProvider;
+use App\Services\Activity\GithubClient;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -48,16 +49,78 @@ it('reads the yearly calendar and runs with a token', function () {
     Http::assertSent(fn ($request) => $request->url() === 'https://api.github.com/graphql' && $request->hasHeader('Authorization', 'Bearer maxfiy-token'));
 });
 
-it('falls back to public events without a token', function () {
+it('reads the public profile calendar without a token', function () {
     config(['services.github.token' => null]);
     fakeGithub();
     connectGithub();
 
     $data = app(ActivityProvider::class)->get();
 
-    expect(array_sum(array_column($data['days'], 'c')))->toBe(4);
+    expect($data['real'])->toBeTrue()
+        ->and($data['days'])->toHaveCount(365)
+        ->and(array_sum(array_column($data['days'], 'c')))->toBe(1310);
     Http::assertNotSent(fn ($request) => str_contains($request->url(), 'graphql'));
     Http::assertNotSent(fn ($request) => $request->hasHeader('Authorization'));
+    Http::assertSent(fn ($request) => $request->url() === 'https://github.com/users/Utkirbek/contributions');
+    Http::assertNotSent(fn ($request) => str_contains($request->url(), '/events/public'));
+});
+
+it('falls back to public events when the profile calendar fails', function () {
+    config(['services.github.token' => null]);
+    fakeGithub(['github.com/users/Utkirbek/contributions' => Http::response('xato', 500)]);
+    connectGithub();
+
+    $data = app(ActivityProvider::class)->get();
+
+    expect(array_sum(array_column($data['days'], 'c')))->toBe(4);
+});
+
+it('falls back to public events when the calendar markup is unusable', function () {
+    config(['services.github.token' => null]);
+    fakeGithub(['github.com/users/Utkirbek/contributions' => Http::response('<html><body>Boshqa sahifa</body></html>')]);
+    connectGithub();
+
+    expect(array_sum(array_column(app(ActivityProvider::class)->get()['days'], 'c')))->toBe(4);
+});
+
+it('prefers the token calendar over the profile page', function () {
+    config(['services.github.token' => 'maxfiy-token']);
+    fakeGithub();
+    connectGithub();
+
+    app(ActivityProvider::class)->get();
+
+    Http::assertNotSent(fn ($request) => str_contains($request->url(), 'github.com/users/Utkirbek/contributions'));
+});
+
+it('parses calendar markup with plural, singular, thousands and empty days', function () {
+    $cells = '';
+    $tips = '';
+
+    foreach (range(1, 40) as $i) {
+        $date = now()->subDays(40 - $i)->toDateString();
+        $label = match (true) {
+            $i === 1 => '1 contribution on a day.',
+            $i === 2 => '1,234 contributions on a day.',
+            $i === 3 => '7 contributions on a day.',
+            default => 'No contributions on a day.',
+        };
+        $cells .= "<td data-date=\"{$date}\" id=\"d{$i}\" class=\"ContributionCalendar-day\"></td>";
+        $tips .= "<tool-tip for=\"d{$i}\" class=\"sr-only\">{$label}</tool-tip>";
+    }
+
+    $counts = app(GithubClient::class)->parseCalendar($cells.$tips);
+    $values = array_values($counts);
+
+    expect($counts)->toHaveCount(40)
+        ->and($values[0])->toBe(1)
+        ->and($values[1])->toBe(1234)
+        ->and($values[2])->toBe(7)
+        ->and($values[3])->toBe(0);
+});
+
+it('rejects calendar markup with too few days', function () {
+    expect(app(GithubClient::class)->parseCalendar('<td data-date="2026-01-01" id="a"></td><tool-tip for="a">3 contributions on x.</tool-tip>'))->toBeNull();
 });
 
 it('orders days oldest to newest and ends today', function () {

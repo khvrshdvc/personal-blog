@@ -30,7 +30,9 @@ class GithubActivityProvider
         ))));
 
         $runs = $full === [] ? [] : $this->client->runs(array_slice($full, 0, 8));
-        $counts = $this->client->contributions($login, ActivityDays::DAYS) ?? $this->client->recentEvents($login);
+        $counts = $this->client->contributions($login, ActivityDays::DAYS)
+            ?? $this->client->profileCalendar($login)
+            ?? $this->client->recentEvents($login);
 
         return [
             'real' => true,

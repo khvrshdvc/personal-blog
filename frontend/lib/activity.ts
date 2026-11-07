@@ -90,18 +90,16 @@ export function weekCount(cells: (Cell | null)[]): number {
 
 export function monthLabels(cells: (Cell | null)[]): MonthLabel[] {
   const labels: MonthLabel[] = [];
-  let previous = -1;
+  const weeks = weekCount(cells);
 
-  for (let week = 0; week < weekCount(cells); week++) {
-    const cell = cells.slice(week * 7, week * 7 + 7).find((item) => item !== null);
+  for (let week = 0; week < weeks; week++) {
+    const column = cells.slice(week * 7, week * 7 + 7).filter((item): item is Cell => item !== null);
+    const first = column.find((item) => item.d.endsWith("-01"));
 
-    if (!cell) continue;
-
-    const month = Number(cell.d.slice(5, 7)) - 1;
-
-    if (month !== previous) {
-      labels.push({ column: week + 1, label: SHORT_MONTHS[month] });
-      previous = month;
+    if (first && week < weeks - 1) {
+      labels.push({ column: week + 1, label: SHORT_MONTHS[Number(first.d.slice(5, 7)) - 1] });
+    } else if (week === 0 && column.length) {
+      labels.push({ column: 1, label: SHORT_MONTHS[Number(column[column.length - 1].d.slice(5, 7)) - 1] });
     }
   }
 
@@ -110,6 +108,7 @@ export function monthLabels(cells: (Cell | null)[]): MonthLabel[] {
 
 export interface Range {
   days: Day[];
+  stats: Day[];
   today: string;
   startMonth: number;
   endMonth: number;
@@ -122,16 +121,21 @@ export function rangeFrom(days: Day[], monthsBack: number, monthsAhead = 1): Ran
   const [year, month] = today.split("-").map(Number);
   const startTime = Math.max(utc(first), Date.UTC(year, month - 1 - monthsBack, 1));
   const endTime = Date.UTC(year, month - 1 + monthsAhead + 1, 0);
+  const gridStart = startTime - ((new Date(startTime).getUTCDay() + 6) % 7) * DAY;
+  const gridEnd = endTime + (6 - ((new Date(endTime).getUTCDay() + 6) % 7)) * DAY;
   const counts = new Map(days.map((day) => [day.d, day.c]));
   const out: Day[] = [];
 
-  for (let time = startTime; time <= endTime; time += DAY) {
+  for (let time = gridStart; time <= gridEnd; time += DAY) {
     const date = iso(time);
     out.push({ d: date, c: counts.get(date) ?? 0 });
   }
 
+  const from = iso(startTime);
+
   return {
     days: out,
+    stats: out.filter((day) => day.d >= from && day.d <= today),
     today,
     startMonth: new Date(startTime).getUTCMonth(),
     endMonth: new Date(endTime).getUTCMonth(),

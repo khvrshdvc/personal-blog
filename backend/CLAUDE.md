@@ -17,7 +17,7 @@ Laravel 12, PHP 8.3. Faqat JSON API, Blade yo'q. MySQL, Redis, Sail. Umumiy qoid
 
 ## Tashqi API (B5)
 - `GET /api/activity|runs|telegram` va `/api/projects/{id}/runs|github` (`docs/api.md`). Manba bitta: `ActivityProvider` (GitHub: foydalanuvchi, repolar, Actions, yillik kalendar). Natija `ResilientCache` bilan keshlanadi: yangi (`services.github.fresh`), xato bo'lsa eskisi (`stale`), xatodan keyin 1 daqiqa pauza.
-- Username yo'q yoki noto'g'ri bo'lsa namuna ma'lumot (`real: false`), GitHub xato bersa ham namuna (kesh bo'lmasa). `GITHUB_TOKEN` ixtiyoriy: bilan bo'lsa GraphQL yillik kalendar, bo'lmasa so'nggi ochiq hodisalar (taxminan 90 kun).
+- Username yo'q yoki noto'g'ri bo'lsa namuna ma'lumot (`real: false`), GitHub xato bersa ham namuna (kesh bo'lmasa). Faollik manbalari ketma-ket: (1) `GITHUB_TOKEN` bo'lsa GraphQL yillik kalendar, (2) tokensiz `github.com/users/{login}/contributions` ochiq profil kalendari (HTML o'qiladi, rasmiy API emas, shuning uchun format o'zgarsa keyingisiga o'tadi), (3) so'nggi ~100 ochiq hodisa (faqat oxirgi 1-2 oy). Token ixtiyoriy, lekin rate limit uchun foydali.
 - Loyiha Actions ishlari umumiy ro'yxatdagi (sakkiz repo, jami 12 ta) ishlardan filtrlanadi. Token javobda va logda chiqmaydi (test bilan tekshirilgan).
 - Telegram kanal `t.me/s/{username}` sahifasidan o'qiladi; o'qilmasa sozlamalardagi (admin) postlar qaytadi.
 

@@ -84,6 +84,44 @@ class GithubClient
         return $counts;
     }
 
+    public function profileCalendar(string $login): ?array
+    {
+        $html = $this->safe(fn () => Http::withHeaders(['Accept' => 'text/html', 'User-Agent' => 'personal-blog'])
+            ->timeout((int) config('services.github.timeout'))
+            ->get('https://github.com/users/'.rawurlencode($login).'/contributions')
+            ->throw()
+            ->body());
+
+        return is_string($html) ? $this->parseCalendar($html) : null;
+    }
+
+    public function parseCalendar(string $html): ?array
+    {
+        preg_match_all('/<td\b[^>]*>/i', $html, $cells);
+        preg_match_all('/<tool-tip\b[^>]*\bfor="([^"]+)"[^>]*>\s*([^<]*?)\s*<\/tool-tip>/i', $html, $tips, PREG_SET_ORDER);
+
+        $labels = [];
+
+        foreach ($tips as $tip) {
+            $labels[$tip[1]] = $tip[2];
+        }
+
+        $counts = [];
+
+        foreach ($cells[0] as $tag) {
+            if (! preg_match('/data-date="(\d{4}-\d{2}-\d{2})"/', $tag, $date) || ! preg_match('/\bid="([^"]+)"/', $tag, $id)) {
+                continue;
+            }
+
+            $label = $labels[$id[1]] ?? '';
+            $counts[$date[1]] = preg_match('/^(\d[\d,]*)\s+contributions?\b/i', $label, $number)
+                ? (int) str_replace(',', '', $number[1])
+                : 0;
+        }
+
+        return count($counts) >= 30 ? $counts : null;
+    }
+
     public function recentEvents(string $login): array
     {
         $events = $this->safe(fn () => $this->request()->get(self::API.'/users/'.rawurlencode($login).'/events/public', ['per_page' => 100])->throw()->json()) ?? [];

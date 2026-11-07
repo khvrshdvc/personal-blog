@@ -10,8 +10,7 @@ const INITIAL_MONTHS_BACK = 3;
 export function ActivityView({ days, available }: { days: Day[]; available: boolean }) {
   const [back, setBack] = useState(INITIAL_MONTHS_BACK);
   const range = rangeFrom(days, back);
-  const past = range.days.filter((day) => day.d <= range.today);
-  const summary = summarize(past);
+  const summary = summarize(range.stats);
   const cells = buildGrid(range.days, range.today);
   const label = `${MONTH_NAMES[range.startMonth]} – ${MONTH_NAMES[range.endMonth]}`;
 

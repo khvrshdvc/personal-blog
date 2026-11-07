@@ -20,6 +20,7 @@ function fakeGithub(array $override = []): void
         'api.github.com/graphql' => Http::response(['data' => ['user' => ['contributionsCollection' => ['contributionCalendar' => ['weeks' => [
             ['contributionDays' => [['date' => $today, 'contributionCount' => 5]]],
         ]]]]]]),
+        'github.com/users/Utkirbek/contributions' => Http::response(file_get_contents(base_path('tests/Fixtures/github-contributions.html'))),
         'api.github.com/users/Utkirbek/events/public*' => Http::response([
             ['type' => 'PushEvent', 'created_at' => now()->toIso8601String(), 'payload' => ['size' => 3]],
             ['type' => 'IssuesEvent', 'created_at' => now()->toIso8601String(), 'payload' => []],
