@@ -2,6 +2,10 @@
 
 import { useEffect } from "react";
 
+function hydrated(element: HTMLElement): boolean {
+  return Object.keys(element).some((key) => key.startsWith("__reactProps$"));
+}
+
 export function Glow() {
   useEffect(() => {
     if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
@@ -9,7 +13,8 @@ export function Glow() {
     let current: HTMLElement | null = null;
 
     function onMove(event: PointerEvent) {
-      const target = event.target instanceof Element ? event.target.closest<HTMLElement>("#site .c") : null;
+      const found = event.target instanceof Element ? event.target.closest<HTMLElement>("#site .c") : null;
+      const target = found && hydrated(found) ? found : null;
 
       if (current && current !== target) {
         current.style.removeProperty("--x");

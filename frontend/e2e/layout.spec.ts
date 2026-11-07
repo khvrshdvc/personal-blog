@@ -180,6 +180,31 @@ test("kartada nur kursorga ergashadi", async ({ page }) => {
   await expect.poll(() => card.evaluate((el) => (el as HTMLElement).style.getPropertyValue("--x"))).toBe("");
 });
 
+test("nur gidratsiya bo'lmagan elementga stil yozmaydi", async ({ page }) => {
+  test.skip((page.viewportSize()?.width ?? 0) <= 760, "nur faqat sichqoncha bilan");
+  await page.goto("/");
+  await page.waitForLoadState("networkidle");
+  await page.locator("html[data-ready]").waitFor({ state: "attached" });
+
+  await page.evaluate(() => {
+    const raw = document.createElement("div");
+    raw.className = "c";
+    raw.id = "raw-card";
+    raw.style.cssText = "position:fixed;left:20px;top:200px;width:200px;height:120px;z-index:99";
+    document.getElementById("site")!.appendChild(raw);
+  });
+
+  await page.mouse.move(60, 240);
+  await page.mouse.move(70, 250);
+
+  expect(await page.locator("#raw-card").evaluate((el) => (el as HTMLElement).style.getPropertyValue("--x"))).toBe("");
+
+  const card = page.locator("#site .c").nth(1);
+  const box = (await card.boundingBox())!;
+  await page.mouse.move(box.x + 40, box.y + 30);
+  await expect.poll(() => card.evaluate((el) => (el as HTMLElement).style.getPropertyValue("--x"))).toBe("40px");
+});
+
 test("kontentga oʻtish havolasi klaviatura bilan ishlaydi", async ({ page }) => {
   await page.goto("/");
   await page.keyboard.press("Tab");
