@@ -2,20 +2,18 @@
 
 import { useState } from "react";
 import { Heatmap } from "@/components/dev/heatmap";
-import { INITIAL_DAYS, STEP_DAYS, buildGrid, monthLabels, summarize, type Day } from "@/lib/activity";
+import { buildGrid, monthLabels, rangeFrom, summarize, type Day } from "@/lib/activity";
+import { MONTH_NAMES } from "@/lib/format";
 
-function rangeLabel(visible: number, all: number): string {
-  if (visible >= all) return "soʻnggi yil";
-
-  return `soʻnggi ${Math.round(visible / 30)} oy`;
-}
+const INITIAL_MONTHS_BACK = 3;
 
 export function ActivityView({ days, available }: { days: Day[]; available: boolean }) {
-  const [visible, setVisible] = useState(INITIAL_DAYS);
-  const shown = days.slice(-visible);
-  const summary = summarize(shown);
-  const cells = buildGrid(shown);
-  const hasMore = visible < days.length;
+  const [back, setBack] = useState(INITIAL_MONTHS_BACK);
+  const range = rangeFrom(days, back);
+  const past = range.days.filter((day) => day.d <= range.today);
+  const summary = summarize(past);
+  const cells = buildGrid(range.days, range.today);
+  const label = `${MONTH_NAMES[range.startMonth]} – ${MONTH_NAMES[range.endMonth]}`;
 
   return (
     <>
@@ -36,16 +34,16 @@ export function ActivityView({ days, available }: { days: Day[]; available: bool
       <div className="c hmcard">
         <div className="hm-top">
           <b>Faollik</b>
-          <span>{rangeLabel(visible, days.length)}</span>
+          <span>{label}</span>
         </div>
         {cells.length ? (
           <Heatmap cells={cells} months={monthLabels(cells)} />
         ) : (
           <div className="empty-row">Faollik maʼlumoti hozircha mavjud emas</div>
         )}
-        {hasMore ? (
-          <button className="more-btn" type="button" onClick={() => setVisible((value) => Math.min(days.length, value + STEP_DAYS))}>
-            Yana 1 oy ochish
+        {range.hasMore ? (
+          <button className="more-btn" type="button" onClick={() => setBack((value) => value + 1)}>
+            Oldingi oyni ochish
           </button>
         ) : null}
       </div>

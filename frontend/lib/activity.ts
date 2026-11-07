@@ -9,6 +9,7 @@ export interface Cell {
   d: string;
   c: number;
   level: 0 | 1 | 2 | 3 | 4;
+  future: boolean;
 }
 
 export interface MonthLabel {
@@ -19,7 +20,6 @@ export interface MonthLabel {
 const DAY = 86400000;
 
 export const INITIAL_DAYS = 60;
-export const STEP_DAYS = 30;
 
 function utc(iso: string): number {
   const [y, m, d] = iso.split("-").map(Number);
@@ -57,7 +57,7 @@ export function summarize(days: Day[]) {
   return { total, streak, active: days.filter((day) => day.c > 0).length };
 }
 
-export function buildGrid(days: Day[]): (Cell | null)[] {
+export function buildGrid(days: Day[], today?: string): (Cell | null)[] {
   if (days.length === 0) return [];
 
   const counts = new Map(days.map((day) => [day.d, day.c]));
@@ -78,7 +78,7 @@ export function buildGrid(days: Day[]): (Cell | null)[] {
 
     const date = iso(time);
     const count = counts.get(date) ?? 0;
-    cells.push({ d: date, c: count, level: level(count) });
+    cells.push({ d: date, c: count, level: level(count), future: today !== undefined && date > today });
   }
 
   return cells;
@@ -106,4 +106,35 @@ export function monthLabels(cells: (Cell | null)[]): MonthLabel[] {
   }
 
   return labels;
+}
+
+export interface Range {
+  days: Day[];
+  today: string;
+  startMonth: number;
+  endMonth: number;
+  hasMore: boolean;
+}
+
+export function rangeFrom(days: Day[], monthsBack: number, monthsAhead = 1): Range {
+  const today = days[days.length - 1]?.d ?? iso(Date.now());
+  const first = days[0]?.d ?? today;
+  const [year, month] = today.split("-").map(Number);
+  const startTime = Math.max(utc(first), Date.UTC(year, month - 1 - monthsBack, 1));
+  const endTime = Date.UTC(year, month - 1 + monthsAhead + 1, 0);
+  const counts = new Map(days.map((day) => [day.d, day.c]));
+  const out: Day[] = [];
+
+  for (let time = startTime; time <= endTime; time += DAY) {
+    const date = iso(time);
+    out.push({ d: date, c: counts.get(date) ?? 0 });
+  }
+
+  return {
+    days: out,
+    today,
+    startMonth: new Date(startTime).getUTCMonth(),
+    endMonth: new Date(endTime).getUTCMonth(),
+    hasMore: startTime > utc(first),
+  };
 }

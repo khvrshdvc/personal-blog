@@ -93,8 +93,8 @@ function isoDay(date: Date) {
 
 function buildActivity(): Activity {
   const random = mulberry(20261105);
-  const today = new Date();
-  today.setUTCHours(0, 0, 0, 0);
+  const [year, month, day] = new Date().toLocaleDateString("sv-SE", { timeZone: "Asia/Tashkent" }).split("-").map(Number);
+  const today = new Date(Date.UTC(year, month - 1, day));
   const days: Activity["days"] = [];
   let total = 0;
 

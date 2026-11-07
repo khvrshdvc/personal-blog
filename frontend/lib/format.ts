@@ -2,6 +2,7 @@ const SHORT = ["Yan", "Fev", "Mar", "Apr", "May", "Iyn", "Iyl", "Avg", "Sen", "O
 const MONTHS = ["yanvar", "fevral", "mart", "aprel", "may", "iyun", "iyul", "avgust", "sentabr", "oktabr", "noyabr", "dekabr"];
 
 export const SHORT_MONTHS = SHORT;
+export const MONTH_NAMES = MONTHS;
 
 function parts(iso: string | null | undefined): [number, number, number] | null {
   const match = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso ?? "");

@@ -1,6 +1,8 @@
 import { expect, test } from "@playwright/test";
 import { ownClient } from "./client";
 
+const MONTH_NAMES = ["yanvar", "fevral", "mart", "aprel", "may", "iyun", "iyul", "avgust", "sentabr", "oktabr", "noyabr", "dekabr"];
+
 test.beforeEach(async ({ page }) => {
   await ownClient(page);
 });
@@ -147,41 +149,50 @@ test("faollik: yig'indi, issiqlik xaritasi, tooltip va Actions", async ({ page }
   await expect(page.getByText("Namuna maʼlumot")).toBeVisible();
   await expect(page.locator(".sum > div")).toHaveCount(3);
   await expect(page.locator(".sum > div").first().locator("b")).toHaveText(/^\d+$/);
-  await expect(page.locator(".hm-grid i[data-d]").first()).toBeAttached();
-  await expect(page.locator(".hm-grid i[data-d]")).toHaveCount(60);
-  const total60 = Number(await page.locator(".sum > div b").first().textContent());
+  const total = Number(await page.locator(".sum > div b").first().textContent());
+
+  const monthsLabel = await page.locator(".hm-top span").textContent();
+  expect(monthsLabel).toMatch(/^[a-zʻ]+ – [a-zʻ]+$/);
+  expect(monthsLabel!.split(" – ")[1]).toBe(MONTH_NAMES[(new Date().getMonth() + 1) % 12]);
+
+  const cells = await page.locator(".hm-grid i[data-d]").count();
+  expect(cells).toBeGreaterThanOrEqual(120);
+  expect(cells).toBeLessThanOrEqual(185);
   expect((await page.locator(".hm-grid i").count()) % 7).toBe(0);
-  await expect(page.locator(".hm-top")).toContainText("soʻnggi 2 oy");
+
+  const future = page.locator(".hm-grid i[data-f]");
+  expect(await future.count()).toBeGreaterThan(20);
+  expect(await future.first().getAttribute("data-c")).toBe("0");
+  await expect(page.locator(".hm-grid i[data-d]:not([data-f])").last()).toHaveAttribute("data-d", new Date().toLocaleDateString("sv-SE", { timeZone: "Asia/Tashkent" }));
+
   const weeks = (await page.locator(".hm-grid i").count()) / 7;
-  expect(weeks).toBeLessThanOrEqual(10);
+  expect(weeks).toBeGreaterThanOrEqual(17);
+  expect(weeks).toBeLessThanOrEqual(26);
   expect(await page.locator(".hm-grid").evaluate((el) => getComputedStyle(el).gridTemplateColumns.split(" ").length)).toBe(weeks);
+
+  const cardWidth = (await page.locator(".hmcard").boundingBox())!.width;
+  const gridWidth = (await page.locator(".hm-grid").boundingBox())!.width;
+  expect(gridWidth).toBeGreaterThan(cardWidth * 0.7);
+  const cell = (await page.locator(".hm-grid i[data-d]").first().boundingBox())!;
+  expect(cell.height).toBeLessThanOrEqual(36);
   await expect(page.locator(".hm-months span").first()).toBeAttached();
 
-  const cell = (await page.locator(".hm-grid i[data-d]").first().boundingBox())!;
-  expect(cell.width).toBeLessThanOrEqual(20);
-  expect(cell.height).toBeLessThanOrEqual(20);
-  expect(Math.abs(cell.width - cell.height)).toBeLessThan(1);
-  const gridHeight = (await page.locator(".hm-grid").boundingBox())!.height;
-  expect(gridHeight).toBeLessThanOrEqual(7 * 20 + 6 * 4);
-
-  await page.getByRole("button", { name: "Yana 1 oy ochish" }).click();
-  await expect(page.locator(".hm-grid i[data-d]")).toHaveCount(90);
-  await expect(page.locator(".hm-top")).toContainText("soʻnggi 3 oy");
-  expect(Number(await page.locator(".sum > div b").first().textContent())).toBeGreaterThanOrEqual(total60);
+  await page.getByRole("button", { name: "Oldingi oyni ochish" }).click();
+  expect(await page.locator(".hm-grid i[data-d]").count()).toBeGreaterThan(cells);
+  expect(Number(await page.locator(".sum > div b").first().textContent())).toBeGreaterThanOrEqual(total);
 
   for (let i = 0; i < 20; i++) {
-    const button = page.getByRole("button", { name: "Yana 1 oy ochish" });
+    const button = page.getByRole("button", { name: "Oldingi oyni ochish" });
 
     if ((await button.count()) === 0) break;
     await button.click();
   }
 
-  await expect(page.getByRole("button", { name: "Yana 1 oy ochish" })).toHaveCount(0);
-  await expect(page.locator(".hm-grid i[data-d]")).toHaveCount(365);
+  await expect(page.getByRole("button", { name: "Oldingi oyni ochish" })).toHaveCount(0);
+  expect(await page.locator(".hm-grid i[data-d]:not([data-f])").count()).toBe(365);
+  expect((await page.locator(".hm-grid i").count()) % 7).toBe(0);
   const wrap = await page.locator(".hm-wrap").evaluate((el) => ({ client: el.clientWidth, scroll: el.scrollWidth }));
   if (page.viewportSize()!.width > 760) expect(wrap.scroll).toBeLessThanOrEqual(wrap.client + 1);
-  await expect(page.locator(".hm-top")).toContainText("soʻnggi yil");
-  expect((await page.locator(".hm-grid i").count()) % 7).toBe(0);
 
   const active = page.locator(".hm-grid i[data-d]:not([data-c='0'])").first();
   await active.scrollIntoViewIfNeeded();
