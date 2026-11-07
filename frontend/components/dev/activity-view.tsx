@@ -1,15 +1,11 @@
-"use client";
-
-import { useState } from "react";
 import { Heatmap } from "@/components/dev/heatmap";
 import { buildGrid, monthLabels, rangeFrom, summarize, type Day } from "@/lib/activity";
 import { MONTH_NAMES } from "@/lib/format";
 
-const INITIAL_MONTHS_BACK = 3;
+const MONTHS_BACK = 4;
 
 export function ActivityView({ days, available }: { days: Day[]; available: boolean }) {
-  const [back, setBack] = useState(INITIAL_MONTHS_BACK);
-  const range = rangeFrom(days, back);
+  const range = rangeFrom(days, MONTHS_BACK);
   const summary = summarize(range.stats);
   const cells = buildGrid(range.days, range.today);
   const label = `${MONTH_NAMES[range.startMonth]} – ${MONTH_NAMES[range.endMonth]}`;
@@ -40,11 +36,6 @@ export function ActivityView({ days, available }: { days: Day[]; available: bool
         ) : (
           <div className="empty-row">Faollik maʼlumoti hozircha mavjud emas</div>
         )}
-        {range.hasMore ? (
-          <button className="more-btn" type="button" onClick={() => setBack((value) => value + 1)}>
-            Oldingi oyni ochish
-          </button>
-        ) : null}
       </div>
     </>
   );

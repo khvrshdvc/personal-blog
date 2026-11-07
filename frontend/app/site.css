@@ -425,29 +425,6 @@ body[data-route="post"] .list{background:var(--cellp)}
   font-weight: 600;
 }
 
-.more-btn {
-  display: inline-flex;
-  align-items: center;
-  height: 36px;
-  margin-top: 14px;
-  padding: 0 16px;
-  border: 0;
-  border-radius: 999px;
-  background: var(--chip);
-  box-shadow: inset 0 0 0 1px var(--line);
-  color: var(--t1);
-  font-size: 14px;
-  font-weight: 600;
-  transition: transform 0.2s;
-}
-
-.more-btn:hover {
-  transform: translateY(-1px);
-}
-
-.more-btn:active {
-  transform: scale(0.97);
-}
 
 .hm-grid.compact {
   flex: 1;

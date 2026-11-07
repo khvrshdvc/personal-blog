@@ -112,7 +112,6 @@ export interface Range {
   today: string;
   startMonth: number;
   endMonth: number;
-  hasMore: boolean;
 }
 
 export function rangeFrom(days: Day[], monthsBack: number, monthsAhead = 1): Range {
@@ -139,6 +138,5 @@ export function rangeFrom(days: Day[], monthsBack: number, monthsAhead = 1): Ran
     today,
     startMonth: new Date(startTime).getUTCMonth(),
     endMonth: new Date(endTime).getUTCMonth(),
-    hasMore: startTime > utc(first),
   };
 }
