@@ -13,8 +13,10 @@ interface Tip {
 export function Heatmap({ cells, months }: { cells: (Cell | null)[]; months: MonthLabel[] }) {
   const wrap = useRef<HTMLDivElement>(null);
   const [tip, setTip] = useState<Tip | null>(null);
-  const columns = `repeat(${weekCount(cells)}, minmax(0, 1fr))`;
-  const rows = "repeat(7, clamp(24px, 3.4vw, 40px))";
+  const weeks = weekCount(cells);
+  const fit = weeks > 26;
+  const columns = fit ? `repeat(${weeks}, minmax(0, 1fr))` : `repeat(${weeks}, 17px)`;
+  const rows = fit ? undefined : "repeat(7, 17px)";
 
   useEffect(() => {
     const el = wrap.current;
@@ -48,7 +50,7 @@ export function Heatmap({ cells, months }: { cells: (Cell | null)[]; months: Mon
   return (
     <>
       <div className="hm-wrap" ref={wrap}>
-        <div className="hm" style={{ minWidth: 0 }}>
+        <div className="hm" style={fit ? undefined : { minWidth: 0, width: "fit-content" }}>
           <div className="hm-months" aria-hidden="true" style={{ gridTemplateColumns: columns }}>
             {months.map((month) => (
               <span key={month.column} style={{ gridColumn: `${month.column}/span 3` }}>
@@ -66,7 +68,7 @@ export function Heatmap({ cells, months }: { cells: (Cell | null)[]; months: Mon
               <span />
               <span />
             </div>
-            <div className="hm-grid wide" role="img" aria-label="GitHub faollik xaritasi" style={{ gridTemplateColumns: columns, gridTemplateRows: rows }} onMouseOver={show} onMouseLeave={() => setTip(null)}>
+            <div className={`hm-grid${fit ? "" : " compact"}`} role="img" aria-label="GitHub faollik xaritasi" style={{ gridTemplateColumns: columns, gridTemplateRows: rows }} onMouseOver={show} onMouseLeave={() => setTip(null)}>
               {cells.map((cell, index) =>
                 cell === null ? (
                   <i key={index} className="x" />

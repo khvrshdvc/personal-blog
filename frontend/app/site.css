@@ -449,20 +449,21 @@ body[data-route="post"] .list{background:var(--cellp)}
   transform: scale(0.97);
 }
 
-.hm-grid.wide {
-  flex: 1;
-  gap: 4px;
+.hm-grid.compact {
+  flex: none;
+  gap: 3px;
 }
 
-.hm-grid.wide i {
+.hm-grid.compact i {
   aspect-ratio: auto;
   height: 100%;
-  border-radius: 6px;
+  border-radius: 3px;
 }
 
-.hm-wrap .hm {
-  width: 100%;
+.hm-months {
+  gap: 3px;
 }
+
 
 .mhm {
   grid-template-columns: repeat(var(--cols, 17), var(--mc, 16px));

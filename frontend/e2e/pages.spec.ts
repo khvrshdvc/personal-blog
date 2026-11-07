@@ -157,11 +157,12 @@ test("faollik: yig'indi, issiqlik xaritasi, tooltip va Actions", async ({ page }
   expect(await page.locator(".hm-grid").evaluate((el) => getComputedStyle(el).gridTemplateColumns.split(" ").length)).toBe(weeks);
   await expect(page.locator(".hm-months span").first()).toBeAttached();
 
-  const cardWidth = (await page.locator(".hmcard").boundingBox())!.width;
-  const gridWidth = (await page.locator(".hm-grid").boundingBox())!.width;
-  expect(gridWidth).toBeGreaterThan(cardWidth * 0.7);
   const cell = (await page.locator(".hm-grid i[data-d]").first().boundingBox())!;
-  expect(cell.height).toBeLessThanOrEqual(40);
+  expect(cell.width).toBeLessThanOrEqual(20);
+  expect(cell.height).toBeLessThanOrEqual(20);
+  expect(Math.abs(cell.width - cell.height)).toBeLessThan(1);
+  const gridHeight = (await page.locator(".hm-grid").boundingBox())!.height;
+  expect(gridHeight).toBeLessThanOrEqual(7 * 20 + 6 * 4);
 
   await page.getByRole("button", { name: "Yana 1 oy ochish" }).click();
   await expect(page.locator(".hm-grid i[data-d]")).toHaveCount(90);
@@ -177,6 +178,8 @@ test("faollik: yig'indi, issiqlik xaritasi, tooltip va Actions", async ({ page }
 
   await expect(page.getByRole("button", { name: "Yana 1 oy ochish" })).toHaveCount(0);
   await expect(page.locator(".hm-grid i[data-d]")).toHaveCount(365);
+  const wrap = await page.locator(".hm-wrap").evaluate((el) => ({ client: el.clientWidth, scroll: el.scrollWidth }));
+  if (page.viewportSize()!.width > 760) expect(wrap.scroll).toBeLessThanOrEqual(wrap.client + 1);
   await expect(page.locator(".hm-top")).toContainText("soʻnggi yil");
   expect((await page.locator(".hm-grid i").count()) % 7).toBe(0);
 
