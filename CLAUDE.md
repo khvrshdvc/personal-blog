@@ -3,7 +3,7 @@
 Utkirbek'ning shaxsiy blog va portfolio sayti. Monorepo: `backend/` (Laravel API) va `frontend/` (Next.js). Prototip: `design/utkirbek-blog-bento.html` (bitta fayl, sayt + admin, localStorage'da ishlaydi). Vazifa: shuni ikki qismga ajratib qurish. Dizayn va matnlar prototipdan o'zgarmaydi.
 
 ## Tuzilma
-- `backend/`: Laravel 11, PHP 8.3, faqat JSON API (Blade yo'q), MySQL, Redis, Sail
+- `backend/`: Laravel 12, PHP 8.3, faqat JSON API (Blade yo'q), MySQL, Redis, Sail
 - `frontend/`: Next.js (App Router), TypeScript, Tailwind, SSR/ISR
 - `design/`: prototip (o'zgartirilmaydi, faqat andoza)
 - `docs/`: `plan.md` (bosqichlar), `api.md` (API shartnomasi)

@@ -8,7 +8,7 @@ Har bosqich alohida branch, commit va qo'lda tekshiruv bilan yopiladi. Backend (
 - `docs/api.md` ni tasdiqlash
 
 ## Backend (B)
-- B1. Laravel 11 + Sail (MySQL, Redis), `.env.example`, CORS, Sanctum SPA auth, bitta admin seeder
+- B1. Laravel 12 + Sail (MySQL, Redis), `.env.example`, CORS, Sanctum SPA auth, bitta admin seeder
 - B2. Migratsiyalar, modellar, seeder (prototipdagi namuna ma'lumotlar): posts, projects, settings
 - B3. Ommaviy API: posts, post, projects, settings, search; Markdown to HTML (tozalash, mundarija, o'qish vaqti)
 - B4. Admin API: login/logout/me, dashboard, posts CRUD, avtosaqlash va pending oqimi, publish/apply, cover yuklash, projects CRUD, settings
@@ -34,5 +34,5 @@ Har bosqich alohida branch, commit va qo'lda tekshiruv bilan yopiladi. Backend (
 - D3. Zaxira nusxa (DB), monitoring, 404/500 sahifalar
 
 ## Ochiq qarorlar
-- Hosting: VPS yoki Hostinger
+- Hosting: VPS (qaror qilindi, Hostinger ishlatilmaydi)
 - Domen nomi

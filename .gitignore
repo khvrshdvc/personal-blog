@@ -1,0 +1,15 @@
+.env
+.env.*
+!.env.example
+.DS_Store
+Thumbs.db
+node_modules/
+vendor/
+.idea/
+.vscode/
+.fleet/
+.zed/
+.nova/
+*.log
+test-results/
+playwright-report/
