@@ -16,6 +16,6 @@ export default defineConfig({
     url: `http://localhost:${port}`,
     reuseExistingServer: false,
     timeout: 240000,
-    env: { API_MOCK: "1", SITE_URL: `http://localhost:${port}`, NEXT_PUBLIC_API_URL: "http://api.test" },
+    env: { API_MOCK: "1", SITE_URL: `http://localhost:${port}`, NEXT_PUBLIC_API_URL: "http://api.test", REVALIDATE_SECRET: "test-secret" },
   },
 });

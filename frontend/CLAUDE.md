@@ -41,3 +41,10 @@ Next.js (App Router), TypeScript, Tailwind. Umumiy qoidalar ildizdagi `../CLAUDE
 - Muharrir avtosaqlashi 600ms; so'rovlar ketma-ket (navbat), yangi yozuv birinchi bo'sh bo'lmagan o'zgarishda yaratiladi. Chop etilgan yozuv o'zgarishlari `pending`ga yoziladi ("Yangilash" qo'llaydi, "Bekor qilish" o'chiradi). Ctrl+S saqlaydi, Ctrl+Enter chop etadi/yangilaydi, `N` yangi yozuv.
 - `app/admin.css`: prototipning admin qoidalari (iOS tokenlari faqat `#admin` ichida).
 - Testlar: `e2e/admin.spec.ts` tarmoqni `e2e/admin-mock.ts` (holatli soxta API) bilan almashtiradi, shuning uchun backend kerak emas. Haqiqiy backend bilan jonli tekshiruv qo'lda o'tkazilgan (vaqtinchalik admin yaratib).
+
+## Xavfsizlik va keshni yangilash (B6)
+- `/api/revalidate` (POST): `REVALIDATE_SECRET` (vaqt bo'yicha doimiy solishtirish), faqat `posts`, `projects`, `settings`, `post:{slug}` teglari, 60/daqiqa. `revalidateTag(tag, { expire: 0 })` bilan darhol yangilaydi.
+- `/api/search` va `/api/posts` IP bo'yicha 120/daqiqa (`lib/rate-limit.ts`, xotirada, har instansda alohida; `x-forwarded-for` ishonchli proksi orqali keladi deb hisoblanadi).
+- `next.config.ts` sarlavhalari: CSP (`script-src` Next'ning inline skriptlari va mavzu skripti uchun `'unsafe-inline'`; nonce bilan qat'iylashtirish har so'rovni dinamik qilib statik qobiqni buzgani uchun ishlatilmagan), `X-Frame-Options`, `nosniff`, `Referrer-Policy`, `Permissions-Policy`, productionda HSTS. `connect-src` va `img-src` ga `NEXT_PUBLIC_API_URL` kiradi.
+- Server-server so'rovlari `X-Frontend-Secret` yuboradi (backend rate limiti uchun istisno). Kalit hech qachon `NEXT_PUBLIC_` bo'lmasligi kerak.
+- Testlarda har bir test o'z mijoz IP'sini oladi (`e2e/client.ts`), aks holda umumiy limitga tushadi. Sahifa gidratsiyasi tugaganini `html[data-ready]` bildiradi.

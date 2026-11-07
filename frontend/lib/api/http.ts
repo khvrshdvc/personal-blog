@@ -32,9 +32,13 @@ function toSearch(params: Record<string, string | number | undefined>): string {
 }
 
 async function request<T>(path: string, allow404 = false): Promise<T | null> {
-  const response = await fetch(`${baseUrl()}/api${path}`, {
-    headers: { Accept: "application/json" },
-  });
+  const headers: Record<string, string> = { Accept: "application/json" };
+
+  if (typeof window === "undefined" && process.env.REVALIDATE_SECRET) {
+    headers["X-Frontend-Secret"] = process.env.REVALIDATE_SECRET;
+  }
+
+  const response = await fetch(`${baseUrl()}/api${path}`, { headers });
 
   if (allow404 && response.status === 404) {
     return null;

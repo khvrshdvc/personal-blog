@@ -20,3 +20,9 @@ Laravel 12, PHP 8.3. Faqat JSON API, Blade yo'q. MySQL, Redis, Sail. Umumiy qoid
 - Username yo'q yoki noto'g'ri bo'lsa namuna ma'lumot (`real: false`), GitHub xato bersa ham namuna (kesh bo'lmasa). `GITHUB_TOKEN` ixtiyoriy: bilan bo'lsa GraphQL yillik kalendar, bo'lmasa so'nggi ochiq hodisalar (taxminan 90 kun).
 - Loyiha Actions ishlari umumiy ro'yxatdagi (sakkiz repo, jami 12 ta) ishlardan filtrlanadi. Token javobda va logda chiqmaydi (test bilan tekshirilgan).
 - Telegram kanal `t.me/s/{username}` sahifasidan o'qiladi; o'qilmasa sozlamalardagi (admin) postlar qaytadi.
+
+## Xavfsizlik va revalidate (B6)
+- Chop etilgan postlar, loyihalar va sozlamalar o'zgarganda `FrontendRevalidator` frontend'ga `POST {FRONTEND_INTERNAL_URL}/api/revalidate` yuboradi (`{secret, tags}`), javobdan keyin, bir so'rovga bitta chaqiruv. Faqat model kuzatuvchilari (`app/Observers`) orqali; qoralama va `pending` o'zgarishlari yuborilmaydi. Xato bo'lsa so'rov buzilmaydi, log'ga yoziladi (kalitsiz).
+- `FRONTEND_INTERNAL_URL` backend frontend'ga erisha oladigan manzil (Docker'da `http://frontend:3000`); bo'sh bo'lsa `FRONTEND_URL` (brauzer/CORS manzili) ishlatiladi. Sail konteyneridan xostdagi `npm run dev` serveriga yo'l yo'q, shuning uchun mahalliy sinov uchun frontend'ni Docker'da ishga tushiring: `docker compose -p backend --profile frontend up -d frontend` va `.env`ga `FRONTEND_INTERNAL_URL=http://frontend:3000`.
+- Ommaviy API IP bo'yicha 120/daqiqa bilan cheklanadi; frontend server-server so'rovlarida `X-Frontend-Secret` yuboradi va cheklanmaydi. Login (5/daqiqa) va admin (300/daqiqa) cheklovlari istisnosiz.
+- Barcha API javoblarida `nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: no-referrer`, qat'iy CSP; admin javoblari `no-store`.

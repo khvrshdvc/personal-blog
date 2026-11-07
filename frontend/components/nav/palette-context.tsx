@@ -20,6 +20,8 @@ export function PaletteProvider({ children }: { children: React.ReactNode }) {
   const close = useCallback(() => setOpen(false), []);
 
   useEffect(() => {
+    document.documentElement.dataset.ready = "1";
+
     function onKey(event: KeyboardEvent) {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();

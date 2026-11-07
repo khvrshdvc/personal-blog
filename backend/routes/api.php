@@ -12,7 +12,7 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SettingsController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('throttle:120,1')->group(function () {
+Route::middleware('throttle:public')->group(function () {
     Route::get('posts', [PostController::class, 'index']);
     Route::get('posts/{slug}', [PostController::class, 'show']);
     Route::get('tags', [PostController::class, 'tags']);

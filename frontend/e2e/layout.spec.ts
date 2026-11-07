@@ -1,4 +1,9 @@
 import { expect, test } from "@playwright/test";
+import { ownClient } from "./client";
+
+test.beforeEach(async ({ page }) => {
+  await ownClient(page);
+});
 
 test("nav bolimlari, hisoblagichlar va faol bolim", async ({ page }) => {
   await page.goto("/");
@@ -41,6 +46,7 @@ test("nav maketi kenglikka mos", async ({ page }) => {
 test("ixcham panel faqat nav ekrandan chiqqanda chiqadi", async ({ page }) => {
   await page.goto("/");
   await page.waitForLoadState("networkidle");
+  await page.locator("html[data-ready]").waitFor({ state: "attached" });
   await page.evaluate(() => {
     const spacer = document.createElement("div");
     spacer.style.height = "3000px";
@@ -61,6 +67,7 @@ test("ixcham panel faqat nav ekrandan chiqqanda chiqadi", async ({ page }) => {
 test("⌘K paneli ochiladi, qidiradi, strelka bilan tanlanadi va yopiladi", async ({ page }) => {
   await page.goto("/");
   await page.waitForLoadState("networkidle");
+  await page.locator("html[data-ready]").waitFor({ state: "attached" });
 
   await page.keyboard.press("Control+k");
   const dialog = page.getByRole("dialog", { name: "Qidiruv" });
@@ -80,6 +87,7 @@ test("⌘K paneli ochiladi, qidiradi, strelka bilan tanlanadi va yopiladi", asyn
 test("⌘K sahifaga oʻtkazadi", async ({ page }) => {
   await page.goto("/");
   await page.waitForLoadState("networkidle");
+  await page.locator("html[data-ready]").waitFor({ state: "attached" });
 
   await page.keyboard.press("Control+k");
   await page.keyboard.type("men");
@@ -95,7 +103,9 @@ test("⌘K sahifaga oʻtkazadi", async ({ page }) => {
 test("⌘K strelka tugmalari aylanib tanlaydi", async ({ page }) => {
   await page.goto("/");
   await page.waitForLoadState("networkidle");
+  await page.locator("html[data-ready]").waitFor({ state: "attached" });
   await page.keyboard.press("Control+k");
+  await expect(page.getByRole("option", { name: /Laravel events/ })).toBeVisible();
   await expect(page.getByRole("option").first()).toHaveAttribute("aria-selected", "true");
 
   await page.keyboard.press("ArrowUp");
@@ -110,6 +120,7 @@ test("⌘K strelka tugmalari aylanib tanlaydi", async ({ page }) => {
 test("⌘K fon bosilganda yopiladi va hech narsa topilmasa xabar chiqadi", async ({ page }) => {
   await page.goto("/");
   await page.waitForLoadState("networkidle");
+  await page.locator("html[data-ready]").waitFor({ state: "attached" });
   await page.keyboard.press("Control+k");
   await page.keyboard.type("yoqqiydirsozxyz");
   await expect(page.getByText("Hech narsa topilmadi")).toBeVisible();
@@ -121,6 +132,7 @@ test("⌘K fon bosilganda yopiladi va hech narsa topilmasa xabar chiqadi", async
 test("qidiruv tugmasi paneli ochadi", async ({ page }) => {
   await page.goto("/");
   await page.waitForLoadState("networkidle");
+  await page.locator("html[data-ready]").waitFor({ state: "attached" });
   await page.getByRole("button", { name: /Qidirish/ }).first().click();
   await expect(page.getByRole("dialog", { name: "Qidiruv" })).toBeVisible();
 });
@@ -129,6 +141,7 @@ test("kartada nur kursorga ergashadi", async ({ page }) => {
   test.skip((page.viewportSize()?.width ?? 0) <= 760, "nur faqat sichqoncha bilan");
   await page.goto("/");
   await page.waitForLoadState("networkidle");
+  await page.locator("html[data-ready]").waitFor({ state: "attached" });
 
   const card = page.locator("#site .c").nth(1);
   const box = (await card.boundingBox())!;

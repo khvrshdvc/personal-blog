@@ -75,7 +75,9 @@ Settings (ommaviy): `github, open, bio, now [{k, v}], learn [{n, p}], telegram {
 
 ## Revalidate
 
-Backend chop etish, yangilash, o'chirish va sozlama o'zgarganda frontend'ga `POST {FRONTEND_URL}/api/revalidate` yuboradi: `{secret, tags: ["posts", "post:{slug}", "projects", "settings"]}`. Maxfiy kalit ikkala `.env` da bir xil.
+Backend chop etish, yangilash, o'chirish va sozlama o'zgarganda frontend'ga `POST {FRONTEND_URL}/api/revalidate` yuboradi: `{secret, tags: ["posts", "post:{slug}", "projects", "settings"]}`. Maxfiy kalit ikkala `.env` da (`REVALIDATE_SECRET`) bir xil. Teglar faqat `posts`, `projects`, `settings`, `post:{slug}` bo'ladi; frontend boshqasini 400 bilan rad etadi. Backend faqat ommaviy o'zgarishda yuboradi (qoralama va `pending` o'zgarishlari yuborilmaydi), bir so'rov uchun bitta chaqiruv. Frontend keshni darhol yangilaydi (`expire: 0`). Xato bo'lsa admin so'rovi buzilmaydi (log'ga yoziladi).
+
+Frontend server-server so'rovlarida `X-Frontend-Secret: {REVALIDATE_SECRET}` sarlavhasini yuboradi, shunda ommaviy API'ning IP bo'yicha rate limiti (120/daqiqa) unga qo'llanmaydi. Boshqa mijozlar cheklanadi.
 
 ## Frontend yo'llari (API'ga bog'liq emas, Next.js o'zi)
 

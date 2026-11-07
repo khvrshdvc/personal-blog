@@ -35,6 +35,12 @@ return [
         'stale' => 86400,
     ],
 
+    'frontend' => [
+        'url' => env('FRONTEND_INTERNAL_URL', env('FRONTEND_URL')),
+        'secret' => env('REVALIDATE_SECRET'),
+        'timeout' => 3,
+    ],
+
     'telegram' => [
         'timeout' => 6,
         'fresh' => 900,

@@ -37,6 +37,7 @@ export function CommandPalette({ onClose }: { onClose: () => void }) {
 
         if (response.ok) {
           setResults((await response.json()) as SearchItem[]);
+          setActive(0);
         }
       } catch {}
     }, query === "" ? 0 : 180);

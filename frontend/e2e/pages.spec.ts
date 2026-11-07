@@ -1,4 +1,9 @@
 import { expect, test } from "@playwright/test";
+import { ownClient } from "./client";
+
+test.beforeEach(async ({ page }) => {
+  await ownClient(page);
+});
 
 const PAGES = ["/", "/fikrlar", "/dasturlash", "/loyihalar", "/faollik", "/men"];
 
