@@ -60,7 +60,7 @@ async function getCounts() {
 
 async function getActivity() {
   "use cache";
-  cacheLife("hours");
+  cacheLife("minutes");
   cacheTag("settings");
 
   return source.getActivity();
@@ -76,7 +76,7 @@ async function getRuns() {
 
 async function getRepoInfo(projectId: number) {
   "use cache";
-  cacheLife("hours");
+  cacheLife("minutes");
   cacheTag("projects", "settings");
 
   return source.getRepoInfo(projectId);
@@ -84,7 +84,7 @@ async function getRepoInfo(projectId: number) {
 
 async function getTelegram() {
   "use cache";
-  cacheLife("hours");
+  cacheLife("minutes");
   cacheTag("settings");
 
   return source.getTelegram();
