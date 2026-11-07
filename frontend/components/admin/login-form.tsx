@@ -63,6 +63,7 @@ export function LoginForm() {
             <input
               className="inp"
               type="password"
+              id="lpw"
               name="password"
               placeholder="••••••"
               autoComplete="current-password"

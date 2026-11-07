@@ -724,3 +724,26 @@ textarea.inp{height:auto;padding:12px 14px;line-height:1.55;resize:vertical}
     padding: 22px;
   }
 }
+
+@media (max-width: 900px) {
+  #admin .d-nav {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  #admin .d-l .gbtn.cap {
+    width: 40px;
+    min-width: 40px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  #admin .d-l .gbtn.cap span {
+    display: none;
+  }
+
+  #admin .d-l .pill,
+  #admin .d-r {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+}

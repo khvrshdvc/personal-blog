@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { Glow } from "@/components/glow";
 import { NavLoader } from "@/components/nav/nav-loader";
 import { PaletteProvider } from "@/components/nav/palette-context";
+import { SiteFooter } from "@/components/site-footer";
 import { NavFallback } from "@/components/nav/site-nav";
 import { ToastProvider } from "@/components/toast";
 
@@ -17,7 +18,7 @@ export default function SiteLayout({ children }: LayoutProps<"/">) {
           <NavLoader />
         </Suspense>
         <main id="view">{children}</main>
-        <footer className="foot">© 2026 Utkirbek · Toshkent</footer>
+        <SiteFooter />
       </div>
       <Glow />
     </PaletteProvider>

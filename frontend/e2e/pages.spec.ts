@@ -210,7 +210,7 @@ test("men: profil, hozir, bio, havolalar va hisoblagichlar", async ({ page }) =>
   await expect(page.locator(".mlk").nth(0)).toContainText("1");
   await expect(page.locator(".mlk").nth(1)).toContainText("2");
   await expect(page.getByRole("link", { name: "Kanal" })).toHaveAttribute("href", "https://t.me/ingliz_kanal");
-  await expect(page.getByRole("link", { name: "Admin panel" })).toHaveAttribute("href", "/admin");
+  await expect(page.locator(".adm-l").getByRole("link", { name: "Admin panel" })).toHaveAttribute("href", "/admin");
 });
 
 test("men: mavzu segmenti va 'qo'shilmagan' xabari", async ({ page }) => {

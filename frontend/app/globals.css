@@ -275,7 +275,7 @@ button.c {
 
 .tnav {
   display: grid;
-  grid-template-columns: minmax(0, 1.7fr) repeat(4, minmax(0, 1fr)) 72px 72px;
+  grid-template-columns: minmax(0, 1.7fr) repeat(4, minmax(0, 1fr)) 72px 72px 72px;
   gap: 12px;
   max-width: 1180px;
   margin: 0 auto;

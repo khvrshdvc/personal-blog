@@ -463,3 +463,14 @@ body[data-route="post"] .list{background:var(--cellp)}
 .hm-wrap .hm {
   width: 100%;
 }
+
+.mhm {
+  grid-template-columns: repeat(var(--cols, 17), var(--mc, 16px));
+  justify-content: start;
+}
+
+@media (max-width: 760px) {
+  .mhm {
+    --mc: 10px;
+  }
+}

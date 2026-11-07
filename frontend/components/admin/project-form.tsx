@@ -143,6 +143,7 @@ function ProjectFormBody({ project }: { project: Project | null }) {
               <span className="ipx">
                 <em>github.com/</em>
                 <input
+                  id="pr"
                   className="inp"
                   name="repo"
                   value={state.repo}

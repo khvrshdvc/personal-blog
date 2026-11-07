@@ -61,6 +61,9 @@ function NavView({ counts, open, active, mini, onSearch, navRef }: NavViewProps)
             <Icon name="search" />
           </button>
           <ThemeButton className="tn-ib" />
+          <Link className="tn-ib" href="/admin" aria-label="Admin panel">
+            <Icon name="lock" />
+          </Link>
         </div>
         {SECTIONS.map((section) => (
           <Link
@@ -83,6 +86,10 @@ function NavView({ counts, open, active, mini, onSearch, navRef }: NavViewProps)
         <ThemeButton className="c tn-x">
           <small>Mavzu</small>
         </ThemeButton>
+        <Link className="c tn-x" href="/admin" aria-label="Admin panel">
+          <Icon name="lock" />
+          <small>Admin</small>
+        </Link>
       </nav>
 
       <nav className={`tmini${mini ? " show" : ""}`} aria-label="Boʻlimlar (ixcham)" inert={!mini}>
@@ -106,6 +113,9 @@ function NavView({ counts, open, active, mini, onSearch, navRef }: NavViewProps)
           <Icon name="search" size={16} />
         </button>
         <ThemeButton className="tmi ic th" />
+        <Link className="tmi ic" href="/admin" aria-label="Admin panel">
+          <Icon name="lock" size={16} />
+        </Link>
       </nav>
     </>
   );

@@ -39,6 +39,10 @@ export function postView(post: AdminPost): PostFields {
   return post.pending ? { ...base, ...post.pending } : base;
 }
 
+export function tashkentToday(): string {
+  return new Date().toLocaleDateString("sv-SE", { timeZone: "Asia/Tashkent" });
+}
+
 export function emptyFields(category: "fikr" | "dev"): PostFields {
   return {
     category,
@@ -47,9 +51,25 @@ export function emptyFields(category: "fikr" | "dev"): PostFields {
     tag: CATEGORY_TAGS[category][0],
     excerpt: "",
     body: "",
-    published_at: new Date().toISOString().slice(0, 10),
+    published_at: tashkentToday(),
     cover: "",
   };
+}
+
+export function slugifyTitle(title: string): string {
+  return title
+    .toLowerCase()
+    .replace(/[ʻʼ‘’'`]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 80);
+}
+
+export function hasCustomSlug(title: string, slug: string): boolean {
+  const base = slug.replace(/-\d+$/, "");
+  const derived = slugifyTitle(title);
+
+  return !(slug === derived || base === derived || ((slug === "qoralama" || base === "qoralama") && derived === ""));
 }
 
 export function countWords(text: string): number {

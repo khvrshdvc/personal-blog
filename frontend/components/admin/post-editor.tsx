@@ -16,6 +16,7 @@ import {
   STATE_LABEL,
   countWords,
   coverSrc,
+  hasCustomSlug,
   emptyFields,
   postState,
   postView,
@@ -116,7 +117,8 @@ export function PostEditor({ id, category = "fikr" }: PostEditorProps) {
       .then((loadedPost) => {
         if (cancelled) return;
         adopt(loadedPost, true);
-        setSlugTouched(true);
+        const view = postView(loadedPost);
+        setSlugTouched(loadedPost.status === "published" || hasCustomSlug(view.title, view.slug));
         setLoaded(true);
       })
       .catch(() => {
@@ -387,8 +389,9 @@ export function PostEditor({ id, category = "fikr" }: PostEditorProps) {
     if (!ok) return;
 
     try {
-      adopt(await adminApi.unpublishPost(idRef.current), true);
-      setSlugTouched(false);
+      const unpublished = await adminApi.unpublishPost(idRef.current);
+      adopt(unpublished, true);
+      setSlugTouched(hasCustomSlug(unpublished.title, unpublished.slug));
       setSheet(false);
       notify("Yozuv qoralamaga olindi");
     } catch (error) {

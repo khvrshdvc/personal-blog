@@ -138,6 +138,16 @@ test.describe("funksional (keng ekran)", () => {
     await expect(page.locator(".as-t").nth(1).locator(".as-c")).toHaveText("4");
   });
 
+  test("yangi yozuvning sanasi Toshkent vaqti bo'yicha (UTC emas)", async ({ page }) => {
+    await page.clock.install({ time: new Date("2026-11-07T21:30:00Z") });
+    const state = await open(page, "/admin/posts/new/fikr");
+
+    await page.locator("#ft").fill("Sana sinovi");
+    await expect(page.locator(".save-st")).toHaveText("Saqlandi");
+
+    expect(callsTo(state, "PATCH", /^\/posts\/100$/).at(-1)?.body).toMatchObject({ published_at: "2026-11-08" });
+  });
+
   test("bo'sh yozuv saqlanmaydi", async ({ page }) => {
     const state = await open(page, "/admin/posts/new/dev");
 

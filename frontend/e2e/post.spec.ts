@@ -169,3 +169,14 @@ test("robots.txt admin va api'ni yopadi, sitemap'ni ko'rsatadi", async ({ reques
   expect(body).toContain("Disallow: /api/");
   expect(body).toContain("Sitemap: http://localhost:3100/sitemap.xml");
 });
+
+test("yorug' mavzu 404 sahifada ham qo'llanadi", async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem("ut4_theme", "light"));
+  await page.goto("/yoq/sahifa");
+  await page.locator("html[data-ready]").waitFor({ state: "attached" });
+
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+  await expect
+    .poll(() => page.evaluate(() => getComputedStyle(document.body).backgroundColor))
+    .toBe("rgb(244, 244, 245)");
+});

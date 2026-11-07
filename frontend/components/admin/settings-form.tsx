@@ -197,6 +197,7 @@ export function SettingsForm() {
               <span className="ipx">
                 <em>github.com/</em>
                 <input
+                  id="sgh"
                   className="inp"
                   value={form.github}
                   onChange={(event) => update((current) => ({ ...current, github: event.target.value }))}
@@ -282,6 +283,7 @@ export function SettingsForm() {
                 <span className="ipx">
                   <em>t.me/</em>
                   <input
+                    id="stgu"
                     className="inp"
                     value={form.telegram.u}
                     onChange={(event) => update((current) => ({ ...current, telegram: { ...current.telegram, u: event.target.value } }))}

@@ -1,0 +1,23 @@
+import { chromium } from "@playwright/test";
+import fs from "node:fs";
+const dir = process.env.SHOTS;
+const [, , theme, project, group, outName] = process.argv;
+const pub = ["home", "fikrlar", "dasturlash", "loyihalar", "faollik", "men", "post_laravel-events", "post_kichik-odatlar", "yoq-sahifa"];
+const adm = ["admin_login", "admin", "admin_posts", "admin_posts_1", "admin_projects_1", "admin_settings"];
+const names = group === "admin" ? adm : pub;
+const phone = project === "telefon";
+const w = phone ? 250 : 560;
+const cap = phone ? 1100 : 760;
+const cells = names.map((n) => {
+  const f = `${dir}/${theme}-${project}-${n}.png`;
+  if (!fs.existsSync(f)) return "";
+  const b64 = fs.readFileSync(f).toString("base64");
+  return `<figure><figcaption>${n}</figcaption><div class="c"><img src="data:image/png;base64,${b64}"></div></figure>`;
+}).join("");
+const html = `<html><body style="margin:0;background:#777;font:12px sans-serif"><div style="display:flex;flex-wrap:wrap;gap:10px;padding:10px">${cells}</div><style>figure{margin:0;width:${w}px}figcaption{color:#fff;padding:2px}.c{height:${Math.round(cap * w / (phone ? 390 : 1440) * (phone ? 1 : 1))}px;overflow:hidden}.c img{width:${w}px;display:block}</style></body></html>`;
+const browser = await chromium.launch();
+const page = await browser.newPage({ viewport: { width: phone ? 1600 : 1780, height: 900 } });
+await page.setContent(html);
+await page.waitForTimeout(500);
+await page.screenshot({ path: `${dir}/../${outName}.png`, fullPage: true });
+await browser.close();

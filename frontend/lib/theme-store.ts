@@ -32,6 +32,10 @@ function subscribe(callback: () => void) {
   };
 }
 
+export function syncTheme() {
+  apply(readMode());
+}
+
 export function setThemeMode(mode: ThemeMode) {
   try {
     localStorage.setItem(THEME_KEY, mode);

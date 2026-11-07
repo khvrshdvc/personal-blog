@@ -39,8 +39,35 @@ test("nav maketi kenglikka mos", async ({ page }) => {
     await expect(page.locator(".tn-x").first()).toBeVisible();
     await expect(page.locator(".tn-ib").first()).toBeHidden();
     const columns = await page.locator(".tnav").evaluate((el) => getComputedStyle(el).gridTemplateColumns.split(" ").length);
-    expect(columns).toBe(7);
+    expect(columns).toBe(8);
   }
+});
+
+test("admin tugmasi har kenglikda ko'rinadi va /admin ga olib boradi", async ({ page }) => {
+  await page.goto("/");
+
+  const button = page.getByRole("link", { name: "Admin panel" }).first();
+  await expect(button).toBeVisible();
+  await expect(button).toHaveAttribute("href", "/admin");
+
+  if (page.viewportSize()!.width > 760) {
+    await expect(page.locator(".tn-x").filter({ hasText: "Admin" })).toBeVisible();
+  } else {
+    await expect(page.locator(".tn-me .tn-ib[href='/admin']")).toBeVisible();
+  }
+});
+
+test("ixcham panelda ham admin ikonkasi bor", async ({ page }) => {
+  await page.goto("/");
+  await page.waitForLoadState("networkidle");
+  await page.evaluate(() => {
+    const spacer = document.createElement("div");
+    spacer.style.height = "3000px";
+    document.getElementById("view")!.appendChild(spacer);
+  });
+  await page.mouse.wheel(0, 900);
+
+  await expect(page.locator(".tmini.show a[href='/admin']")).toBeVisible();
 });
 
 test("ixcham panel faqat nav ekrandan chiqqanda chiqadi", async ({ page }) => {
