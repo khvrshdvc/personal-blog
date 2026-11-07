@@ -2,12 +2,18 @@
 
 namespace App\Actions\Admin;
 
+use App\Services\GithubProjectSync;
 use App\Services\SettingsService;
 use App\Support\RepoName;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class UpdateSettings
 {
-    public function __construct(private SettingsService $settings) {}
+    public function __construct(
+        private SettingsService $settings,
+        private GithubProjectSync $projects,
+    ) {}
 
     public function __invoke(array $input): array
     {
@@ -33,8 +39,18 @@ class UpdateSettings
             ],
         ];
 
+        $previous = (string) $this->settings->get('github', '');
+
         foreach ($values as $key => $value) {
             $this->settings->put($key, $value);
+        }
+
+        if ($values['github'] !== '' && strcasecmp($values['github'], $previous) !== 0) {
+            try {
+                $this->projects->sync();
+            } catch (Throwable $e) {
+                Log::warning('GitHub loyihalarini yuklab boʻlmadi', ['error' => class_basename($e)]);
+            }
         }
 
         return $values;

@@ -42,6 +42,8 @@ Next.js (App Router), TypeScript, Tailwind. Umumiy qoidalar ildizdagi `../CLAUDE
 - `app/admin.css`: prototipning admin qoidalari (iOS tokenlari faqat `#admin` ichida).
 - Testlar: `e2e/admin.spec.ts` tarmoqni `e2e/admin-mock.ts` (holatli soxta API) bilan almashtiradi, shuning uchun backend kerak emas. Haqiqiy backend bilan jonli tekshiruv qo'lda o'tkazilgan (vaqtinchalik admin yaratib).
 
+- Loyihalar ro'yxatida "GitHub'dan yuklash" (`use-sync-projects.ts`): `POST /admin/projects/sync`, keyin ro'yxat qayta yuklanadi.
+
 ## Xavfsizlik va keshni yangilash (B6)
 - `/api/revalidate` (POST): `REVALIDATE_SECRET` (vaqt bo'yicha doimiy solishtirish), faqat `posts`, `projects`, `settings`, `post:{slug}` teglari, 60/daqiqa. `revalidateTag(tag, { expire: 0 })` bilan darhol yangilaydi.
 - `/api/search` va `/api/posts` IP bo'yicha 120/daqiqa (`lib/rate-limit.ts`, xotirada, har instansda alohida; `x-forwarded-for` ishonchli proksi orqali keladi deb hisoblanadi).

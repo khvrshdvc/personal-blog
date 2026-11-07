@@ -69,7 +69,8 @@ Settings (ommaviy): `github, open, bio, now [{k, v}], learn [{n, p}], telegram {
 | GET | `/admin/projects` | Ro'yxat |
 | POST | `/admin/projects` | `{name, repo?, description?, stack? [string] (8 tagacha), demo_url?}`, 201. Javob: Project |
 | PATCH | `/admin/projects/{id}` | Tahrirlash (qisman). Javob: Project |
-| DELETE | `/admin/projects/{id}` | O'chirish, 204 |
+| POST | `/admin/projects/sync` | GitHub username'dagi ommaviy repolarni loyiha sifatida yuklaydi (fork, arxivlangan, profil repo, o'chirilgan va mavjudlari o'tkazib yuboriladi; mavjudlarning bo'sh maydonlari to'ldiriladi). Javob: `{created, updated, total}`. Username yo'q bo'lsa 422 (`errors.github`), GitHub javob bermasa 502. Username o'zgarganda sozlamalarni saqlash ham shuni avtomatik bajaradi |
+| DELETE | `/admin/projects/{id}` | O'chirish, 204. Repo ro'yxatdan yashiriladi va sinxronlashda qaytmaydi (qo'lda qayta saqlansa yana ochiladi) |
 | GET | `/admin/settings` | Barcha sozlamalar (Settings shakli) |
 | PUT | `/admin/settings` | To'liq sozlamalar: `now` aynan 4 ta, `learn` aynan 3 ta (`p` 0–100), `telegram.posts` aynan 2 ta. Javob: Settings |
 

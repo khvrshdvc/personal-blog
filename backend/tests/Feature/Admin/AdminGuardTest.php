@@ -32,6 +32,7 @@ it('answers 401 json to guests on every admin endpoint', function () {
         ['post', '/api/admin/uploads'],
         ['get', '/api/admin/projects'],
         ['post', '/api/admin/projects'],
+        ['post', '/api/admin/projects/sync'],
         ['patch', '/api/admin/projects/1'],
         ['delete', '/api/admin/projects/1'],
         ['get', '/api/admin/settings'],

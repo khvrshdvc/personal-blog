@@ -49,6 +49,7 @@ Route::prefix('admin')->group(function () {
         Route::post('uploads', [AdminPostController::class, 'upload']);
 
         Route::get('projects', [AdminProjectController::class, 'index']);
+        Route::post('projects/sync', [AdminProjectController::class, 'sync']);
         Route::post('projects', [AdminProjectController::class, 'store']);
         Route::patch('projects/{project}', [AdminProjectController::class, 'update'])->whereNumber('project');
         Route::delete('projects/{project}', [AdminProjectController::class, 'destroy'])->whereNumber('project');

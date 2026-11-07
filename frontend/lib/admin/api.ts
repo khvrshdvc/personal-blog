@@ -125,6 +125,7 @@ export const adminApi = {
     return request<{ url: string; path: string }>("/uploads", { method: "POST", form });
   },
   projects: () => request<Project[]>("/projects"),
+  syncProjects: () => request<{ created: number; updated: number; total: number }>("/projects/sync", { method: "POST" }),
   createProject: (input: ProjectInput) => request<Project>("/projects", { method: "POST", json: input }),
   saveProject: (id: number, input: ProjectInput) => request<Project>(`/projects/${id}`, { method: "PATCH", json: input }),
   deleteProject: (id: number) => request<void>(`/projects/${id}`, { method: "DELETE" }),

@@ -37,6 +37,7 @@ export interface MockState {
   rateLimited: boolean;
   expireCsrfOnce: boolean;
   forceUnauthorized: boolean;
+  syncFails: boolean;
   csrfCalls: number;
   calls: Call[];
   posts: MockPost[];
@@ -78,6 +79,7 @@ export function initialState(): MockState {
     rateLimited: false,
     expireCsrfOnce: false,
     forceUnauthorized: false,
+    syncFails: false,
     csrfCalls: 0,
     calls: [],
     nextId: 100,
@@ -395,6 +397,25 @@ export async function mockAdminApi(page: Page, state: MockState = initialState()
 
         return json(route, 200, adminPost(post));
       }
+    }
+
+    if (path === "/projects/sync" && method === "POST") {
+      if (!state.settings.github) {
+        return json(route, 422, { message: "Avval sozlamalarda GitHub username kiriting.", errors: { github: ["Avval sozlamalarda GitHub username kiriting."] } });
+      }
+
+      if (state.syncFails) return json(route, 502, { message: "GitHub javob bermadi." });
+
+      let created = 0;
+
+      for (const name of ["ilova-bir", "ilova-ikki"]) {
+        if (!state.projects.some((project) => project.repo === `utkirbek/${name}`)) {
+          state.projects.push({ id: state.nextId++, name, repo: `utkirbek/${name}`, description: "GitHub'dan", stack: ["PHP"], demo_url: null });
+          created++;
+        }
+      }
+
+      return json(route, 200, { created, updated: 0, total: state.projects.length });
     }
 
     if (path === "/projects" && method === "GET") return json(route, 200, state.projects);

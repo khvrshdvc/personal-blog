@@ -18,10 +18,11 @@ interface ListPaneProps {
   newHref: string;
   newLabel: string;
   search?: { value: string; onChange: (value: string) => void; label: string };
+  extra?: React.ReactNode;
   children: (state: { editing: boolean; revealed: number | null; reveal: (id: number | null) => void }) => React.ReactNode;
 }
 
-export function ListPane({ title, count, newHref, newLabel, search, children }: ListPaneProps) {
+export function ListPane({ title, count, newHref, newLabel, search, extra, children }: ListPaneProps) {
   const [editing, setEditing] = useState(false);
   const [revealed, setRevealed] = useState<number | null>(null);
 
@@ -33,6 +34,7 @@ export function ListPane({ title, count, newHref, newLabel, search, children }: 
             {title} <span>{count ?? ""}</span>
           </h1>
           <div className="al-act">
+            {extra}
             <button
               className={`al-eb${editing ? " done" : ""}`}
               type="button"

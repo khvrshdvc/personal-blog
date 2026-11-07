@@ -25,7 +25,14 @@ class GithubClient
 
     public function repositories(string $login): array
     {
-        return $this->safe(fn () => $this->request()->get(self::API.'/users/'.rawurlencode($login).'/repos', ['sort' => 'pushed', 'per_page' => 100])->throw()->json()) ?? [];
+        return $this->userRepositories($login) ?? [];
+    }
+
+    public function userRepositories(string $login): ?array
+    {
+        $repos = $this->safe(fn () => $this->request()->get(self::API.'/users/'.rawurlencode($login).'/repos', ['sort' => 'pushed', 'per_page' => 100, 'type' => 'owner'])->throw()->json());
+
+        return is_array($repos) ? $repos : null;
     }
 
     public function runs(array $fullNames): array

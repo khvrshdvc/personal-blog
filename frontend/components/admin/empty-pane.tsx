@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useSyncProjects } from "@/components/admin/use-sync-projects";
 import { Icon } from "@/components/icon";
 
 export function PostsEmptyPane() {
@@ -39,6 +42,8 @@ export function PostsEmptyPane() {
 }
 
 export function ProjectsEmptyPane() {
+  const sync = useSyncProjects();
+
   return (
     <div className="a-empty">
       <div className="c ae-c">
@@ -46,12 +51,16 @@ export function ProjectsEmptyPane() {
           <Icon name="folder" />
         </span>
         <h2>Loyihalaringiz</h2>
-        <p>Chapdan loyihani tanlang yoki yangisini qoʻshing. Saytda &quot;Dasturlash → Loyihalar&quot; boʻlimida koʻrinadi.</p>
+        <p>Chapdan loyihani tanlang, yangisini qoʻshing yoki GitHub repolaringizni bir bosishda yuklang. Saytda &quot;Dasturlash → Loyihalar&quot; boʻlimida koʻrinadi.</p>
         <div className="d-acts">
           <Link className="dbtn pri" href="/admin/projects/new">
             <Icon name="plus" />
             Yangi loyiha
           </Link>
+          <button className="dbtn" type="button" onClick={sync.run} disabled={sync.busy}>
+            <Icon name="branch" />
+            {sync.busy ? "Yuklanmoqda…" : "GitHub'dan yuklash"}
+          </button>
         </div>
       </div>
     </div>

@@ -452,6 +452,18 @@ test.describe("funksional (keng ekran)", () => {
     expect(state.projects).toHaveLength(2);
   });
 
+  test("loyihalar: GitHub'dan yuklash", async ({ page }) => {
+    const state = await open(page, "/admin/projects");
+
+    await page.getByRole("button", { name: "GitHub'dan yuklash" }).first().click();
+    await expect(page.locator(".toast.show")).toContainText("2 ta yangi loyiha");
+    await expect(page.locator(".ali")).toHaveCount(4);
+    expect(callsTo(state, "POST", /^\/projects\/sync$/)).toHaveLength(1);
+
+    await page.getByRole("button", { name: "GitHub'dan yuklash" }).first().click();
+    await expect(page.locator(".toast.show")).toContainText("yangi loyiha topilmadi");
+  });
+
   test("sozlamalar: avtosaqlash, holat tugmasi va chiqish", async ({ page }) => {
     const state = await open(page, "/admin/settings");
 

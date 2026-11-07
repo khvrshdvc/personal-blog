@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { ListPane, MinusIcon } from "@/components/admin/list-pane";
 import { useAdmin } from "@/components/admin/session";
 import { Icon } from "@/components/icon";
+import { useSyncProjects } from "@/components/admin/use-sync-projects";
 import { useNotify } from "@/components/toast";
 import { adminApi } from "@/lib/admin/api";
 import { initials } from "@/lib/format";
@@ -13,6 +14,7 @@ export function ProjectsList({ activeId }: { activeId: number | null }) {
   const { projects, removeProject } = useAdmin();
   const notify = useNotify();
   const router = useRouter();
+  const sync = useSyncProjects();
 
   async function remove(id: number) {
     try {
@@ -30,7 +32,17 @@ export function ProjectsList({ activeId }: { activeId: number | null }) {
   }
 
   return (
-    <ListPane title="Loyihalar" count={projects?.length ?? null} newHref="/admin/projects/new" newLabel="Yangi loyiha">
+    <ListPane
+      title="Loyihalar"
+      count={projects?.length ?? null}
+      newHref="/admin/projects/new"
+      newLabel="Yangi loyiha"
+      extra={
+        <button className="al-eb" type="button" onClick={sync.run} disabled={sync.busy} title="GitHub'dan yuklash" aria-label="GitHub'dan yuklash">
+          {sync.busy ? "Yuklanmoqda…" : "GitHub"}
+        </button>
+      }
+    >
       {({ editing, revealed, reveal }) => (
         <>
           {(projects ?? []).map((project) => {
