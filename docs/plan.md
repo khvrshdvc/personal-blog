@@ -13,5 +13,4 @@ Har bosqich alohida branch, commit va qo'lda tekshiruv bilan yopiladi.
 9. Deploy: VPS + Docker, SSL, GitHub Actions orqali avtomatik deploy, zaxira nusxa
 
 ## Keyingi qaror kerak
-- Admin muharriri: oddiy Blade + JS (boshlang'ich) yoki Livewire
 - Hosting: VPS yoki Hostinger

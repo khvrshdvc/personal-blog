@@ -25,3 +25,8 @@ docker run --rm -u "$(id -u):$(id -g)" -v "$(pwd):/var/www/html" -w /var/www/htm
 ./vendor/bin/sail npm run build
 ```
 Ishlab chiqishda `sail npm run dev`.
+
+## Tashqi API
+- **GitHub.** Faollik xaritasi, Actions va repo maʼlumotlari admin sozlamalaridagi username boʻyicha olinadi. `.env` dagi `GITHUB_TOKEN` (faqat oʻqish ruxsati) bilan yillik xarita chiqadi, tokensiz faqat soʻnggi 90 kun. Token commit qilinmaydi.
+- **Telegram.** Kanalning soʻnggi postlari `t.me/s/{username}` dan olinadi, kanal javob bermasa admin sozlamalaridagi postlar chiqadi.
+- Ikkalasi ham Redis'da keshlanadi (GitHub 10 daqiqa, Telegram 15 daqiqa), xato boʻlsa soʻnggi muvaffaqiyatli natija 24 soat saqlanadi.

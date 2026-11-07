@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\Project;
 use App\Services\Activity\ActivityProvider;
 use App\Services\SettingsService;
+use App\Services\TelegramChannel;
 use App\Support\ActivityStats;
 use App\Support\RunStatus;
 use App\Support\Uz;
@@ -16,6 +17,7 @@ class GetHomeData
     public function __construct(
         private SettingsService $settings,
         private ActivityProvider $activity,
+        private TelegramChannel $channel,
     ) {
     }
 
@@ -69,15 +71,20 @@ class GetHomeData
     private function telegram(): array
     {
         $tg = $this->settings->get('telegram', []);
+        $username = trim($tg['u'] ?? '');
+
+        $manual = collect($tg['posts'] ?? [])
+            ->filter(fn ($p) => trim($p['t'] ?? '') !== '')
+            ->sortBy(fn ($p) => (string) ($p['d'] ?? ''))
+            ->values()
+            ->all();
+
+        $fetched = $username !== '' ? $this->channel->latestPosts($username) : null;
 
         return [
-            'username' => trim($tg['u'] ?? ''),
+            'username' => $username,
             'name' => $tg['n'] ?? '',
-            'posts' => collect($tg['posts'] ?? [])
-                ->filter(fn ($p) => trim($p['t'] ?? '') !== '')
-                ->sortBy(fn ($p) => (string) ($p['d'] ?? ''))
-                ->values()
-                ->all(),
+            'posts' => $fetched !== null ? collect($fetched)->sortBy('d')->values()->all() : $manual,
         ];
     }
 

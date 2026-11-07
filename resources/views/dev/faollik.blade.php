@@ -4,7 +4,7 @@
             <li>
                 <a class="row" href="{{ url('/admin/settings') }}">
                     <span class="ricon" style="--c:var(--tint)"><x-icon name="info" /></span>
-                    <span class="rbody"><span class="rt">Namuna maʼlumot</span><span class="rs2">Haqiqiy faollik uchun admin panelda GitHub username kiriting.</span></span>
+                    <span class="rbody"><span class="rt">Namuna maʼlumot</span><span class="rs2">{{ $error ? 'GitHub maʼlumotini yuklab boʻlmadi — username yoki API limitini tekshiring.' : 'Haqiqiy faollik uchun admin panelda GitHub username kiriting.' }}</span></span>
                     <span class="chev"><x-icon name="chevR" /></span>
                 </a>
             </li>

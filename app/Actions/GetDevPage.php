@@ -77,6 +77,7 @@ class GetDevPage
 
         return [
             'real' => $data['real'],
+            'error' => $data['error'] ?? false,
             'range' => $data['range'],
             'total' => $summary['total'],
             'activeDays' => count(array_filter($days, fn ($d) => $d && $d['c'] > 0)),

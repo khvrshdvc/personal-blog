@@ -67,7 +67,7 @@
                             </div>
                         </template>
                     </div>
-                    <p class="hint">Bosh sahifadagi kartada chiqadi. Soʻnggi postlar kanaldan avtomatik olinishi 7-bosqichda qoʻshiladi.</p>
+                    <p class="hint">Bosh sahifadagi kartada kanalning soʻnggi postlari avtomatik chiqadi. Kanal javob bermasa, shu yerdagi postlar koʻrsatiladi.</p>
                 </x-card>
                 <x-card tag="section" class="sc sc-dz">
                     <x-card-title icon="info">Hisob</x-card-title>

@@ -4,9 +4,11 @@ namespace App\Models;
 
 use App\Enums\PostCategory;
 use App\Enums\PostStatus;
+use App\Services\SiteStats;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class Post extends Model
 {
@@ -25,6 +27,18 @@ class Post extends Model
             'published_at' => 'date',
             'pending' => 'array',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        $flush = function () {
+            foreach (PostCategory::cases() as $category) {
+                Cache::forget(SiteStats::KEY.$category->value);
+            }
+        };
+
+        static::saved($flush);
+        static::deleted($flush);
     }
 
     public function getRouteKeyName(): string
