@@ -11,6 +11,8 @@ async function Content({ params }: { params: PageProps<"/admin/projects/[id]">["
   return <ProjectForm key={number} id={number} />;
 }
 
+export const instant = false;
+
 export default function EditProjectPage({ params }: PageProps<"/admin/projects/[id]">) {
   return (
     <Suspense fallback={null}>

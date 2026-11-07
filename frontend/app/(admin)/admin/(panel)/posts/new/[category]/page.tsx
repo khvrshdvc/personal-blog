@@ -10,6 +10,8 @@ async function Content({ params }: { params: PageProps<"/admin/posts/new/[catego
   return <PostEditor key={category} id={null} category={category} />;
 }
 
+export const instant = false;
+
 export default function NewPostCategoryPage({ params }: PageProps<"/admin/posts/new/[category]">) {
   return (
     <Suspense fallback={null}>

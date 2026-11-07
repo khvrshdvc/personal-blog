@@ -11,6 +11,8 @@ async function Content({ params }: { params: PageProps<"/admin/posts/[id]">["par
   return <PostEditor key={number} id={number} />;
 }
 
+export const instant = false;
+
 export default function EditPostPage({ params }: PageProps<"/admin/posts/[id]">) {
   return (
     <Suspense fallback={null}>
