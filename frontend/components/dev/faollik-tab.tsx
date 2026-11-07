@@ -1,14 +1,13 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { DevShell } from "@/components/dev/dev-shell";
-import { Heatmap } from "@/components/dev/heatmap";
+import { ActivityView } from "@/components/dev/activity-view";
 import { Icon } from "@/components/icon";
 import { NotifyLink } from "@/components/notify-link";
 import { RunIcon } from "@/components/run-icon";
 import { api } from "@/lib/api";
 import { requestTime } from "@/lib/time";
 import type { Activity, Run } from "@/lib/api";
-import { buildGrid, monthLabels, summarize } from "@/lib/activity";
 import { ago, duration } from "@/lib/format";
 import { RUN_LABELS } from "@/lib/site";
 
@@ -87,8 +86,6 @@ async function Content() {
   const now = await requestTime();
   const [activity, runs] = await Promise.all([safe(api.getActivity(), null as Activity | null), safe(api.getRuns(), [] as Run[])]);
   const days = activity?.days ?? [];
-  const summary = summarize(days);
-  const cells = buildGrid(days);
 
   return (
     <>
@@ -97,31 +94,7 @@ async function Content() {
       ) : !activity.real ? (
         <Notice text="Haqiqiy faollik uchun admin panelda GitHub username kiriting." />
       ) : null}
-      <div className="sum">
-        <div>
-          <b>{activity ? summary.total : "—"}</b>
-          <span>hissa</span>
-        </div>
-        <div>
-          <b>{activity ? summary.active : "—"}</b>
-          <span>faol kun</span>
-        </div>
-        <div>
-          <b>{activity ? summary.streak : "—"}</b>
-          <span>kunlik seriya</span>
-        </div>
-      </div>
-      <div className="c hmcard">
-        <div className="hm-top">
-          <b>Faollik</b>
-          <span>soʻnggi 2 oy</span>
-        </div>
-        {cells.length ? (
-          <Heatmap cells={cells} months={monthLabels(cells)} />
-        ) : (
-          <div className="empty-row">Faollik maʼlumoti hozircha mavjud emas</div>
-        )}
-      </div>
+      <ActivityView days={days} available={activity !== null} />
       <div className="group">
         <h3 className="group-h">GitHub Actions</h3>
         <ul className="list" style={{ borderRadius: 24 }}>

@@ -11,7 +11,7 @@ it('returns the documented activity shape with demo data', function () {
 
     $response = $this->getJson('/api/activity')->assertOk()->assertJsonStructure(['days' => [['d', 'c']], 'total', 'real']);
 
-    expect($response->json('days'))->toHaveCount(60)
+    expect($response->json('days'))->toHaveCount(365)
         ->and($response->json('real'))->toBeFalse()
         ->and($response->json('total'))->toBe(array_sum(array_column($response->json('days'), 'c')));
 });

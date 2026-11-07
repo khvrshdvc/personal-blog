@@ -18,6 +18,9 @@ export interface MonthLabel {
 
 const DAY = 86400000;
 
+export const INITIAL_DAYS = 60;
+export const STEP_DAYS = 30;
+
 function utc(iso: string): number {
   const [y, m, d] = iso.split("-").map(Number);
 

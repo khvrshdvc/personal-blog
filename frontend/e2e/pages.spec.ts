@@ -144,12 +144,30 @@ test("faollik: yig'indi, issiqlik xaritasi, tooltip va Actions", async ({ page }
   await expect(page.locator(".sum > div").first().locator("b")).toHaveText(/^\d+$/);
   await expect(page.locator(".hm-grid i[data-d]").first()).toBeAttached();
   await expect(page.locator(".hm-grid i[data-d]")).toHaveCount(60);
+  const total60 = Number(await page.locator(".sum > div b").first().textContent());
   expect((await page.locator(".hm-grid i").count()) % 7).toBe(0);
   await expect(page.locator(".hm-top")).toContainText("soʻnggi 2 oy");
   const weeks = (await page.locator(".hm-grid i").count()) / 7;
   expect(weeks).toBeLessThanOrEqual(10);
   expect(await page.locator(".hm-grid").evaluate((el) => getComputedStyle(el).gridTemplateColumns.split(" ").length)).toBe(weeks);
   await expect(page.locator(".hm-months span").first()).toBeAttached();
+
+  await page.getByRole("button", { name: "Yana 1 oy ochish" }).click();
+  await expect(page.locator(".hm-grid i[data-d]")).toHaveCount(90);
+  await expect(page.locator(".hm-top")).toContainText("soʻnggi 3 oy");
+  expect(Number(await page.locator(".sum > div b").first().textContent())).toBeGreaterThanOrEqual(total60);
+
+  for (let i = 0; i < 20; i++) {
+    const button = page.getByRole("button", { name: "Yana 1 oy ochish" });
+
+    if ((await button.count()) === 0) break;
+    await button.click();
+  }
+
+  await expect(page.getByRole("button", { name: "Yana 1 oy ochish" })).toHaveCount(0);
+  await expect(page.locator(".hm-grid i[data-d]")).toHaveCount(365);
+  await expect(page.locator(".hm-top")).toContainText("soʻnggi yil");
+  expect((await page.locator(".hm-grid i").count()) % 7).toBe(0);
 
   const cell = page.locator(".hm-grid i[data-d]:not([data-c='0'])").first();
   await cell.scrollIntoViewIfNeeded();

@@ -98,7 +98,7 @@ function buildActivity(): Activity {
   const days: Activity["days"] = [];
   let total = 0;
 
-  for (let i = 59; i >= 0; i--) {
+  for (let i = 364; i >= 0; i--) {
     const date = new Date(today.getTime() - i * 86400000);
     const growth = Math.max(0.08, 1 - i / 400);
     const weekday = (date.getUTCDay() + 6) % 7 >= 5 ? 0.5 : 1;

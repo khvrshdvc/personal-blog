@@ -6,7 +6,7 @@ use Carbon\Carbon;
 
 class ActivityDays
 {
-    public const DAYS = 60;
+    public const DAYS = 365;
 
     public static function range(callable $count): array
     {

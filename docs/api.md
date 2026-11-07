@@ -15,7 +15,7 @@ Post (qisqa, dashboard): `id, title, excerpt, tag, status ("draft"|"published"|"
 
 Project: `id, name, repo, description, stack [string], demo_url`
 
-Activity: `{days: [{d, c}], total, real}`. `days` oxirgi 60 kun, taxminan 2 oy (eskisidan yangisiga, `d` sana, `c` hissa soni), `total` shu davr jami, `real: false` bo'lsa namuna ma'lumot (GitHub username kiritilmagan yoki GitHub javob bermadi).
+Activity: `{days: [{d, c}], total, real}`. `days` oxirgi 365 kun (eskisidan yangisiga, `d` sana, `c` hissa soni), `total` yillik jami. Frontend faqat so'nggi 60 kunni ko'rsatib, keyin oyma-oy ochadi, `real: false` bo'lsa namuna ma'lumot (GitHub username kiritilmagan yoki GitHub javob bermadi).
 
 Run (GitHub Actions): `{status ("success"|"failure"|"running"|"skipped"), workflow, title, repo, branch, num, url, at (ISO 8601), dur (soniya|null)}`
 

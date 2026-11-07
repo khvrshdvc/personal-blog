@@ -6,7 +6,7 @@ import { Icon } from "@/components/icon";
 import { api } from "@/lib/api";
 import { requestTime } from "@/lib/time";
 import type { Activity, PostListItem, Project, RepoInfo, Run, Settings, Telegram } from "@/lib/api";
-import { buildGrid, summarize, weekCount } from "@/lib/activity";
+import { INITIAL_DAYS, buildGrid, summarize, weekCount } from "@/lib/activity";
 import { CI_LABELS, STACK, TEACH } from "@/lib/site";
 import { ago, fmtLong, fmtShort, initials, repoName } from "@/lib/format";
 
@@ -71,7 +71,7 @@ export async function HomeBento() {
   const tashkent = new Date(now).toLocaleTimeString("en-GB", { timeZone: "Asia/Tashkent", hour: "2-digit", minute: "2-digit" });
   const telegram = data.telegram ?? data.settings?.telegram ?? null;
   const telegramPosts = (telegram?.posts ?? []).filter((post) => post.t.trim() !== "");
-  const activityDays = data.activity?.days ?? [];
+  const activityDays = (data.activity?.days ?? []).slice(-INITIAL_DAYS);
   const summary = summarize(activityDays);
   const grid = buildGrid(activityDays);
   const runs = data.runs.slice(0, 4);
