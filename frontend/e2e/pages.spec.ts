@@ -157,6 +157,12 @@ test("faollik: yig'indi, issiqlik xaritasi, tooltip va Actions", async ({ page }
   expect(await page.locator(".hm-grid").evaluate((el) => getComputedStyle(el).gridTemplateColumns.split(" ").length)).toBe(weeks);
   await expect(page.locator(".hm-months span").first()).toBeAttached();
 
+  const cardWidth = (await page.locator(".hmcard").boundingBox())!.width;
+  const gridWidth = (await page.locator(".hm-grid").boundingBox())!.width;
+  expect(gridWidth).toBeGreaterThan(cardWidth * 0.7);
+  const cell = (await page.locator(".hm-grid i[data-d]").first().boundingBox())!;
+  expect(cell.height).toBeLessThanOrEqual(40);
+
   await page.getByRole("button", { name: "Yana 1 oy ochish" }).click();
   await expect(page.locator(".hm-grid i[data-d]")).toHaveCount(90);
   await expect(page.locator(".hm-top")).toContainText("soʻnggi 3 oy");
@@ -174,9 +180,9 @@ test("faollik: yig'indi, issiqlik xaritasi, tooltip va Actions", async ({ page }
   await expect(page.locator(".hm-top")).toContainText("soʻnggi yil");
   expect((await page.locator(".hm-grid i").count()) % 7).toBe(0);
 
-  const cell = page.locator(".hm-grid i[data-d]:not([data-c='0'])").first();
-  await cell.scrollIntoViewIfNeeded();
-  await cell.hover();
+  const active = page.locator(".hm-grid i[data-d]:not([data-c='0'])").first();
+  await active.scrollIntoViewIfNeeded();
+  await active.hover();
   await expect(page.locator(".tip")).toContainText("ta hissa");
 
   await expect(page.locator(".group .list li")).toHaveCount(8);

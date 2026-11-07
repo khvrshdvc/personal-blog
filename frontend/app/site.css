@@ -448,3 +448,18 @@ body[data-route="post"] .list{background:var(--cellp)}
 .more-btn:active {
   transform: scale(0.97);
 }
+
+.hm-grid.wide {
+  flex: 1;
+  gap: 4px;
+}
+
+.hm-grid.wide i {
+  aspect-ratio: auto;
+  height: 100%;
+  border-radius: 6px;
+}
+
+.hm-wrap .hm {
+  width: 100%;
+}
