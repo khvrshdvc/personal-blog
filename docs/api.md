@@ -1,6 +1,6 @@
 # API shartnomasi
 
-Asosiy manzil: `/api`. Format: JSON. Sanalar ISO 8601. Xatolar: `{ "message": "...", "errors": { "field": ["..."] } }` (422), 401, 403, 404.
+Asosiy manzil: `/api`. Format: JSON. Sanalar ISO 8601. Xatolar: `{ "message": "...", "errors": { "field": ["..."] } }` (422), 401, 403, 404. Barcha javoblar JSON. Yagona resurs va ro'yxatlar o'ramasiz qaytadi (`{data}` faqat `/posts` ro'yxatida).
 
 ## Turlar
 
@@ -19,12 +19,12 @@ Settings (ommaviy): `github, open, bio, now [{k, v}], learn [{n, p}], telegram {
 
 | Metod | Yo'l | Izoh |
 |---|---|---|
-| GET | `/posts` | Chop etilganlar. Query: `category`, `tag`, `q`, `page`, `per_page`. Javob: `{data, meta}` |
-| GET | `/posts/{slug}` | To'liq post, `prev` va `next` bilan |
-| GET | `/tags` | `[{tag, count}]` |
-| GET | `/search?q=` | ⌘K uchun: postlar va loyihalar, eng ko'pi 8 ta |
-| GET | `/projects` | Loyihalar ro'yxati |
-| GET | `/settings` | Ommaviy sozlamalar |
+| GET | `/posts` | Chop etilganlar, yangisi birinchi. Query: `category` (`fikr`\|`dev`), `tag`, `q`, `page`, `per_page` (birlamchi 12, eng ko'pi 50). Javob: `{data: [Post], meta: {current_page, last_page, per_page, total}}` |
+| GET | `/posts/{slug}` | To'liq post. `prev` (bir xil kategoriyadagi oldingi, eskiroq) va `next` (keyingi, yangiroq): ro'yxat shaklidagi post yoki `null`. Chop etilmagan bo'lsa 404 |
+| GET | `/tags` | `[{tag, count}]`, soni bo'yicha kamayish tartibida. Query: `category` |
+| GET | `/search?q=` | ⌘K uchun, eng ko'pi 8 ta: `[{type: "post"\|"project", title, subtitle, path}]`. `q` bo'sh bo'lsa so'nggi 5 ta post. `path` frontend yo'li |
+| GET | `/projects` | `[Project]` |
+| GET | `/settings` | Ommaviy sozlamalar (yuqoridagi Settings shakli) |
 | GET | `/activity` | GitHub faollik xaritasi `{days: [{d, c}], total}` (keshlangan) |
 | GET | `/projects/{id}/runs` | GitHub Actions natijalari (keshlangan) |
 | GET | `/telegram` | Kanal so'nggi postlari (keshlangan) |
