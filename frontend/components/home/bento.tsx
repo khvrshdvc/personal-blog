@@ -130,10 +130,12 @@ export async function HomeBento() {
           <span>{data.activity ? summary.total : "—"}</span>
           <small>hissa · soʻnggi 2 oy</small>
         </div>
-        <div className="mhm" aria-hidden="true" style={{ ["--cols" as string]: weekCount(grid) || 1 }}>
-          {grid.map((cell, index) =>
-            cell === null ? <i key={index} className="x" /> : <i key={index} data-l={cell.level} />,
-          )}
+        <div className="mhw" aria-hidden="true">
+          <div className="mhm" style={{ ["--cols" as string]: weekCount(grid) || 1 }}>
+            {grid.map((cell, index) =>
+              cell === null ? <i key={index} className="x" /> : <i key={index} data-l={cell.level} />,
+            )}
+          </div>
         </div>
       </Link>
 
