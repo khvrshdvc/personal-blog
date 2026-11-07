@@ -4,9 +4,11 @@ import { connection } from "next/server";
 import { FikrlarBrowser } from "@/components/fikrlar-browser";
 import { api } from "@/lib/api";
 import type { PostListItem } from "@/lib/api";
+import { pageAlternates } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Fikrlar — Utkirbek",
+  alternates: pageAlternates("/fikrlar"),
 };
 
 const FIKR_TAGS = ["Hayot", "Oʻsish", "Ustozlik", "Til"];

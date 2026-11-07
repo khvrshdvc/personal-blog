@@ -3,6 +3,7 @@ import { Inter, JetBrains_Mono, Source_Serif_4 } from "next/font/google";
 import "./globals.css";
 import { ThemeScript } from "@/components/theme-script";
 import { ThemeSync } from "@/components/theme-sync";
+import { SITE_DESCRIPTION, SITE_NAME, siteUrl } from "@/lib/seo";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -24,8 +25,12 @@ const mono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Utkirbek",
-  description: "Utkirbek — oʻrganish, ustozlik, til va hayot haqida fikrlar. Alohida boʻlimda dasturlash.",
+  metadataBase: new URL(siteUrl()),
+  title: SITE_NAME,
+  description: SITE_DESCRIPTION,
+  alternates: { types: { "application/rss+xml": "/rss.xml" } },
+  openGraph: { siteName: SITE_NAME, locale: "uz_UZ", type: "website", title: SITE_NAME, description: SITE_DESCRIPTION },
+  twitter: { card: "summary", title: SITE_NAME, description: SITE_DESCRIPTION },
 };
 
 export const viewport: Viewport = {

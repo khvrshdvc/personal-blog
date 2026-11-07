@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import { Glow } from "@/components/glow";
 import { NavLoader } from "@/components/nav/nav-loader";
 import { PaletteProvider } from "@/components/nav/palette-context";
-import { SiteNav } from "@/components/nav/site-nav";
+import { NavFallback } from "@/components/nav/site-nav";
 import { ToastProvider } from "@/components/toast";
 
 export default function SiteLayout({ children }: LayoutProps<"/">) {
@@ -13,7 +13,7 @@ export default function SiteLayout({ children }: LayoutProps<"/">) {
         <a className="skip" href="#view">
           Asosiy qismga oʻtish
         </a>
-        <Suspense fallback={<SiteNav counts={null} open={null} />}>
+        <Suspense fallback={<NavFallback />}>
           <NavLoader />
         </Suspense>
         <main id="view">{children}</main>

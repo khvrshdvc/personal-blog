@@ -8,9 +8,11 @@ import { NotifyLink } from "@/components/notify-link";
 import { ThemeSeg } from "@/components/theme-seg";
 import { api } from "@/lib/api";
 import type { Settings } from "@/lib/api";
+import { pageAlternates } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Men haqimda — Utkirbek",
+  alternates: pageAlternates("/men"),
 };
 
 const SETTINGS_ACTION = { label: "Sozlamalar", href: "/admin/settings" };

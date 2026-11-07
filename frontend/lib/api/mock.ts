@@ -36,6 +36,16 @@ const posts: PostListItem[] = [
   },
 ];
 
+const RICH: Record<string, { html: string; toc: PostDetail["toc"] }> = {
+  "laravel-events": {
+    html: '<p>Event va <strong>listener</strong> kodni ajratadi.</p><h2 id="nima-uchun">Nima uchun kerak</h2><p>Bitta amal bir nechta natija bersa.</p><pre><code class="language-php">&lt;?php\nevent(new PostCreated($post));\n</code></pre><h3 id="listener">Listener</h3><blockquote>Ortiqcha murakkablikdan qoching.</blockquote><ul><li>Oddiy</li><li>Tushunarli</li></ul>',
+    toc: [
+      { id: "nima-uchun", text: "Nima uchun kerak", level: 2 },
+      { id: "listener", text: "Listener", level: 3 },
+    ],
+  },
+};
+
 const projects: Project[] = [
   {
     id: 1,
@@ -159,10 +169,11 @@ export const mockApi: Api = {
       return null;
     }
 
+    const rich = RICH[slug];
     const detail: PostDetail = {
       ...posts[index],
-      body_html: `<p>${posts[index].excerpt ?? ""}</p>`,
-      toc: [],
+      body_html: rich?.html ?? `<p>${posts[index].excerpt ?? ""}</p><p>Bu mock matn.</p>`,
+      toc: rich?.toc ?? [],
       prev: posts[index + 1] ?? null,
       next: posts[index - 1] ?? null,
     };

@@ -29,3 +29,9 @@ Next.js (App Router), TypeScript, Tailwind. Umumiy qoidalar ildizdagi `../CLAUDE
 - Dizayn CSS'i `app/site.css` da: prototipning ommaviy sayt qoidalari (admin va post sahifa qoidalarisiz) deyarli o'zgarishsiz ko'chirilgan. Sinf nomlari prototipdagi bilan bir xil, shuning uchun JSX shu sinflardan foydalanadi. Tailwind bilan nomi to'qnashgan sinflar (`.ring`) shu faylda bekor qilinadi.
 - Faollik, Actions, loyiha GitHub ma'lumoti va Telegram endpointlari (`docs/api.md`) backend B5'da quriladi. Hozircha javob 404 bo'lsa sahifalar "ma'lumot yo'q" holatini ko'rsatadi; `API_MOCK=1` namuna ma'lumot beradi.
 - So'rov vaqtiga bog'liq (soat, "oldin") komponentlar `lib/time.ts` dagi `requestTime()` orqali `Suspense` ichida ishlaydi.
+
+## Post sahifasi va SEO (F4)
+- `/post/[slug]`: backend'ning `body_html` (allaqachon tozalangan) `lib/post-html.ts` orqali kod bloklari bilan boyitiladi, nusxalash `Prose` komponentida. Mundarija faqat dasturlash postlarida (2 va undan ko'p bo'lim).
+- Yo'q post uchun to'g'ri 404 statusi `proxy.ts` da beriladi (oqim boshlangandan keyin `notFound()` statusni o'zgartirmaydi). Noma'lum manzillar `app/(site)/[...rest]` orqali sayt layout'i bilan 404 beradi.
+- Sahifa `metadata.alternates` ildizdagini to'liq almashtiradi, shuning uchun `pageAlternates()` (canonical + RSS) ishlatiladi. `openGraph` uchun ham shunday: `siteName` va `locale` har safar yoziladi.
+- `sitemap.xml`, `rss.xml` route handler'lari, `robots.ts`. `SITE_URL` `.env` da (mutlaq URL'lar uchun).

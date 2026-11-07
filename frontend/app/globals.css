@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "./site.css";
+@import "./post.css";
 
 :root {
   color-scheme: light;

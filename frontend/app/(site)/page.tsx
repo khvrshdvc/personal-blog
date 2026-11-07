@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { BentoSkeleton, HomeBento } from "@/components/home/bento";
+import { pageAlternates } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Utkirbek",
+  alternates: pageAlternates("/"),
 };
 
 export default function Home() {
