@@ -49,6 +49,11 @@ class Post extends Model
         return preg_match_all('/\S+/u', (string) $this->body);
     }
 
+    public function viewWords(): int
+    {
+        return preg_match_all('/\S+/u', $this->view()['body']);
+    }
+
     public function readMinutes(): int
     {
         return max(1, (int) round($this->words() / 200));
@@ -76,5 +81,43 @@ class Post extends Model
     public function hasPending(): bool
     {
         return $this->pending !== null;
+    }
+
+    public function fields(): array
+    {
+        return [
+            'category' => $this->category->value,
+            'title' => (string) $this->title,
+            'slug' => (string) $this->slug,
+            'tag' => (string) $this->tag,
+            'excerpt' => (string) $this->excerpt,
+            'body' => (string) $this->body,
+            'published_at' => $this->published_at?->toDateString() ?? '',
+            'cover' => (string) $this->cover,
+        ];
+    }
+
+    public function view(): array
+    {
+        $fields = $this->fields();
+
+        if (! $this->hasPending()) {
+            return $fields;
+        }
+
+        foreach (self::FIELDS as $key) {
+            $fields[$key] = (string) ($this->pending[$key] ?? '');
+        }
+
+        return $fields;
+    }
+
+    public function stateKey(): string
+    {
+        if (! $this->isPublished()) {
+            return 'draft';
+        }
+
+        return $this->hasPending() ? 'pending' : 'published';
     }
 }
