@@ -52,7 +52,7 @@ class GithubClient
         return array_slice($runs, 0, 12);
     }
 
-    public function contributionYear(string $login): ?array
+    public function contributions(string $login, int $days): ?array
     {
         if (! $this->hasToken()) {
             return null;
@@ -64,7 +64,7 @@ class GithubClient
             'query' => $query,
             'variables' => [
                 'login' => $login,
-                'from' => now('UTC')->subDays(364)->startOfDay()->toIso8601String(),
+                'from' => now('UTC')->subDays($days - 1)->startOfDay()->toIso8601String(),
                 'to' => now('UTC')->toIso8601String(),
             ],
         ])->throw()->json('data.user.contributionsCollection.contributionCalendar.weeks'));

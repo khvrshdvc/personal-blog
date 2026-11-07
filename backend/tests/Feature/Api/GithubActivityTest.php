@@ -13,7 +13,7 @@ it('uses demo data when no username is set and sends no request', function () {
 
     expect($data['real'])->toBeFalse()
         ->and($data['error'])->toBeFalse()
-        ->and($data['days'])->toHaveCount(365);
+        ->and($data['days'])->toHaveCount(60);
     Http::assertNothingSent();
 });
 
@@ -38,7 +38,7 @@ it('reads the yearly calendar and runs with a token', function () {
 
     expect($data['real'])->toBeTrue()
         ->and($data['login'])->toBe('Utkirbek')
-        ->and($data['days'])->toHaveCount(365)
+        ->and($data['days'])->toHaveCount(60)
         ->and(array_sum(array_column($data['days'], 'c')))->toBe(5)
         ->and($data['info']['crm-system'])->toMatchArray(['lang' => 'PHP', 'stars' => 7])
         ->and($data['runs'])->toHaveCount(2)
@@ -66,8 +66,8 @@ it('orders days oldest to newest and ends today', function () {
 
     $days = app(ActivityProvider::class)->get()['days'];
 
-    expect($days[364]['d'])->toBe(now()->toDateString())
-        ->and($days[0]['d'])->toBe(now()->subDays(364)->toDateString());
+    expect($days[59]['d'])->toBe(now()->toDateString())
+        ->and($days[0]['d'])->toBe(now()->subDays(59)->toDateString());
 });
 
 it('caches the result', function () {

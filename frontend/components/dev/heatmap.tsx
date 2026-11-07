@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { Cell, MonthLabel } from "@/lib/activity";
+import { weekCount, type Cell, type MonthLabel } from "@/lib/activity";
 import { fmtLong } from "@/lib/format";
 
 interface Tip {
@@ -13,6 +13,7 @@ interface Tip {
 export function Heatmap({ cells, months }: { cells: (Cell | null)[]; months: MonthLabel[] }) {
   const wrap = useRef<HTMLDivElement>(null);
   const [tip, setTip] = useState<Tip | null>(null);
+  const columns = `repeat(${weekCount(cells)}, 28px)`;
 
   useEffect(() => {
     const el = wrap.current;
@@ -46,8 +47,8 @@ export function Heatmap({ cells, months }: { cells: (Cell | null)[]; months: Mon
   return (
     <>
       <div className="hm-wrap" ref={wrap}>
-        <div className="hm">
-          <div className="hm-months" aria-hidden="true">
+        <div className="hm" style={{ minWidth: 0 }}>
+          <div className="hm-months" aria-hidden="true" style={{ gridTemplateColumns: columns }}>
             {months.map((month) => (
               <span key={month.column} style={{ gridColumn: `${month.column}/span 3` }}>
                 {month.label}
@@ -64,7 +65,7 @@ export function Heatmap({ cells, months }: { cells: (Cell | null)[]; months: Mon
               <span />
               <span />
             </div>
-            <div className="hm-grid" role="img" aria-label="GitHub faollik xaritasi" onMouseOver={show} onMouseLeave={() => setTip(null)}>
+            <div className="hm-grid" role="img" aria-label="GitHub faollik xaritasi" style={{ gridTemplateColumns: columns, flex: "none" }} onMouseOver={show} onMouseLeave={() => setTip(null)}>
               {cells.map((cell, index) =>
                 cell === null ? (
                   <i key={index} className="x" />

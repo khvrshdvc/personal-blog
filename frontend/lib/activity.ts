@@ -58,15 +58,17 @@ export function buildGrid(days: Day[]): (Cell | null)[] {
   if (days.length === 0) return [];
 
   const counts = new Map(days.map((day) => [day.d, day.c]));
+  const first = utc(days[0].d);
   const end = utc(days[days.length - 1].d);
-  const offset = (new Date(end).getUTCDay() + 6) % 7;
-  const start = end - (52 * 7 + offset) * DAY;
+  const offset = (new Date(first).getUTCDay() + 6) % 7;
+  const start = first - offset * DAY;
+  const total = Math.ceil(((end - start) / DAY + 1) / 7) * 7;
   const cells: (Cell | null)[] = [];
 
-  for (let i = 0; i < 371; i++) {
+  for (let i = 0; i < total; i++) {
     const time = start + i * DAY;
 
-    if (time > end) {
+    if (time < first || time > end) {
       cells.push(null);
       continue;
     }
@@ -79,32 +81,26 @@ export function buildGrid(days: Day[]): (Cell | null)[] {
   return cells;
 }
 
+export function weekCount(cells: (Cell | null)[]): number {
+  return Math.ceil(cells.length / 7);
+}
+
 export function monthLabels(cells: (Cell | null)[]): MonthLabel[] {
   const labels: MonthLabel[] = [];
-  const month = (cell: Cell | null | undefined) => (cell ? Number(cell.d.slice(5, 7)) - 1 : null);
   let previous = -1;
 
-  for (let week = 0; week < 53; week++) {
-    const cell = cells[week * 7];
+  for (let week = 0; week < weekCount(cells); week++) {
+    const cell = cells.slice(week * 7, week * 7 + 7).find((item) => item !== null);
 
     if (!cell) continue;
 
-    const current = month(cell)!;
+    const month = Number(cell.d.slice(5, 7)) - 1;
 
-    if (current !== previous) {
-      const skip = week === 0 && cells[14] && month(cells[14]) !== current;
-
-      if (!skip && week < 51) {
-        labels.push({ column: week + 1, label: SHORT_MONTHS[current] });
-      }
-
-      previous = current;
+    if (month !== previous) {
+      labels.push({ column: week + 1, label: SHORT_MONTHS[month] });
+      previous = month;
     }
   }
 
   return labels;
-}
-
-export function miniGrid(days: Day[], count = 119): (Cell | null)[] {
-  return buildGrid(days).slice(-count);
 }

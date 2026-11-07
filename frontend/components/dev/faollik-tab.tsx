@@ -114,7 +114,7 @@ async function Content() {
       <div className="c hmcard">
         <div className="hm-top">
           <b>Faollik</b>
-          <span>soʻnggi yil</span>
+          <span>soʻnggi 2 oy</span>
         </div>
         {cells.length ? (
           <Heatmap cells={cells} months={monthLabels(cells)} />

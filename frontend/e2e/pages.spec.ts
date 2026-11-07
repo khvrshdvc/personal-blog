@@ -30,7 +30,12 @@ test("bosh sahifa: bento kartalari mock ma'lumot bilan", async ({ page }) => {
   await expect(page.locator(".b-loc")).toContainText("Toshkent");
   await expect(page.locator(".b-loc .tm")).toHaveText(/^\d{2}:\d{2}$/);
   await expect(page.locator(".b-gh .gn span").first()).toHaveText(/^\d+$/);
-  await expect(page.locator(".b-gh .mhm i")).toHaveCount(119);
+  const miniCells = await page.locator(".b-gh .mhm i").count();
+  expect(miniCells % 7).toBe(0);
+  expect(miniCells).toBeGreaterThanOrEqual(63);
+  expect(miniCells).toBeLessThanOrEqual(70);
+  await expect(page.locator(".b-gh .mhm i[data-l]")).toHaveCount(60);
+  await expect(page.locator(".b-gh small")).toContainText("soʻnggi 2 oy");
   await expect(page.locator(".b-gh")).toHaveAttribute("href", "/faollik");
   await expect(page.locator(".b-tch .tv")).toHaveText("12–18");
   await expect(page.locator(".b-term")).toContainText("gh run list --limit 4");
@@ -138,11 +143,15 @@ test("faollik: yig'indi, issiqlik xaritasi, tooltip va Actions", async ({ page }
   await expect(page.locator(".sum > div")).toHaveCount(3);
   await expect(page.locator(".sum > div").first().locator("b")).toHaveText(/^\d+$/);
   await expect(page.locator(".hm-grid i[data-d]").first()).toBeAttached();
-  expect(await page.locator(".hm-grid i[data-d]").count()).toBeGreaterThan(350);
-  await expect(page.locator(".hm-grid i")).toHaveCount(371);
+  await expect(page.locator(".hm-grid i[data-d]")).toHaveCount(60);
+  expect((await page.locator(".hm-grid i").count()) % 7).toBe(0);
+  await expect(page.locator(".hm-top")).toContainText("soʻnggi 2 oy");
+  const weeks = (await page.locator(".hm-grid i").count()) / 7;
+  expect(weeks).toBeLessThanOrEqual(10);
+  expect(await page.locator(".hm-grid").evaluate((el) => getComputedStyle(el).gridTemplateColumns.split(" ").length)).toBe(weeks);
   await expect(page.locator(".hm-months span").first()).toBeAttached();
 
-  const cell = page.locator(".hm-grid i[data-l='4']").first();
+  const cell = page.locator(".hm-grid i[data-d]:not([data-c='0'])").first();
   await cell.scrollIntoViewIfNeeded();
   await cell.hover();
   await expect(page.locator(".tip")).toContainText("ta hissa");

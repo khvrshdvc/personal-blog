@@ -6,7 +6,7 @@ import { Icon } from "@/components/icon";
 import { api } from "@/lib/api";
 import { requestTime } from "@/lib/time";
 import type { Activity, PostListItem, Project, RepoInfo, Run, Settings, Telegram } from "@/lib/api";
-import { miniGrid, summarize } from "@/lib/activity";
+import { buildGrid, summarize, weekCount } from "@/lib/activity";
 import { CI_LABELS, STACK, TEACH } from "@/lib/site";
 import { ago, fmtLong, fmtShort, initials, repoName } from "@/lib/format";
 
@@ -73,6 +73,7 @@ export async function HomeBento() {
   const telegramPosts = (telegram?.posts ?? []).filter((post) => post.t.trim() !== "");
   const activityDays = data.activity?.days ?? [];
   const summary = summarize(activityDays);
+  const grid = buildGrid(activityDays);
   const runs = data.runs.slice(0, 4);
 
   return (
@@ -127,10 +128,10 @@ export async function HomeBento() {
         </CardTitle>
         <div className="gn">
           <span>{data.activity ? summary.total : "—"}</span>
-          <small>hissa · soʻnggi yil</small>
+          <small>hissa · soʻnggi 2 oy</small>
         </div>
-        <div className="mhm" aria-hidden="true">
-          {miniGrid(activityDays).map((cell, index) =>
+        <div className="mhm" aria-hidden="true" style={{ gridTemplateColumns: `repeat(${weekCount(grid) || 1}, minmax(0, 1fr))` }}>
+          {grid.map((cell, index) =>
             cell === null ? <i key={index} className="x" /> : <i key={index} data-l={cell.level} />,
           )}
         </div>
