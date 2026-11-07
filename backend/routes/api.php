@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\Admin\ProjectController as AdminProjectController;
 use App\Http\Controllers\Admin\SettingsController as AdminSettingsController;
+use App\Http\Controllers\ExternalController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\SearchController;
@@ -18,6 +19,11 @@ Route::middleware('throttle:120,1')->group(function () {
     Route::get('search', SearchController::class);
     Route::get('projects', [ProjectController::class, 'index']);
     Route::get('settings', SettingsController::class);
+    Route::get('activity', [ExternalController::class, 'activity']);
+    Route::get('runs', [ExternalController::class, 'runs']);
+    Route::get('projects/{project}/runs', [ExternalController::class, 'projectRuns'])->whereNumber('project');
+    Route::get('projects/{project}/github', [ExternalController::class, 'projectGithub'])->whereNumber('project');
+    Route::get('telegram', [ExternalController::class, 'telegram']);
 });
 
 Route::prefix('admin')->group(function () {
