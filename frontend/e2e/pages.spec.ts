@@ -41,7 +41,10 @@ test("bosh sahifa: bento kartalari mock ma'lumot bilan", async ({ page }) => {
   expect(miniCells % 7).toBe(0);
   expect(miniCells).toBeGreaterThanOrEqual(63);
   expect(miniCells).toBeLessThanOrEqual(70);
-  await expect(page.locator(".b-gh .mhm i[data-l]")).toHaveCount(60);
+  const realCells = await page.locator(".b-gh .mhm i[data-l]").count();
+  expect(realCells).toBeGreaterThanOrEqual(60);
+  expect(realCells).toBeLessThanOrEqual(66);
+  await expect(page.locator(".b-gh .mhm i").first()).not.toHaveClass(/x/);
   await expect(page.locator(".b-gh small")).toContainText("soʻnggi 2 oy");
   await expect(page.locator(".b-gh")).toHaveAttribute("href", "/faollik");
   await expect(page.locator(".b-tch .tv")).toHaveText("12–18");

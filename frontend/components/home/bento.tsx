@@ -80,7 +80,12 @@ export async function HomeBento() {
   const telegramPosts = (telegram?.posts ?? []).filter((post) => post.t.trim() !== "");
   const activityDays = (data.activity?.days ?? []).slice(-INITIAL_DAYS);
   const summary = summarize(activityDays);
-  const grid = buildGrid(activityDays);
+  const allDays = data.activity?.days ?? [];
+  let gridStart = Math.max(0, allDays.length - INITIAL_DAYS);
+
+  while (gridStart > 0 && (new Date(`${allDays[gridStart].d}T00:00:00Z`).getUTCDay() + 6) % 7 !== 0) gridStart--;
+
+  const grid = buildGrid(allDays.slice(gridStart));
   const runs = data.runs.slice(0, 4);
 
   return (
