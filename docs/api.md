@@ -39,7 +39,7 @@ Settings (ommaviy): `github, open, bio, now [{k, v}], learn [{n, p}], telegram {
 | GET | `/runs` | Barcha loyihalar bo'yicha so'nggi 8 ta Actions ishi, yangisi birinchi: `[Run]` (keshlangan) |
 | GET | `/projects/{id}/runs` | Bitta loyiha Actions ishlari: `[Run]` (keshlangan) |
 | GET | `/projects/{id}/github` | Loyiha repo ma'lumoti va oxirgi ish: RepoInfo (keshlangan) |
-| GET | `/telegram/posts` | Kanalning so'nggi matnli postlari (yangisi birinchi, 20 tagacha): `{u, n, posts: [{id, t, d, url}]}` (`t` to'liq matn, qatorlar `\n` bilan, `d` sana `YYYY-MM-DD`, `url` postga havola). Frontend `/fikrlar` shu yerdan oladi. Kanal o'qilmasa yoki username yo'q bo'lsa `posts: []` (keshlangan) |
+| GET | `/telegram/posts` | Kanalning so'nggi matnli postlari (yangisi birinchi, 100 tagacha, kanal sahifalari bo'ylab): `{u, n, posts: [{id, t, d, url}]}` (`t` to'liq matn (kesilmaydi; javob postlarida o'zining matni), qatorlar `\n` bilan, `d` sana `YYYY-MM-DD`, `url` postga havola). Frontend `/fikrlar` shu yerdan oladi. Kanal o'qilmasa yoki username yo'q bo'lsa `posts: []` (keshlangan) |
 | GET | `/telegram` | Kanal so'nggi postlari: Telegram (keshlangan). Kanal o'qilmasa sozlamalardagi `telegram` qaytadi |
 
 ## Autentifikatsiya (Sanctum SPA, cookie)

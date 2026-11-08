@@ -136,3 +136,27 @@ it('returns an empty feed without a username or when the channel fails', functio
 
     $this->getJson('/api/telegram/posts')->assertOk()->assertJsonPath('posts', []);
 });
+
+it('uses the message own text and not the reply preview', function () {
+    $html = '<div class="tgme_widget_message_wrap"><div class="tgme_widget_message js-widget_message" data-post="selfdev/7"><div class="tgme_widget_message_bubble"><a class="tgme_widget_message_reply"><div class="tgme_widget_message_text js-message_reply_text">Eski post matni</div></a><div class="tgme_widget_message_text js-message_text" dir="auto">Javob matni<br/>ikkinchi qator</div><div class="tgme_widget_message_footer"><a class="tgme_widget_message_date" href="https://t.me/selfdev/7"><time datetime="2026-11-05T10:00:00+00:00"></time></a></div></div></div></div>';
+
+    $posts = app(TelegramChannel::class)->parseFeed($html, 'selfdev');
+
+    expect($posts)->toHaveCount(1)->and($posts[0]['t'])->toBe("Javob matni\nikkinchi qator");
+});
+
+it('keeps long posts whole and reads older pages', function () {
+    $long = str_repeat('uzun matn ', 600);
+    $message = fn (int $id, string $text) => '<div class="tgme_widget_message_wrap"><div class="tgme_widget_message js-widget_message" data-post="selfdev/'.$id.'"><div class="tgme_widget_message_text js-message_text">'.$text.'</div><time datetime="2026-11-0'.($id % 9 + 1).'T10:00:00+00:00"></time></div></div>';
+    Http::fake(function ($request) use ($message, $long) {
+        return Http::response(str_contains($request->url(), 'before=5')
+            ? '<html>'.$message(3, 'Eski').$message(1, 'Birinchi').'</html>'
+            : '<html>'.$message(5, trim($long)).$message(8, 'Yangi').'</html>');
+    });
+    setChannel();
+
+    $posts = $this->getJson('/api/telegram/posts')->assertOk()->json('posts');
+
+    expect(array_column($posts, 'id'))->toBe([8, 5, 3, 1])
+        ->and(mb_strlen($posts[1]['t']))->toBe(mb_strlen(trim($long)));
+});

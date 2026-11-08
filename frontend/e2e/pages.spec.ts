@@ -72,22 +72,22 @@ test("fikrlar: Telegram kanal postlari va qidiruv", async ({ page }) => {
   await page.waitForLoadState("networkidle");
 
   await expect(page.getByRole("heading", { level: 1 })).toContainText("2 ta yozuv");
-  await expect(page.locator(".pgrid .pc")).toHaveCount(2);
-  await expect(page.locator(".pgrid .pc").first()).toHaveClass(/big/);
-  await expect(page.locator(".pgrid .pc").first()).toHaveAttribute("href", "https://t.me/ingliz_kanal/12");
-  await expect(page.locator(".pgrid .pc").first()).toContainText("Telegram");
+  await expect(page.locator(".tgp")).toHaveCount(2);
+  await expect(page.locator(".tgp").first().locator(".tgb")).toContainText("Avval mundarija, keyin misollar, oxirida tafsilotlar.");
+  await expect(page.locator(".tgp").first().locator("a")).toHaveAttribute("href", "https://t.me/ingliz_kanal/12");
+  await expect(page.locator(".tgo")).toHaveAttribute("href", "https://t.me/ingliz_kanal");
 
   const input = page.getByRole("searchbox");
   await input.fill("resilient");
-  await expect(page.locator(".pgrid .pc")).toHaveCount(1);
-  await expect(page.locator(".pgrid .pc")).toContainText("chidamli");
+  await expect(page.locator(".tgp")).toHaveCount(1);
+  await expect(page.locator(".tgp")).toContainText("chidamli");
 
   await input.fill("yoqqiydirsoz");
   await expect(page.getByText("Hech narsa topilmadi. Boshqa soʻz bilan qidirib koʻring.")).toBeVisible();
 
   await page.getByRole("button", { name: "Qidiruvni tozalash" }).click();
   await expect(input).toHaveValue("");
-  await expect(page.locator(".pgrid .pc")).toHaveCount(2);
+  await expect(page.locator(".tgp")).toHaveCount(2);
 });
 
 test("dasturlash: bo'limlar o'zgaradi va faol bo'lim belgilanadi", async ({ page }) => {

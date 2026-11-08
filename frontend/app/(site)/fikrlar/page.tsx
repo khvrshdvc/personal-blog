@@ -34,7 +34,7 @@ async function Content() {
           Telegram kanalimdan so&apos;nggi fikrlar. <span>{feed.posts.length} ta yozuv.</span>
         </h1>
       </header>
-      <TelegramFeedList posts={feed.posts} />
+      <TelegramFeedList posts={feed.posts} channel={feed.u} />
     </>
   );
 }

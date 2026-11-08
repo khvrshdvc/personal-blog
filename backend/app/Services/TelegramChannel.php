@@ -6,6 +6,8 @@ use App\Support\ResilientCache;
 use Carbon\Carbon;
 use DOMDocument;
 use DOMXPath;
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 
 class TelegramChannel
@@ -14,7 +16,9 @@ class TelegramChannel
 
     private const LIMIT = 2;
 
-    private const FEED_LIMIT = 20;
+    private const FEED_LIMIT = 100;
+
+    private const FEED_PAGES = 5;
 
     public function __construct(private ResilientCache $cache) {}
 
@@ -43,18 +47,49 @@ class TelegramChannel
             (int) config('services.telegram.fresh'),
             (int) config('services.telegram.stale'),
             function () use ($username) {
-                $posts = $this->parseFeed($this->page($username), $username);
+                $posts = [];
+                $before = null;
 
-                return $posts === [] ? null : $posts;
+                for ($page = 0; $page < self::FEED_PAGES; $page++) {
+                    try {
+                        $html = $this->page($username, $before);
+                    } catch (ConnectionException|RequestException $exception) {
+                        if ($page === 0) {
+                            throw $exception;
+                        }
+
+                        break;
+                    }
+
+                    $posts = array_merge($posts, $this->parseFeed($html, $username));
+                    $ids = $this->messageIds($html);
+
+                    if ($ids === [] || min($ids) <= 1) {
+                        break;
+                    }
+
+                    $before = min($ids);
+                }
+
+                usort($posts, fn (array $a, array $b) => $b['id'] <=> $a['id']);
+
+                return $posts === [] ? null : array_slice($posts, 0, self::FEED_LIMIT);
             },
         );
     }
 
-    private function page(string $username): string
+    private function messageIds(string $html): array
+    {
+        preg_match_all('/data-post="[^"\/]+\/(\d+)"/', $html, $matches);
+
+        return array_map('intval', $matches[1]);
+    }
+
+    private function page(string $username, ?int $before = null): string
     {
         return Http::withHeaders(['Accept' => 'text/html', 'User-Agent' => 'personal-blog'])
             ->timeout((int) config('services.telegram.timeout'))
-            ->get('https://t.me/s/'.$username)
+            ->get('https://t.me/s/'.$username, $before === null ? [] : ['before' => $before])
             ->throw()
             ->body();
     }
@@ -66,7 +101,7 @@ class TelegramChannel
         $posts = [];
 
         foreach ($xpath->query("//div[contains(concat(' ', normalize-space(@class), ' '), ' tgme_widget_message ') and @data-post]") as $message) {
-            $textNode = $xpath->query(".//div[contains(@class, 'tgme_widget_message_text')]", $message)->item(0);
+            $textNode = $xpath->query(".//div[contains(concat(' ', normalize-space(@class), ' '), ' js-message_text ')]", $message)->item(0);
             $id = (int) substr((string) strrchr($message->getAttribute('data-post'), '/'), 1);
 
             if ($textNode === null || $id < 1) {
@@ -87,13 +122,13 @@ class TelegramChannel
 
             $posts[] = [
                 'id' => $id,
-                't' => mb_strimwidth($text, 0, 2000, '…'),
+                't' => $text,
                 'd' => $time ? Carbon::parse($time->nodeValue)->timezone(config('app.timezone'))->toDateString() : '',
                 'url' => 'https://t.me/'.$username.'/'.$id,
             ];
         }
 
-        return array_slice(array_reverse($posts), 0, self::FEED_LIMIT);
+        return array_reverse($posts);
     }
 
     private function load(string $html): DOMDocument
@@ -121,7 +156,7 @@ class TelegramChannel
         $posts = [];
 
         foreach ($xpath->query("//div[contains(concat(' ', normalize-space(@class), ' '), ' tgme_widget_message ') and @data-post]") as $message) {
-            $textNode = $xpath->query(".//div[contains(@class, 'tgme_widget_message_text')]", $message)->item(0);
+            $textNode = $xpath->query(".//div[contains(concat(' ', normalize-space(@class), ' '), ' js-message_text ')]", $message)->item(0);
 
             if ($textNode === null) {
                 continue;
