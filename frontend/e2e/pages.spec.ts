@@ -142,7 +142,7 @@ test("faollik: yig'indi, issiqlik xaritasi, tooltip va Actions", async ({ page }
   );
   expect(summed).toBe(total);
 
-  const monthsLabel = await page.locator(".hm-top span").textContent();
+  const monthsLabel = await page.locator(".hmcard .hm-top span").textContent();
   expect(monthsLabel).toMatch(/^[a-zʻ]+ – [a-zʻ]+$/);
   expect(monthsLabel!.split(" – ")[0]).toBe(MONTH_NAMES[(new Date().getMonth() + 12 - 4) % 12]);
   expect(monthsLabel!.split(" – ")[1]).toBe(MONTH_NAMES[(new Date().getMonth() + 1) % 12]);
