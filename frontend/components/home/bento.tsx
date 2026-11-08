@@ -70,6 +70,13 @@ export async function HomeBento() {
   const tags = STACK.flatMap((group) => group.items).slice(0, 11);
   const tashkent = new Date(now).toLocaleTimeString("en-GB", { timeZone: "Asia/Tashkent", hour: "2-digit", minute: "2-digit" });
   const telegram = data.telegram ?? data.settings?.telegram ?? null;
+  const pushes = data.projects
+    .map((project) => ({ project, info: data.infos[project.id] }))
+    .filter((item): item is { project: Project; info: RepoInfo & { pushed_at: string } } => Boolean(item.info?.pushed_at))
+    .sort((a, b) => b.info.pushed_at.localeCompare(a.info.pushed_at))
+    .slice(0, 4);
+  const fallback = data.runs.length === 0 && pushes.length > 0;
+  const lines = fallback ? pushes.length : Math.min(4, data.runs.length);
   const telegramPosts = (telegram?.posts ?? []).filter((post) => post.t.trim() !== "");
   const activityDays = (data.activity?.days ?? []).slice(-INITIAL_DAYS);
   const summary = summarize(activityDays);
@@ -162,9 +169,19 @@ export async function HomeBento() {
         </div>
         <div className="tc">
           <div>
-            <b>$ gh run list --limit 4</b>
+            <b>{fallback ? "$ gh repo list --limit 4" : "$ gh run list --limit 4"}</b>
           </div>
-          {runs.length ? (
+          {fallback ? (
+            pushes.map(({ project, info }, index) => (
+              <div key={project.id} style={{ animationDelay: `${(0.15 + index * 0.18).toFixed(2)}s` }}>
+                <span className="ok">●</span> <b>{repoName(project.repo) || project.name}</b> push{" "}
+                <em>
+                  · {info.lang ? `${info.lang} · ` : ""}
+                  {ago(info.pushed_at, now)}
+                </em>
+              </div>
+            ))
+          ) : runs.length ? (
             runs.map((run, index) => (
               <div key={`${run.repo}-${run.num}-${index}`} style={{ animationDelay: `${(0.15 + index * 0.18).toFixed(2)}s` }}>
                 {RUN_SYMBOL[run.status]} <b>{run.workflow}</b> {run.title}{" "}
@@ -178,7 +195,7 @@ export async function HomeBento() {
               <em>hali ishga tushmagan</em>
             </div>
           )}
-          <div style={{ animationDelay: `${(0.3 + runs.length * 0.18).toFixed(2)}s` }}>
+          <div style={{ animationDelay: `${(0.3 + lines * 0.18).toFixed(2)}s` }}>
             <b>$</b>
             <span className="cur" />
           </div>
