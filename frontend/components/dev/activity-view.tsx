@@ -1,4 +1,5 @@
 import { Heatmap } from "@/components/dev/heatmap";
+import { ActivityInsights } from "@/components/dev/insights";
 import { buildGrid, monthLabels, rangeFrom, summarize, type Day } from "@/lib/activity";
 import { MONTH_NAMES } from "@/lib/format";
 
@@ -37,6 +38,7 @@ export function ActivityView({ days, available }: { days: Day[]; available: bool
           <div className="empty-row">Faollik maʼlumoti hozircha mavjud emas</div>
         )}
       </div>
+      {available && cells.length ? <ActivityInsights days={days} today={range.today} /> : null}
     </>
   );
 }

@@ -179,6 +179,11 @@ test("faollik: yig'indi, issiqlik xaritasi, tooltip va Actions", async ({ page }
   await active.hover();
   await expect(page.locator(".tip")).toContainText("ta hissa");
 
+  await expect(page.locator(".an .bars").first().locator("li")).toHaveCount(12);
+  await expect(page.locator(".an .bars").nth(1).locator("li")).toHaveCount(7);
+  await expect(page.locator(".an-s > div")).toHaveCount(3);
+  await expect(page.locator(".an-s > div").first().locator("b")).toHaveText(/^\d+$/);
+
   await expect(page.locator(".group .list li")).toHaveCount(8);
   await expect(page.locator(".rstat.failure")).toHaveCount(1);
   await expect(page.locator(".rstat.running")).toHaveCount(1);

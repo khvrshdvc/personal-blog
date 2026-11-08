@@ -140,3 +140,59 @@ export function rangeFrom(days: Day[], monthsBack: number, monthsAhead = 1): Ran
     endMonth: new Date(endTime).getUTCMonth(),
   };
 }
+
+export const WEEKDAYS = ["Du", "Se", "Ch", "Pa", "Ju", "Sh", "Ya"];
+
+export interface Insights {
+  longestStreak: number;
+  best: Day | null;
+  perActive: number;
+  weekdays: number[];
+  months: { key: string; month: number; total: number }[];
+  busiestWeekday: number | null;
+}
+
+export function insights(days: Day[], today: string): Insights {
+  const past = days.filter((day) => day.d <= today);
+  const weekdays = [0, 0, 0, 0, 0, 0, 0];
+  const monthTotals = new Map<string, number>();
+  let longest = 0;
+  let run = 0;
+  let best: Day | null = null;
+  let total = 0;
+  let active = 0;
+
+  for (const day of past) {
+    const weekday = (new Date(utc(day.d)).getUTCDay() + 6) % 7;
+    weekdays[weekday] += day.c;
+    monthTotals.set(day.d.slice(0, 7), (monthTotals.get(day.d.slice(0, 7)) ?? 0) + day.c);
+
+    if (day.c > 0) {
+      run++;
+      active++;
+      total += day.c;
+      longest = Math.max(longest, run);
+      if (best === null || day.c > best.c) best = day;
+    } else {
+      run = 0;
+    }
+  }
+
+  const [year, month] = today.split("-").map(Number);
+  const months = Array.from({ length: 12 }, (_, index) => {
+    const date = new Date(Date.UTC(year, month - 1 - (11 - index), 1));
+    const key = date.toISOString().slice(0, 7);
+
+    return { key, month: date.getUTCMonth(), total: monthTotals.get(key) ?? 0 };
+  });
+  const top = Math.max(...weekdays);
+
+  return {
+    longestStreak: longest,
+    best,
+    perActive: active ? Math.round((total / active) * 10) / 10 : 0,
+    weekdays,
+    months,
+    busiestWeekday: top > 0 ? weekdays.indexOf(top) : null,
+  };
+}
