@@ -490,16 +490,16 @@ body[data-route="post"] .list{background:var(--cellp)}
   container-type: size;
 }
 
-.mhm {
+.mhw .mhm {
+  grid-template-columns: repeat(var(--cols, 17), minmax(0, 1fr));
   --s: calc((100cqh - 18px) / 7);
   margin-top: 0;
-  grid-template-columns: repeat(var(--cols, 17), minmax(0, 1fr));
   grid-template-rows: repeat(7, var(--s));
   align-content: end;
   height: 100%;
 }
 
-.mhm i {
+.mhw .mhm i {
   width: auto;
   height: var(--s);
   aspect-ratio: auto;
